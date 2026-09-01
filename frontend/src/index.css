@@ -13,7 +13,7 @@ body {
   margin: 0;
   min-width: 320px;
   font-family: sans-serif !important;
-  background-image: linear-gradient(to right, #292929 0%, black 100%);
+  background-image: linear-gradient(to right, #000000 0%, rgb(24, 7, 34) 100%);
 }
 
 a {
