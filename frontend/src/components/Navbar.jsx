@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import { FaHome, FaRegQuestionCircle, FaBars, FaTimes } from 'react-icons/fa'
-import { BiLogoZoom } from 'react-icons/bi'
+import { HomeUser, VideoLib, HelpCircle, X, Reorder } from 'reicon-react'
 
 import flowerMark from '../assets/lily-3-transparent.png'
 
 const navItems = [
-  { label: 'Home', icon: FaHome },
-  { label: 'Demo', icon: BiLogoZoom },
-  { label: 'FAQ', icon: FaRegQuestionCircle },
+  { label: 'Home', icon: HomeUser },
+  { label: 'Demo', icon: VideoLib },
+  { label: 'FAQ', icon: HelpCircle },
 ]
 
 export default function NavBar() {
@@ -47,7 +46,7 @@ export default function NavBar() {
           className="flex p-1 text-white transitio  focus:outline-none md:hidden"
           aria-label="Toggle navigation menu"
         >
-          {isMobileMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+          {isMobileMenuOpen ? <X size={27} /> : <Reorder size={27} />}
         </button>
       </nav>
 

@@ -1,5 +1,6 @@
 import flowerMark from './assets/lily-3-transparent.png'
 import backgroundHeroImage from './assets/gradient-480x360-1788263508954.png'
+import {} from 'reicon-react'
 
 import './App.css'
 import {
@@ -32,14 +33,13 @@ function Hero() {
       />
       <div className="relative z-10 mx-auto max-w-4xl">
         <h1 className="font-serif text-[clamp(2.45rem,6vw,5rem)] leading-[1.32] tracking-normal text-white">
-          &quot;Tell us what you
+          &quot;Tell us what you want to <u className="text-amber-200">learn</u>
+          .
           <br />
-          want to learn. We&apos;ll
+          We&apos;ll <u className="text-blue-200">find</u> the best{' '}
+          <FlowerAccent className="inline-block h-14 w-14 align-middle sm:h-16 sm:w-16" />
           <br />
-          find the best{' '}
-          <FlowerAccent className="-mt-4 inline-block h-14 w-14 align-middle sm:h-16 sm:w-16" />
-          <br />
-          resources for you.&quot;
+          <u className="text-fuchsia-200">resources</u> for you.&quot;
         </h1>
         <button className="start-button mt-10">
           <div>
