@@ -1,40 +1,25 @@
-import { FiSearch } from 'react-icons/fi'
-import { IoDocumentTextOutline } from 'react-icons/io5'
-import { LuCode, LuFlaskConical } from 'react-icons/lu'
-import { RiSparkling2Line } from 'react-icons/ri'
+import { GlobalSearch, OrderedList, BookBookmark } from 'reicon-react'
 import '.././App.css'
 
 const featureCards = [
   {
-    title: 'Learn interviews, then teaches in bytes',
-    copy: 'It figures out what you actually want to learn, scaffolds the project, and publishes short lessons with real challenges sized to your level.',
-    icon: IoDocumentTextOutline,
+    title: 'find blogs/articles for you',
+    copy: 'It figures out what you actually want to learn optimized query into subparts and find best blogs/articles links for you woth the helper tools',
+    icon: GlobalSearch,
     className: 'bg-sky-100',
     size: 'large',
   },
   {
-    title: 'Learnish coaches without spoiling',
-    copy: 'It asks what you think you should do, corrects your approach, and hands you the docs to understand it, not the solution to paste.',
-    icon: LuCode,
+    title: 'give you formatted summarized blogs and articles',
+    copy: 'after finding lot of blogs and articles agent optimize them and gives you best top rated resources with the description.',
+    icon: OrderedList,
     className: 'bg-emerald-100',
   },
   {
-    title: 'Labs that punish lazy code',
-    copy: 'You write the lab. The system validates the outcome, flags weak implementations, and pushes you from naive to dependable.',
-    icon: LuFlaskConical,
+    title: 'planed ordered resources access',
+    copy: 'based on query it give you multiple blogs/article and ordered them as per difficuly level and reqding flow',
+    icon: BookBookmark,
     className: 'bg-violet-100',
-  },
-  {
-    title: 'Revise locks in what you claim to know',
-    copy: 'It grills you on finished lessons so the skill sticks instead of leaking.',
-    icon: RiSparkling2Line,
-    className: 'bg-purple-100',
-  },
-  {
-    title: 'Status & fix-lesson help you never lose your place',
-    copy: 'Pick up exactly where you left off. Repair lesson content when something is off.',
-    icon: FiSearch,
-    className: 'bg-teal-50',
   },
 ]
 function SystemCard({ card }) {
@@ -44,7 +29,7 @@ function SystemCard({ card }) {
     <article
       className={`${card.className} rounded-2xl p-6 shadow-sm h-full ${card.size === 'large' ? 'md:col-span-1 md:row-span-2' : ''}`}
     >
-      <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/65 text-lg text-indigo-500">
+      <div className="mb-4 flex h-15 w-15 items-center justify-center rounded-full bg-white/65 text-lg text-indigo-500">
         <Icon />
       </div>
       <h3 className="text-base font-black leading-tight text-neutral-950">
@@ -55,7 +40,7 @@ function SystemCard({ card }) {
         <div className="mt-8 grid place-items-center">
           <div className="relative h-36 w-36 rounded-full border-4 border-indigo-300">
             <div className="absolute inset-8 grid place-items-center rounded-full bg-white text-[0.62rem] font-black text-indigo-500 shadow">
-              LILY AI
+              Lily agent
             </div>
           </div>
         </div>

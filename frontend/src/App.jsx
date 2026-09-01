@@ -40,7 +40,7 @@ function Hero() {
           We&apos;ll <u className="text-blue-200">find</u> the best{' '}
           <FlowerAccent className="inline-block h-14 w-14 align-middle sm:h-16 sm:w-16" />
           <br />
-          <u className="text-fuchsia-200">resources</u> for you.&quot;
+          <u className="text-fuchsia-200">Blogs and Articles</u> for you.&quot;
         </h1>
         <button className="start-button mt-10">
           <div>
