@@ -1,5 +1,7 @@
 import flowerMark from './assets/lily-3-transparent.png'
 import backgroundHeroImage from './assets/gradient-480x360-1788263508954.png'
+import googleSearchIcon from './assets/g-search.png'
+import redditIcon from './assets/reddit.png'
 import { Dialog2 } from 'reicon-react'
 
 import './App.css'
@@ -33,6 +35,18 @@ function Hero() {
       />
       <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-neutral-950/90"></div>
       <div className="relative z-10 mx-auto max-w-4xl">
+        <div className="hero-source-icons" aria-hidden="true">
+          <img
+            className="hero-source-icon hero-source-icon--google-search"
+            src={googleSearchIcon}
+            alt=""
+          />
+          <img
+            className="hero-source-icon hero-source-icon--reddit"
+            src={redditIcon}
+            alt=""
+          />
+        </div>
         <h1 className="font-serif text-[clamp(2.45rem,6vw,5rem)] leading-[1.32] tracking-normal text-white">
           &quot;Tell us what you want to <u className="text-amber-200">learn</u>
           .

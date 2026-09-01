@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { HomeUser, VideoLib, HelpCircle, X, Reorder } from 'reicon-react'
+import { VideoLib, HelpCircle, X, Reorder } from 'reicon-react'
 
 import flowerMark from '../assets/lily-3-transparent.png'
 
 const navItems = [
-  { label: 'Home', icon: HomeUser },
   { label: 'Demo', icon: VideoLib },
   { label: 'FAQ', icon: HelpCircle },
 ]
