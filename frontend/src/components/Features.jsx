@@ -1,6 +1,6 @@
 import { FiSearch } from 'react-icons/fi'
 import { IoDocumentTextOutline } from 'react-icons/io5'
-import { LuBot, LuCode, LuFlaskConical } from 'react-icons/lu'
+import { LuCode, LuFlaskConical } from 'react-icons/lu'
 import { RiSparkling2Line } from 'react-icons/ri'
 import '.././App.css'
 
@@ -36,12 +36,6 @@ const featureCards = [
     icon: FiSearch,
     className: 'bg-teal-50',
   },
-  {
-    title: 'Setup takes one prompt',
-    copy: 'Deps, git, private remote, profile. No classroom UI to learn.',
-    icon: LuBot,
-    className: 'bg-orange-100',
-  },
 ]
 function SystemCard({ card }) {
   const Icon = card.icon
@@ -72,8 +66,8 @@ function SystemCard({ card }) {
 
 export function HowItWorks() {
   return (
-    <section className="texture-shell px-5 py-16">
-      <div className="mx-auto max-w-6xl">
+    <section className="texture-shell px-5 py-16 border-t border-zinc-600">
+      <div className="mx-auto max-w-5xl">
         <div className="mx-auto max-w-3xl text-center mb-12">
           <h2 className="text-3xl font-black tracking-tight text-white sm:text-3xl">
             How the system actually works
@@ -83,7 +77,7 @@ export function HowItWorks() {
             share one rule: you write the code.
           </p>
         </div>
-        <div className="mx-auto grid gap-6 md:grid-cols-3 auto-rows-max">
+        <div className="mx-auto grid gap-6 md:grid-cols-2 auto-rows-max">
           {featureCards.map((card) => (
             <SystemCard key={card.title} card={card} />
           ))}

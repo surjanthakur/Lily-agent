@@ -1,33 +1,29 @@
 import { useState } from 'react'
-import { FiChevronDown, FiExternalLink } from 'react-icons/fi'
+import { FiChevronDown } from 'react-icons/fi'
 import { RiSparkling2Line } from 'react-icons/ri'
+import { Mailbox } from 'reicon-react'
 import '.././App.css'
 
 const faqItems = [
   {
-    question: 'What is Lily AI and how does it help me learn?',
+    question: '1. What is Lily agent and how does it help me learn ?',
     answer:
-      'Lily AI is an intelligent learning platform that understands your learning goals and creates personalized learning paths. It scaffolds projects, breaks down concepts into bite-sized lessons, and provides real-world challenges matched to your skill level.',
+      'lily is an agent that find best article/blog resource base on your topic and gives you sorted article links with some metadata',
   },
   {
-    question: 'How does AI coaching work in Lily?',
+    question: '2. who should use Lily agent ?',
     answer:
-      'Our AI coaches guide you through problem-solving without spoiling the solution. It asks clarifying questions, corrects your approach, and directs you to relevant documentation so you truly understand the concepts rather than just copying answers.',
+      'anyone who want to learn any topic in dept with the help of lily agent sorted strucutred format of articles and blogs',
   },
   {
-    question: 'Can I practice what I learn with real projects?',
+    question:
+      '3. how lily agent prepare a sorted set of blogs/articles for you ?',
     answer:
-      'Yes! Lily includes interactive labs where you write actual code. The system validates your implementation, flags inefficient patterns, and pushes you to write production-quality code instead of just passing basic tests.',
+      'lily take you query and find relevent bunch of articles/blogs and sort them line by line like course topic wise and also share description about them difficulty level rating and standards about resource',
   },
   {
-    question: 'How does Lily ensure concepts stick in my memory?',
-    answer:
-      'Lily uses spaced repetition and review sessions to reinforce learning. After completing lessons, the system quizzes you on key concepts to ensure retention and helps you build lasting knowledge instead of temporary memorization.',
-  },
-  {
-    question: 'How do I get started with Lily?',
-    answer:
-      'Getting started is simple - just provide one prompt describing what you want to learn. Lily handles all the setup including dependencies, git configuration, and environment setup. No classroom UI to learn - everything works in your editor.',
+    question: '4. is lily agent free ?',
+    answer: 'yes!! for now its free so go and check it out?',
   },
 ]
 
@@ -39,7 +35,10 @@ export default function FaqSection() {
   }
 
   return (
-    <section id="faq" className="texture-shell px-5 py-16">
+    <section
+      id="faq"
+      className="texture-shell px-5 py-16 border-t border-zinc-600"
+    >
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-2xl text-center mb-16">
           <span className="inline-flex items-center gap-2 rounded-full border border-neutral-700 px-3 py-1 text-sm font-bold text-neutral-300">
@@ -92,10 +91,10 @@ export default function FaqSection() {
             assistance.
           </p>
           <a
-            href="mailto:hello@lilyagent.dev"
+            href="mailto:tsurjan506@gmail.com"
             className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-bold text-neutral-950 shadow-lg transition hover:bg-neutral-100"
           >
-            Contact us <FiExternalLink />
+            Contact us <Mailbox size={24} />
           </a>
         </div>
       </div>
