@@ -48,7 +48,7 @@ function SystemCard({ card }) {
 
   return (
     <article
-      className={`${card.className} rounded-2xl p-5 shadow-sm ${card.size === 'large' ? 'md:row-span-2 md:p-6' : ''}`}
+      className={`${card.className} rounded-2xl p-6 shadow-sm h-full ${card.size === 'large' ? 'md:col-span-1 md:row-span-2' : ''}`}
     >
       <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/65 text-lg text-indigo-500">
         <Icon />
@@ -63,14 +63,6 @@ function SystemCard({ card }) {
             <div className="absolute inset-8 grid place-items-center rounded-full bg-white text-[0.62rem] font-black text-indigo-500 shadow">
               LILY AI
             </div>
-            {['Learn', 'Build', 'Review', 'Grow'].map((label, index) => (
-              <span
-                key={label}
-                className={`orbit-node orbit-node-${index + 1}`}
-              >
-                {label}
-              </span>
-            ))}
           </div>
         </div>
       )}
@@ -80,18 +72,18 @@ function SystemCard({ card }) {
 
 export function HowItWorks() {
   return (
-    <section className="texture-shell px-5 pb-16">
-      <div className="mx-auto max-w-302.5 bg-white px-5 py-8 shadow-sm sm:px-10 lg:px-20">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl font-black tracking-tight text-neutral-950 sm:text-3xl">
+    <section className="texture-shell px-5 py-16">
+      <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-3xl text-center mb-12">
+          <h2 className="text-3xl font-black tracking-tight text-white sm:text-3xl">
             How the system actually works
           </h2>
-          <p className="mt-2 text-xs leading-5 text-neutral-500">
+          <p className="mt-2 text-lg leading-5 text-neutral-400">
             Not a course player. A set of skills that run in your editor and
             share one rule: you write the code.
           </p>
         </div>
-        <div className="mx-auto mt-10 grid max-w-3xl gap-4 md:grid-cols-3">
+        <div className="mx-auto grid gap-6 md:grid-cols-3 auto-rows-max">
           {featureCards.map((card) => (
             <SystemCard key={card.title} card={card} />
           ))}
