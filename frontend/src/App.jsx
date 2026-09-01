@@ -1,6 +1,6 @@
 import flowerMark from './assets/lily-3-transparent.png'
 import backgroundHeroImage from './assets/gradient-480x360-1788263508954.png'
-import {} from 'reicon-react'
+import { Dialog2 } from 'reicon-react'
 
 import './App.css'
 import {
@@ -43,7 +43,9 @@ function Hero() {
         </h1>
         <button className="start-button mt-10">
           <div>
-            <span>Let's Chat</span>
+            <span>
+              Let's Chat <Dialog2 size={50} />
+            </span>
           </div>
         </button>
       </div>
