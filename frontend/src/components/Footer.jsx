@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer
       id="footer"
-      className="footer-band relative overflow-hidden px-7 border-t border-zinc-600 py-16 sm:px-12 sm:py-24"
+      className="footer-band scroll-reveal relative overflow-hidden px-7 border-t border-zinc-600 py-16 sm:px-12 sm:py-24"
     >
       <img
         src={lilyLine}
@@ -18,7 +18,7 @@ export default function Footer() {
         className="footer-lily pointer-events-none absolute opacity-10"
       />
       <div className="relative z-10 mx-auto max-w-6xl">
-        <div className="text-center mb-16">
+        <div className="text-reveal text-center mb-16">
           <div className="relative inline-block">
             <FlowerAccent className="absolute -left-8 -top-4 h-12 w-12" />
             <h2 className="font-serif text-[clamp(3rem,10vw,6rem)] uppercase leading-none tracking-normal text-white">
@@ -30,7 +30,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 mb-12 py-12 ">
+        <div className="text-reveal grid md:grid-cols-2 gap-12 mb-12 py-12 ">
           <div>
             <h3 className="text-white font-black text-sm  tracking-wider mb-6">
               Connect with us
@@ -67,7 +67,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="text-center text-neutral-500 text-sm pt-8">
+        <div className="text-reveal text-center text-neutral-500 text-sm pt-8">
           <p>&copy; 2026 Lily Agent. All rights reserved.</p>
         </div>
       </div>

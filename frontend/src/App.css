@@ -105,6 +105,27 @@
   }
 }
 
+.hero-title {
+  perspective: 900px;
+}
+
+.hero-title-line {
+  display: block;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.scroll-reveal,
+.text-reveal,
+.feature-card,
+.feature-card-icon {
+  will-change: transform, opacity;
+}
+
+.feature-card {
+  transform-origin: center;
+}
+
 .hero-source-icons {
   position: absolute;
   inset: 0;

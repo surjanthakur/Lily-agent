@@ -27,9 +27,10 @@ function SystemCard({ card }) {
 
   return (
     <article
-      className={`${card.className} rounded-2xl p-6 shadow-sm h-full ${card.size === 'large' ? 'md:col-span-1 md:row-span-2' : ''}`}
+      tabIndex={0}
+      className={`feature-card ${card.className} h-full rounded-2xl p-6 shadow-sm outline-none transition-colors focus-visible:ring-4 focus-visible:ring-white/70 ${card.size === 'large' ? 'md:col-span-1 md:row-span-2' : ''}`}
     >
-      <div className="mb-4 flex h-15 w-15 items-center justify-center rounded-full bg-white/65 text-lg text-indigo-500">
+      <div className="feature-card-icon mb-4 flex h-15 w-15 items-center justify-center rounded-full bg-white/65 text-lg text-indigo-500">
         <Icon />
       </div>
       <h3 className="text-base font-black leading-tight text-neutral-950">
@@ -51,9 +52,9 @@ function SystemCard({ card }) {
 
 export function HowItWorks() {
   return (
-    <section className="texture-shell px-5 py-16 border-t border-zinc-600">
+    <section className="texture-shell scroll-reveal px-5 py-16 border-t border-zinc-600">
       <div className="mx-auto max-w-5xl">
-        <div className="mx-auto max-w-3xl text-center mb-12">
+        <div className="text-reveal mx-auto max-w-3xl text-center mb-12">
           <h2 className="text-3xl font-black tracking-tight text-white sm:text-3xl">
             How the system actually works
           </h2>

@@ -37,10 +37,10 @@ export default function FaqSection() {
   return (
     <section
       id="faq"
-      className="texture-shell px-5 py-16 border-t border-zinc-600"
+      className="texture-shell scroll-reveal px-5 py-16 border-t border-zinc-600"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="mx-auto max-w-2xl text-center mb-16">
+        <div className="text-reveal mx-auto max-w-2xl text-center mb-16">
           <span className="inline-flex items-center gap-2 rounded-full border border-neutral-700 px-3 py-1 text-sm font-bold text-neutral-300">
             <RiSparkling2Line /> FAQ
           </span>
@@ -57,7 +57,7 @@ export default function FaqSection() {
           {faqItems.map((item, index) => (
             <div
               key={index}
-              className="border border-neutral-800 rounded-lg overflow-hidden bg-neutral-900/50 backdrop-blur-sm transition hover:border-neutral-700"
+              className="text-reveal border border-neutral-800 rounded-lg overflow-hidden bg-neutral-900/50 backdrop-blur-sm transition hover:border-neutral-700"
             >
               <button
                 type="button"
@@ -82,7 +82,7 @@ export default function FaqSection() {
           ))}
         </div>
 
-        <div className="mt-16 mx-auto max-w-xl rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 text-center">
+        <div className="text-reveal mt-16 mx-auto max-w-xl rounded-xl border border-neutral-800 bg-neutral-900/50 p-6 text-center">
           <h3 className="text-lg font-black text-white">
             Still have questions?
           </h3>
