@@ -31,6 +31,7 @@ function Hero() {
         alt="hero-image"
         className="absolute inset-0 h-full w-full object-cover"
       />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-neutral-950/90"></div>
       <div className="relative z-10 mx-auto max-w-4xl">
         <h1 className="font-serif text-[clamp(2.45rem,6vw,5rem)] leading-[1.32] tracking-normal text-white">
           &quot;Tell us what you want to <u className="text-amber-200">learn</u>

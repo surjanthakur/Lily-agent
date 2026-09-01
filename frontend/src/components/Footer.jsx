@@ -13,7 +13,7 @@ export default function Footer() {
   return (
     <footer
       id="footer"
-      className="footer-band relative overflow-hidden bg-neutral-950 px-7 py-16 sm:px-12 sm:py-24"
+      className="footer-band relative overflow-hidden px-7 py-16 sm:px-12 sm:py-24"
     >
       <img
         src={lilyLine}

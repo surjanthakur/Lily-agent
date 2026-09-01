@@ -39,7 +39,7 @@ export default function FaqSection() {
   }
 
   return (
-    <section id="faq" className="texture-shell px-5 py-16 bg-neutral-950">
+    <section id="faq" className="texture-shell px-5 py-16">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-2xl text-center mb-16">
           <span className="inline-flex items-center gap-2 rounded-full border border-neutral-700 px-3 py-1 text-sm font-bold text-neutral-300">
