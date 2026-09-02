@@ -40,14 +40,14 @@ export default function DemoSection({
       className="video-band scroll-reveal relative px-5 py-14 sm:py-20"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="text-reveal mb-10 flex items-center justify-center gap-2 text-center text-2xl font-black text-white sm:text-3xl">
+        <div className=" mb-10 flex font-light items-center justify-center gap-2 text-center text-2xl text-white sm:text-3xl">
           <FlowerAccent className="h-10 w-10 shrink-0" />
-          <span>Let&apos;s see how Lily agent work</span>
+          <span>Let&apos;s see how Lily agent work's</span>
         </div>
 
-        <div className="text-reveal mx-auto w-full max-w-6xl overflow-hidden rounded-[26px] border border-white/20 bg-sky-950/5 shadow-[0_28px_80px_rgba(14,116,144,0.15)] sm:rounded-4xl">
+        <div className="text-reveal mx-auto max-w-6xl overflow-hidden rounded-4xl border-20 border-gray-300 bg-sky-950/5 shadow-[0_28px_80px_rgba(14,116,144,0.15)]">
           {embedUrl ? (
-            <div className="relative mx-auto aspect-video w-full max-w-275 overflow-hidden rounded-[inherit]">
+            <div className="aspect-video w-full">
               <iframe
                 src={embedUrl}
                 title="Lily agent demo video"
@@ -59,7 +59,7 @@ export default function DemoSection({
               />
             </div>
           ) : (
-            <div className="flex min-h-65 items-center justify-center px-6 text-center text-base font-medium text-slate-700 sm:min-h-85 md:min-h-105">
+            <div className="flex min-h-80 items-center justify-center px-6 text-center text-lg font-medium text-slate-700 sm:min-h-105">
               Paste a YouTube link into the videoUrl prop to show the demo
               video.
             </div>
