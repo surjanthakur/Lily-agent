@@ -1,5 +1,6 @@
-import { FlowerAccent } from '../App'
+import { FlowerAccent } from './Hero'
 
+// check video url
 function getYouTubeEmbedUrl(videoUrl) {
   if (!videoUrl) {
     return ''

@@ -1,6 +1,6 @@
 import { FaGithub, FaTwitter } from 'react-icons/fa'
 import lilyLine from '../assets/lily-2.png'
-import { FlowerAccent } from '../App'
+import { FlowerAccent } from './Hero'
 import { Send } from 'reicon-react'
 
 import '.././App.css'
