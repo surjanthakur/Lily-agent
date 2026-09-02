@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { SidebarLeft, SidebarRight } from 'reicon-react'
-import Sidebar from '../components/sidebar/Sidebar'
-import ChatSection from '../components/dashboard-rightSection/chatsSection'
-import InputSection from '../components/dashboard-rightSection/inputSection'
+import { ChatSection, Sidebar, InputSection } from '../components/index'
 
 export default function Dashboard() {
   const [sidebarToggle, setSidebarToggle] = useState(true)

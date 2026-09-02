@@ -16,12 +16,3 @@ body {
   background-color: #000000;
   background-image: linear-gradient(to right, #000000 0%, rgb(24, 7, 34) 100%);
 }
-
-a {
-  text-decoration-thickness: 1px;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
