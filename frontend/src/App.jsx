@@ -154,13 +154,15 @@ export default function App() {
   }, [])
 
   return (
-    <main ref={appRef} className="min-h-screen overflow-hidden">
-      {/* component render */}
-      <Hero />
-      <DemoSection />
-      <HowItWorks />
-      <FaqSection />
-      <Footer />
-    </main>
+    <>
+      <main ref={appRef} className="min-h-screen overflow-hidden">
+        {/* component render */}
+        <Hero />
+        <DemoSection />
+        <HowItWorks />
+        <FaqSection />
+        <Footer />
+      </main>
+    </>
   )
 }

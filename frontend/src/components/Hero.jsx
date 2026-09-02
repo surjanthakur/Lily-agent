@@ -1,11 +1,11 @@
-import './App.css'
+import '.././App.css'
 
-import backgroundHeroImage from './assets/gradient-480x360-1788263508954.png'
-import googleSearchIcon from './assets/g-search.png'
-import redditIcon from './assets/reddit.png'
+import backgroundHeroImage from '../assets/gradient-480x360-1788263508954.png'
+import googleSearchIcon from '../assets/g-search.png'
+import redditIcon from '../assets/reddit.png'
 import { Dialog2 } from 'reicon-react'
-import flowerMark from './assets/lily-3-transparent.png'
-import { NavBar } from '../src/components/index.js'
+import flowerMark from '../assets/lily-3-transparent.png'
+import { NavBar } from './index'
 
 export function FlowerAccent({ className = '' }) {
   return (
