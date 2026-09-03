@@ -3,13 +3,13 @@ import { FiMic } from 'react-icons/fi'
 export default function InputSection() {
   return (
     <div className="pb-2 pt-4">
-      <div className="mx-auto max-w-275">
-        <div className="flex items-center gap-3 rounded-full border border-white/10 bg-[#161616] px-3 py-2 shadow-[0_20px_40px_rgba(0,0,0,0.25)] sm:px-5 sm:py-3">
+      <div className="mx-auto max-w-200">
+        <div className="flex items-center gap-3 rounded-full border border-white/20 bg-[#171818] px-3 py-2 sm:px-5 sm:py-3">
           <input
             type="text"
             value="find with Lily..."
             readOnly
-            className="w-full bg-transparent text-base text-slate-200 placeholder:text-slate-500 focus:outline-none sm:text-lg"
+            className="w-full bg-transparent text-base text-slate-200 placeholder:text-slate-500 font-light focus:outline-none sm:text-lg"
             aria-label="Chat input"
           />
 

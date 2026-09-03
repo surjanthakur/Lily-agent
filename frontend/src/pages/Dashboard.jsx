@@ -26,7 +26,7 @@ export default function Dashboard() {
           sidebarToggleSwitch={sidebarToggleSwitch}
         />
 
-        <main className="flex min-h-screen flex-1 flex-col bg-[#030303]">
+        <main className="flex min-h-screen flex-1 flex-col bg-[#0D0D0D]">
           <div className="mx-auto flex w-full max-w-375 flex-1 flex-col py-3 pt-16 sm:px-5 sm:py-4 sm:pt-20 lg:py-5 lg:pt-5">
             <ChatSection />
             <InputSection />

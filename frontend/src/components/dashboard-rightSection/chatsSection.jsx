@@ -41,7 +41,7 @@ export default function ChatSection() {
           if (message.sender === 'user') {
             return (
               <div key={index} className="flex justify-end">
-                <div className="max-w-[90%] rounded-full bg-[#171717] px-5 py-3 text-base text-white shadow-xl shadow-slate-950/20 sm:px-7 sm:text-lg">
+                <div className="max-w-[90%] rounded-full bg-[#1d1d1d] px-5 py-3 text-base text-white shadow-xl font-light shadow-slate-950/20 sm:px-7 sm:text-lg">
                   {message.text}
                 </div>
               </div>
