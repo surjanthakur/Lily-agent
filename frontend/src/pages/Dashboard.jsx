@@ -5,7 +5,7 @@ import { ChatSection, Sidebar, InputSection } from '../components/index'
 export default function Dashboard() {
   const [sidebarToggle, setSidebarToggle] = useState(true)
 
-  // function chage value between {true and false}
+  // function change value between {true and false}
   const sidebarToggleSwitch = () => {
     setSidebarToggle((prev) => !prev)
   }
