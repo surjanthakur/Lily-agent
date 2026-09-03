@@ -1,6 +1,19 @@
 import { Logout4 } from 'reicon-react'
+import { Sun, MoonStars } from 'reicon-react'
+import { useTheme } from '../../context/themecontext.js'
 
-export default function SettingsPopupWindow({ isLightTheme, onThemeToggle }) {
+export default function SettingsPopupWindow() {
+  const { themeMode, lightTheme, darkTheme } = useTheme()
+  const isDark = themeMode === 'dark'
+
+  const toggleTheme = () => {
+    if (isDark) {
+      lightTheme()
+    } else {
+      darkTheme()
+    }
+  }
+
   return (
     <aside
       aria-label="Settings"
@@ -14,26 +27,15 @@ export default function SettingsPopupWindow({ isLightTheme, onThemeToggle }) {
       {/* sidebar theme change button */}
       <button
         type="button"
-        // based on prop value check value {true or false}
-        onClick={onThemeToggle}
-        className="flex w-full items-center justify-between rounded-xl px-2 py-2.5 text-sm transition hover:bg-white/10"
+        onClick={toggleTheme}
+        className="flex w-full items-center justify-between gap-2 rounded-xl px-2 py-2.5 text-sm transition hover:bg-white/10"
       >
-        <span>Light theme</span>
-        <span
-          aria-hidden="true"
-          className={`flex h-5 w-9 items-center rounded-full p-0.5 transition ${
-            isLightTheme ? 'bg-slate-300' : 'bg-white/20'
-          }`}
-        >
-          <span
-            className={`h-4 w-4 rounded-full transition-transform ${
-              isLightTheme
-                ? 'translate-x-4 bg-slate-700'
-                : 'translate-x-0 bg-white/70'
-            }`}
-          />
-        </span>
+        <span className="whitespace-nowrap">change theme</span>
+        <div className="flex items-center">
+          {themeMode === 'light' ? <MoonStars /> : <Sun />}
+        </div>
       </button>
+
       {/* logout account button  */}
       {/* here we call a function  */}
       <button

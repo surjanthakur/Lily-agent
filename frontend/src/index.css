@@ -1,11 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@400;500;700;800;900&display=swap');
+
 @import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
 
 * {
   box-sizing: border-box;
 }
 
 html {
+  color-scheme: dark;
   scroll-behavior: smooth;
 }
 

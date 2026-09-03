@@ -8,7 +8,7 @@ export default function Sidebar({ sidebarToggle }) {
       // sidebar toggle logic
       aria-expanded={sidebarToggle}
       className={[
-        'w-full overflow-hidden border-b border-white/10 bg-[#181818] transition-all duration-300 ease-in-out',
+        'w-full overflow-hidden border-b border-white/10 bg-[#181818] transition-all duration-300 ease-in-out dark:bg-white',
 
         // check if sidebarToggle value is true or not absed on. that add classes
         sidebarToggle ? 'max-lg:block lg:w-[320px]' : 'max-lg:hidden lg:w-0',
