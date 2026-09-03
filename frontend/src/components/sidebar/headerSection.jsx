@@ -3,7 +3,7 @@ import flowerLogo from '../../assets/lily-3-transparent.png'
 
 export default function HeaderSection() {
   return (
-    <header className="border-b border-white/10 bg-[#1a1f2a]/80 px-3 py-3 sm:px-4 sm:py-4">
+    <header className="border-b border-white/10 bg-[#181818] px-3 py-3 sm:px-4 sm:py-4">
       <div className="flex items-center gap-2.5">
         <div className="flex ms-40 min-w-0 items-center gap-2.5">
           <h2 className="text-xl font-light tracking-tight text-white sm:text-[1.65rem]">

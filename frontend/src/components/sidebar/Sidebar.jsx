@@ -7,7 +7,7 @@ export default function Sidebar({ sidebarToggle }) {
     <aside
       aria-expanded={sidebarToggle}
       className={[
-        'w-full overflow-hidden border-b border-white/10 bg-[#090909] transition-all duration-300 ease-in-out',
+        'w-full overflow-hidden border-b border-white/10 bg-[#181818] transition-all duration-300 ease-in-out',
         sidebarToggle ? 'max-lg:block lg:w-[320px]' : 'max-lg:hidden lg:w-0',
         sidebarToggle
           ? 'lg:border-b-0 lg:border-r lg:border-white/10'
