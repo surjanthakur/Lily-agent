@@ -7,7 +7,9 @@ export default function BottomSection() {
 
   return (
     <div className="relative border-t border-white/20 bg-[#181818] px-3 py-3 sm:px-4 dark:bg-white dark:border-black/20">
-      {isSettingsOpen && <SettingsPopupWindow />}
+      {isSettingsOpen && (
+        <SettingsPopupWindow setIsSettingsOpen={setIsSettingsOpen} />
+      )}
       {/* here we show authenticated user detrails */}
       <div className="flex items-center justify-between gap-3 rounded-2xl bg-[#181818] px-2.5 py-2 ring-1 ring-white/10 dark:bg-white dark:ring-black/20">
         <div className="flex min-w-0 items-center gap-3">

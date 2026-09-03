@@ -2,7 +2,7 @@ import { Logout4 } from 'reicon-react'
 import { Sun, MoonStars } from 'reicon-react'
 import { useTheme } from '../../context/themecontext.js'
 
-export default function SettingsPopupWindow() {
+export default function SettingsPopupWindow({ setIsSettingsOpen }) {
   const { themeMode, lightTheme, darkTheme } = useTheme()
   const isDark = themeMode === 'dark'
 
@@ -12,6 +12,7 @@ export default function SettingsPopupWindow() {
     } else {
       darkTheme()
     }
+    setIsSettingsOpen((prev) => !prev)
   }
 
   return (

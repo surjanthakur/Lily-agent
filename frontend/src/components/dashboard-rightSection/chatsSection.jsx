@@ -41,7 +41,7 @@ export default function ChatSection() {
           if (message.sender === 'user') {
             return (
               <div key={index} className="flex justify-end">
-                <div className="max-w-[90%] rounded-full bg-[#1d1d1d] px-5 py-3 text-base text-white shadow-xl font-light shadow-slate-950/20 sm:px-7 sm:text-lg">
+                <div className="max-w-[90%] rounded-full bg-[#1d1d1d] px-5 py-3 text-base text-white shadow-xl font-light shadow-slate-950/20 dark:bg-[#eef0f3] dark:text-black dark:shadow-slate-300/30 sm:px-7 sm:text-lg">
                   {message.text}
                 </div>
               </div>
@@ -49,17 +49,17 @@ export default function ChatSection() {
           }
 
           return (
-            <div key={index} className="max-w-245 text-slate-100">
+            <div key={index} className="max-w-245 text-slate-100 dark:text-black">
               {message.type === 'heading' ? (
                 <>
-                  <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+                    <h2 className="text-2xl font-semibold tracking-tight text-white dark:text-black sm:text-3xl">
                     {message.title}
                   </h2>
 
                   {message.content.map((paragraph, paragraphIndex) => (
                     <p
                       key={`${message.title}-${paragraphIndex}`}
-                      className={`mt-4 text-base leading-8 text-slate-200 sm:text-lg ${
+                      className={`mt-4 text-base leading-8 text-slate-200 dark:text-slate-700 sm:text-lg ${
                         paragraphIndex === 0 ? 'font-medium' : ''
                       }`}
                     >
@@ -68,7 +68,7 @@ export default function ChatSection() {
                   ))}
                 </>
               ) : (
-                <p className="text-lg leading-8 text-slate-200 sm:text-xl">
+                <p className="text-lg leading-8 text-slate-200 dark:text-slate-700 sm:text-xl">
                   {message.text}
                 </p>
               )}
