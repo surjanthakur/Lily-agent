@@ -5,12 +5,14 @@ import { ChatSection, Sidebar, InputSection } from '../components/index'
 export default function Dashboard() {
   const [sidebarToggle, setSidebarToggle] = useState(true)
 
+  // function chage value between {true and false}
   const sidebarToggleSwitch = () => {
     setSidebarToggle((prev) => !prev)
   }
 
   return (
     <div className="relative min-h-screen bg-[#000000] text-white">
+      {/* button that toggle sidebar */}
       <button
         type="button"
         aria-label="Toggle sidebar"
@@ -20,12 +22,14 @@ export default function Dashboard() {
         {sidebarToggle ? <SidebarLeft size={18} /> : <SidebarRight size={18} />}
       </button>
 
+      {/* sidebar window left side section */}
       <div className="mx-auto flex min-h-screen max-w-[1800px] flex-col lg:flex-row">
         <Sidebar
           sidebarToggle={sidebarToggle}
           sidebarToggleSwitch={sidebarToggleSwitch}
         />
 
+        {/* main chat window section right side where client and agent interact */}
         <main className="flex min-h-screen flex-1 flex-col bg-[#0D0D0D]">
           <div className="mx-auto flex w-full max-w-375 flex-1 flex-col py-3 pt-16 sm:px-5 sm:py-4 sm:pt-20 lg:py-5 lg:pt-5">
             <ChatSection />
