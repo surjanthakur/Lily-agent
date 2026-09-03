@@ -19,7 +19,7 @@ const recents = [
 export default function RecentsSection() {
   return (
     <section className="h-full">
-      <div className="mb-3 px-1">
+      <div className="mb-4 px-1">
         <h3 className="text-base font-medium text-white/80">Recents</h3>
       </div>
 
@@ -28,7 +28,7 @@ export default function RecentsSection() {
           <button
             key={item}
             type="button"
-            className="flex w-full items-center justify-between rounded-xl px-2 py-2 text-left text-sm text-slate-300 transition hover:bg-white/5 hover:text-white"
+            className="flex w-full items-center justify-between rounded-xl px-2 py-2 text-left text-sm text-blue-400 underline transition hover:bg-white/5 hover:text-white"
           >
             <span className="truncate">{item}</span>
           </button>
