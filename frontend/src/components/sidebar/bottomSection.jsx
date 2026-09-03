@@ -14,6 +14,7 @@ export default function BottomSection() {
           onThemeToggle={() => setIsLightTheme((current) => !current)}
         />
       )}
+      {/* here we show authenticated user detrails */}
       <div className="flex items-center justify-between gap-3 rounded-2xl bg-[#181818] px-2.5 py-2 ring-1 ring-white/10">
         <div className="flex min-w-0 items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-linear-to-br from-slate-300 to-slate-500 text-sm font-semibold text-[#0d1117]">
@@ -25,7 +26,7 @@ export default function BottomSection() {
             </p>
           </div>
         </div>
-
+        {/* button that popup settings window */}
         <button
           type="button"
           aria-label="Open settings"

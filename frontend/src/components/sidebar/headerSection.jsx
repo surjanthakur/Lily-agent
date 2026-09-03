@@ -24,6 +24,8 @@ export default function HeaderSection() {
         </div>
       </div>
 
+      {/* create new chat window button */}
+      {/* here we call a fucntion that create new chat window in frontend {empty} */}
       <div className="mt-4">
         <button
           type="button"

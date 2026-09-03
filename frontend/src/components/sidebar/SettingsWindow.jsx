@@ -11,8 +11,10 @@ export default function SettingsPopupWindow({ isLightTheme, onThemeToggle }) {
         <p className="mt-1 text-xs text-white/50">Personalize your workspace</p>
       </div>
 
+      {/* sidebar theme change button */}
       <button
         type="button"
+        // based on prop value check value {true or false}
         onClick={onThemeToggle}
         className="flex w-full items-center justify-between rounded-xl px-2 py-2.5 text-sm transition hover:bg-white/10"
       >
@@ -32,7 +34,8 @@ export default function SettingsPopupWindow({ isLightTheme, onThemeToggle }) {
           />
         </span>
       </button>
-
+      {/* logout account button  */}
+      {/* here we call a function  */}
       <button
         type="button"
         className="mt-1 w-full gap-2 flex rounded-xl px-2 py-2.5 text-left text-sm text-red-300 transition hover:bg-red-400/10"
