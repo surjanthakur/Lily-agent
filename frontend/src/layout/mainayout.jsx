@@ -1,4 +1,5 @@
 import LoginForm from '../pages/loginForm'
+import Dashboard from '../pages/Dashboard.jsx'
 import { ThemeProvider } from '../context/themecontext.js'
 import { useState, useEffect } from 'react'
 
@@ -39,6 +40,7 @@ export default function MainLayout() {
   return (
     <>
       <ThemeProvider value={{ themeMode, lightTheme, darkTheme }}>
+        <Dashboard />
         <LoginForm />
       </ThemeProvider>
     </>
