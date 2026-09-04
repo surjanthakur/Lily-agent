@@ -7,7 +7,7 @@ export default function LoginForm() {
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#08090b] text-white">
-      <div className="mx-auto grid min-h-screen w-full max-w-[1600px] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+      <div className="mx-auto grid min-h-screen w-full max-w-full lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <section className="flex min-h-140 flex-col justify-between px-6 py-8 sm:px-10 sm:py-10 lg:min-h-screen lg:px-16 lg:py-12 xl:px-24">
           <a
             href="#login"
@@ -58,11 +58,8 @@ export default function LoginForm() {
           </p>
         </section>
 
-        <section className="relative flex min-h-105 items-end overflow-hidden border-t border-white/10 bg-[#151a17] px-6 py-8 sm:px-10 sm:py-10 lg:min-h-screen lg:border-l lg:border-t-0 lg:px-16 lg:py-12 xl:px-24">
+        <section className="relative flex min-h-screen items-end overflow-hidden border-t border-white/10 bg-[#151a17] px-6 py-8 sm:px-10 sm:py-10 lg:min-h-screen lg:border-l lg:border-t-0 lg:px-16 lg:py-12 xl:px-24">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_22%,rgba(216,243,106,0.18),transparent_30%),linear-gradient(135deg,#151a17_0%,#101311_56%,#253326_100%)]" />
-          <div className="absolute right-[12%] top-[15%] h-36 w-36 rounded-full border border-[#d8f36a]/30 sm:h-52 sm:w-52" />
-          <div className="absolute right-[18%] top-[23%] h-20 w-20 rounded-full bg-[#d8f36a]/10 blur-sm sm:h-28 sm:w-28" />
-
           <div className="relative z-10 max-w-xl">
             <div className="mb-20 flex items-center gap-3 text-sm font-medium text-white/60 sm:mb-28 lg:mb-36">
               <span className="h-px w-8 bg-[#d8f36a]" />A quieter way to learn
