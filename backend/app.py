@@ -1,6 +1,6 @@
 from typing import TypedDict
 
-from langgraph.graph import START, StateGraph
+from langgraph.graph import END, START, StateGraph
 
 
 # create state schema structure
@@ -26,10 +26,12 @@ def do_fallback(state: StateSchema):
     print(
         f"question: {state['question']} answer:{state['research']} attempts:{state['attempts']} is_good: {state['is_good']}"
     )
+    return {}
 
 
 def do_answer(state: StateSchema):
     print(f"question: {state['question']} answer: {state['research']}")
+    return {}
 
 
 def do_check(state: StateSchema):
@@ -54,7 +56,6 @@ graph_builder.add_node("research", do_research)
 graph_builder.add_node("fallback", do_fallback)
 graph_builder.add_node("answer", do_answer)
 graph_builder.add_node("check", do_check)
-graph_builder.add_node("route", do_route)
 
 # define edges
 graph_builder.add_edge(START, "research")
@@ -62,8 +63,15 @@ graph_builder.add_edge("research", "check")
 graph_builder.add_conditional_edges(
     "check",
     do_route,
-    {"fallback", "answer", "research"},
+    {
+        "fallback": "fallback",
+        "answer": "answer",
+        "research": "research",
+    },
 )
+
+graph_builder.add_edge("answer", END)
+graph_builder.add_edge("fallback", END)
 
 # compile graph
 agent = graph_builder.compile()
