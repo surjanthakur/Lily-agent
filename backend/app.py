@@ -7,7 +7,7 @@ from langgraph.graph import START, StateGraph
 class StateSchema(TypedDict):
     question: str
     research: str
-    is_good: Annotated[bool, "only true and false value"]
+    is_good: bool
     attempts: int
 
 
