@@ -1,6 +1,6 @@
 from typing import Annotated, TypedDict
 
-from langgraph.graph import END, START, StateGraph
+from langgraph.graph import START, StateGraph
 
 
 # create state schema structure
@@ -16,11 +16,13 @@ graph_builder = StateGraph(StateSchema)
 
 
 def do_research(state: StateSchema):
+    ans = (
+        "langgraph is a graph/workflow architecture that builds agents by connecting nodes nd edges",
+    )
+
     return {
-        state[
-            "research":"langgraph is a graph/workflow architecture that builds agents by connecting nodes nd edges"
-        ],
-        state["attempts"] + 1,
+        "research": ans,
+        "attempts": state["attempts"] + 1,
     }
 
 
@@ -28,7 +30,6 @@ def do_fallback(state: StateSchema):
     print(
         f"question: {state['question']} answer:{state['research']} attempts:{state['attempts']} is_good: {state['is_good']}"
     )
-    return END
 
 
 def do_answer(state: StateSchema):
@@ -36,10 +37,8 @@ def do_answer(state: StateSchema):
 
 
 def do_check(state: StateSchema):
-
-    if state["research"] and len(state["research"]) >= 10:
-        return {state["is_good"]: True}
-    return {state["is_good"]: False}
+    if state["research"]:
+        return {"is_good": True}
 
 
 def do_route(state: StateSchema):
@@ -70,6 +69,16 @@ graph_builder.add_conditional_edges(
     {"fallback", "answer", "research"},
 )
 
-graph_builder.compile(graph_builder)
 # compile graph
+agent = graph_builder.compile()
+
+
 # invoke graph
+agent.invoke(
+    input={
+        "question": "what is langgraph",
+        "attempts": 0,
+        "is_good": False,
+        "research": "",
+    }
+)
