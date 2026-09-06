@@ -8,7 +8,7 @@ class StateSchema(TypedDict):
     question: str
     research: str
     is_good: Annotated[bool, "only true and false value"]
-    attempts: int = 0
+    attempts: int
 
 
 # create stategeaph
