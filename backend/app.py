@@ -1,6 +1,6 @@
 from typing import Annotated, TypedDict
 
-from langgraph.graph import END, START, StateGraph
+from langgraph.graph import StateGraph
 
 
 # create state schema structure
