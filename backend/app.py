@@ -16,12 +16,8 @@ graph_builder = StateGraph(StateSchema)
 
 
 def do_research(state: StateSchema):
-    ans = (
-        "langgraph is a graph/workflow architecture that builds agents by connecting nodes nd edges",
-    )
-
     return {
-        "research": ans,
+        "research": "langgraph is a graph/workflow architecture that builds agents by connecting nodes nd edges",
         "attempts": state["attempts"] + 1,
     }
 
