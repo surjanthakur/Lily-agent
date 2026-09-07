@@ -37,8 +37,14 @@ def do_answer(state: StateSchema):
 
 def do_check(state: StateSchema) -> Command[Literal["answer", "research"]]:
     if state["is_good"]:
-        return Command(update={"is_good": True}, goto="answer")
-    return Command(update={"is_good": False}, goto="research")
+        return Command(
+            update={"is_good": True},
+            goto="answer",
+        )
+    return Command(
+        update={"is_good": False},
+        goto="research",
+    )
 
 
 def do_route(state: StateSchema):
