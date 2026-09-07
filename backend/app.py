@@ -1,6 +1,7 @@
-from typing import TypedDict
+from typing import Literal, TypedDict
 
 from langgraph.graph import END, START, StateGraph
+from langgraph.types import Command
 
 
 # create state schema structure
@@ -34,21 +35,15 @@ def do_answer(state: StateSchema):
     return {}
 
 
-def do_check(state: StateSchema):
-    if state["research"]:
-        return {"is_good": True}
+def do_check(state: StateSchema) -> Command[Literal["answer", "research"]]:
+    if state["is_good"]:
+        return Command(update={"is_good": True}, goto="answer")
+    return Command(update={"is_good": False}, goto="research")
 
 
 def do_route(state: StateSchema):
-
     if state["attempts"] >= 3:
         return "fallback"
-
-    elif state["is_good"] == True:
-        return "answer"
-
-    else:
-        return "research"
 
 
 # define nodes
