@@ -2,13 +2,17 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from .core.logginig import get_logger, setup_logging
 from .db.databse import create_db_tables
+
+setup_logging()
+logger = get_logger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_db_tables()
-    print("db tables created successfully🔥")
+    logger.info("Database tables created successfully")
     yield
 
 

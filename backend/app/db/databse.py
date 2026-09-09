@@ -6,6 +6,9 @@ from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from ..config.settings import settings
+from ..core.logginig import get_logger
+
+logger = get_logger(__name__)
 
 #  creating async engine
 async_engine: AsyncEngine = create_async_engine(
@@ -34,7 +37,7 @@ async def get_session_db() -> AsyncGenerator[AsyncSession, None]:
             yield session
         except SQLAlchemyError as err:
             session.rollback()
-            print(err)
+            logger.warning(f"db session err: {err}")
         finally:
             await session.close()
 
