@@ -15,6 +15,7 @@ async_engine: AsyncEngine = create_async_engine(
     pool_pre_ping=True,  # Detect and handle idle pool disconnects
 )
 
+
 async_session_maker = async_sessionmaker(
     async_engine,
     class_=AsyncSession,
