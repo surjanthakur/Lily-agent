@@ -1,4 +1,3 @@
-import os
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import create_async_engine
@@ -6,11 +5,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-DB_URL = os.getenv("NEON_DB_URL")
+from ..config.settings import settings
 
 #  creating async engine
 create_engine = create_async_engine(
-    url=DB_URL,
+    url=settings.db_url,
     echo=True,  # set False in production
     pool_pre_ping=True,  # Detect and handle idle pool disconnects
 )
