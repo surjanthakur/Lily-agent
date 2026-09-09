@@ -16,3 +16,9 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+# health check route
+@app.get("/health", status_code=200)
+def health_checks_route():
+    return {"status": "ok"}
