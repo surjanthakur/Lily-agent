@@ -7,13 +7,11 @@ from sqlmodel import Field, Relationship, SQLModel
 
 
 # user's table
-class USER(SQLModel, table=True):
+class User(SQLModel, table=True):
     user_id: UUID = Field(
         default_factory=uuid4,
-        unique=True,
         title="unique id of the user",
         primary_key=True,
-        index=True,
     )
     username: str = Field(
         default=None,
@@ -24,16 +22,16 @@ class USER(SQLModel, table=True):
     google_id: str = Field(
         default=None,
         unique=True,
-        title="google id for auth user",
+        title="google id of the user",
     )
     email_id: str = Field(
         default=None,
         unique=True,
-        title="email of the auth user",
+        title="email of the user",
     )
     profile_picture: str = Field(
         default=None,
-        title="pictutre of the auth user",
+        title="picture of the user",
     )
     created_at: datetime = Field(
         default_factory=datetime.now,
@@ -53,8 +51,6 @@ class Conversation(SQLModel, table=True):
     conversation_id: UUID = Field(
         default_factory=uuid4,
         primary_key=True,
-        unique=True,
-        index=True,
         title="unique id of the conversation",
     )
     user_id: UUID = Field(
@@ -67,7 +63,8 @@ class Conversation(SQLModel, table=True):
         default_factory=datetime.now,
         title="date and time the conversation was created",
     )
-    user: Optional["USER"] = Field(Relationship(back_populates="conversations"))
+
+    user: Optional["User"] = Field(Relationship(back_populates="conversations"))
 
     messages: list["Message"] = Field(
         Relationship(back_populates="conversation", cascade_delete=True)
@@ -84,8 +81,6 @@ class Message(SQLModel, table=True):
     message_id: UUID = Field(
         default_factory=uuid4,
         primary_key=True,
-        unique=True,
-        index=True,
         title="unique id of the message",
     )
     conversation_id: UUID = Field(
