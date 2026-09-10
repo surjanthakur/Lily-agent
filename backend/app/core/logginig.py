@@ -22,16 +22,23 @@ def setup_logging() -> None:
                     "class": "logging.StreamHandler",
                     "formatter": "default",
                     "stream": "ext://sys.stdout",
-                }
+                },
+                "file": {
+                    "class": "logging.FileHandler",
+                    "filename": "app.log",
+                    "formatter": "default",
+                    "encoding": "utf-8",
+                    "mode": "a",
+                },
             },
             "loggers": {
                 "app": {
-                    "handlers": ["console"],
+                    "handlers": ["console", "file"],
                     "level": log_level,
                     "propagate": False,
                 }
             },
-            "root": {"level": log_level, "handlers": ["console"]},
+            "root": {"level": log_level, "handlers": ["console", "file"]},
         }
     )
 
