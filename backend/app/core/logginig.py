@@ -1,11 +1,12 @@
 import logging
 import logging.config
-import os
+
+from .settings import settings
 
 
 def setup_logging() -> None:
     """Configure application logs for local development and production."""
-    log_level = os.getenv("LOG_LEVEL", "INFO").upper()
+    log_level = settings.LOG_LEVEL
 
     logging.config.dictConfig(
         {
