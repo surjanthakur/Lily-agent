@@ -11,7 +11,6 @@ logger = get_logger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
     await create_db_tables()
     yield
 
