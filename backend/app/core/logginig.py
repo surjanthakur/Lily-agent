@@ -6,7 +6,7 @@ from .settings import settings
 
 def setup_logging() -> None:
     """Configure application logs for local development and production."""
-    log_level = settings.LOG_LEVEL
+    log_level = (settings.LOG_LEVEL or "INFO").upper()
 
     logging.config.dictConfig(
         {
