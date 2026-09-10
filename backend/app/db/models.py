@@ -68,8 +68,9 @@ class Conversation(SQLModel, table=True):
         title="date and time the conversation was created",
     )
     user: Optional["USER"] = Field(Relationship(back_populates="conversations"))
+
     messages: list["Message"] = Field(
-        Relationship(back_populates="conversations", cascade_delete=True)
+        Relationship(back_populates="conversation", cascade_delete=True)
     )
 
 
@@ -98,6 +99,9 @@ class Message(SQLModel, table=True):
     )
     content: str = Field(
         title="message content",
+    )
+    conversation: Optional["Conversation"] = Field(
+        Relationship(back_populates="messages", cascade_delete=True)
     )
     created_at: datetime = Field(
         default_factory=datetime.now,
