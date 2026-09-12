@@ -23,3 +23,7 @@ def input_query_optimizer(state: AgentState):
         logger.exception("Query optimizer model call failed")
         raise
     return {"optimized_query": result}
+
+
+def web_search_reosurces(state: AgentState):
+    state["optimized_query"]

@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     DB_URL: str
     LOG_LEVEL: str
     GOOGLE_GEMINI_API_KEY: str
+    TRAVILY_API_KEY: str
 
     model_config = SettingsConfigDict(
         env_file=env_path,
