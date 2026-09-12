@@ -24,7 +24,6 @@ class GeminiModelsFactory:
         llm = ChatGoogleGenerativeAI(
             model="gemini-3.5-flash",
             google_api_key=settings.GOOGLE_GEMINI_API_KEY,
-            max_tokens=None,
             thinking_level="low",
         )
         system_prompt = QUERY_OPTIMIZER_PROMPT_PATH.read_text(encoding="utf-8")
@@ -39,10 +38,11 @@ class GeminiModelsFactory:
 
     def flash_lite_model(cls, query: str):
         """
-        get the model gemini-3.5-flash-lite for better agentic work +reasoning.
+        get the model gemini-3.5-flash-lite for better agentic work.
         """
         model = ChatGoogleGenerativeAI(
             model="gemini-3.5-flash-lite",
-            max_tokens=None,
+            google_api_key=settings.GOOGLE_GEMINI_API_KEY,
+            thinking_level="low",
         )
         return model
