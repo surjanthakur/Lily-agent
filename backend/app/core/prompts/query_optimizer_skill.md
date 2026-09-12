@@ -44,9 +44,12 @@ Turn one user-provided topic into a concise set of related subqueries that help 
 
 Return a JSON object in this format:
 
-{
-"topic": "central topic",
-"subqueries": ["focused subquery","focused subquery","focused subquery","focused subquery","focused subquery",]
+"queries": {
+"focused subquery",
+"focused subquery",
+"focused subquery",
+"focused subquery",
+"focused subquery",
 }
 
 Add objects 6 through 10 only when justified by topic breadth. Do not answer the subqueries unless the user explicitly asks for answers, explanations, or resources. If an interpretation was necessary, add an `assumption` string to the root object.
