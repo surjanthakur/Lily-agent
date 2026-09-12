@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from .core.logginig import get_logger, setup_logging
 from .db.databse import create_db_tables
+from .routes import llm_router
 
 setup_logging()
 logger = get_logger(__name__)
@@ -16,6 +17,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_route(llm_router.router)
 
 
 # health check route
