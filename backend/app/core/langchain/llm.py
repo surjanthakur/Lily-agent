@@ -13,10 +13,10 @@ class GeminiModelsFactory:
 
     @classmethod
     def flash_model(cls, query: str):
-        """Send a query to Gemini 2.5 Flash and return its response."""
+        """Send a query to Gemini 3.5 Flash and return its response."""
 
         llm = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash",
+            model="gemini-3.5-flash",
             google_api_key=settings.GOOGLE_GEMINI_API_KEY,
             max_tokens=None,
             thinking_level="low",
