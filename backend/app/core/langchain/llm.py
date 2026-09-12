@@ -35,7 +35,7 @@ class GeminiModelsFactory:
 
         response = llm.invoke(messages)
 
-        return response
+        return response.text
 
     def flash_lite_model(cls, query: str):
         """
