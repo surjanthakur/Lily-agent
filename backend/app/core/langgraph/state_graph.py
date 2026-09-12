@@ -19,7 +19,7 @@ class AgentState(TypedDict):
     scraped_resources: Annotated[
         list[Source], operator.add
     ]  # after scrapted add metadata: title , url , score , level , type , description.
-    optimized_query: list
+    optimized_query: str
     messages: Annotated[list, add_messages]  # store recent messages state
 
 
