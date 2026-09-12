@@ -10,7 +10,7 @@ class GeminiModelsFactory:
     """
 
     @classmethod
-    def gemini_2_flash(cls, query: str):
+    def flash_model(cls, query: str):
         """Send a query to Gemini 2.5 Flash and return its response."""
 
         llm = ChatGoogleGenerativeAI(
@@ -20,9 +20,11 @@ class GeminiModelsFactory:
         )
         messages = [HumanMessage(content=query)]
 
-        return llm.invoke(messages)
+        response = llm.invoke(messages)
 
-    def gemini_3_flash_lite(cls, query: str):
+        return response
+
+    def flash_lite_model(cls, query: str):
         """
         get the model gemini-3.5-flash-lite for better agentic work +reasoning.
         """
