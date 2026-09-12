@@ -1,6 +1,8 @@
 from langchain.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
+from ..settings import settings
+
 
 class GeminiModelsFactory:
     """Provide ready-to-use LangChain chat model configurations.
@@ -15,6 +17,7 @@ class GeminiModelsFactory:
 
         llm = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
+            google_api_key=settings.GOOGLE_GEMINI_API_KEY,
             max_tokens=None,
             thinking_level="low",
         )
