@@ -2,7 +2,7 @@ from fastapi import APIRouter, status
 
 from ..services.llm_service import call_llm
 
-router = APIRouter(prefix="/lily-agent/ask", tags=["agent call"])
+router = APIRouter(tags=["agent call"])
 
 
 @router.get("/query", status_code=status.HTTP_200_OK)
