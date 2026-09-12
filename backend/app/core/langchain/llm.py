@@ -6,24 +6,19 @@ class GeminiModelsFactory:
     """Provide ready-to-use LangChain chat model configurations.
 
     Use the class methods to select the Gemini model required by a service,
-    for example ``LlmRegistery.gemini_2_flash()``.
+    for example ``GeminiModelsFactory.gemini_2_flash("Hello")``.
     """
 
     @classmethod
     def gemini_2_flash(cls, query: str):
-        """
-        get the model gemini-2.5-flash for better reasoning.
-
-        input: role:str , query:str
-        output: llm response: llm take query and generate response  and return it.
-        """
+        """Send a query to Gemini 2.5 Flash and return its response."""
 
         llm = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
             max_tokens=None,
             thinking_level="low",
         )
-        messages = [HumanMessage(query)]
+        messages = [HumanMessage(content=query)]
 
         return llm.invoke(messages)
 
