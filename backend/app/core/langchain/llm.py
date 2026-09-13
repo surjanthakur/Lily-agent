@@ -10,39 +10,4 @@ QUERY_OPTIMIZER_PROMPT_PATH = (
 )
 
 
-class GeminiModelsFactory:
-    """Provide ready-to-use LangChain chat model configurations.
-
-    Use the class methods to select the Gemini model required by a service,
-    for example ``GeminiModelsFactory.gemini_2_flash("Hello")``.
-    """
-
-    @classmethod
-    def flash_model(cls, query: str):
-        """Send a query to Gemini 3.5 Flash and return its response."""
-
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-3.5-flash",
-            google_api_key=settings.GOOGLE_GEMINI_API_KEY,
-            thinking_level="low",
-        )
-        system_prompt = QUERY_OPTIMIZER_PROMPT_PATH.read_text(encoding="utf-8")
-        messages = [
-            SystemMessage(content=system_prompt),
-            HumanMessage(content=query),
-        ]
-
-        response = llm.invoke(messages)
-
-        return response.text
-
-    def flash_lite_model(cls, query: str):
-        """
-        get the model gemini-3.5-flash-lite for better agentic work.
-        """
-        model = ChatGoogleGenerativeAI(
-            model="gemini-3.5-flash-lite",
-            google_api_key=settings.GOOGLE_GEMINI_API_KEY,
-            thinking_level="low",
-        )
-        return model
+def llm_model_provider()
