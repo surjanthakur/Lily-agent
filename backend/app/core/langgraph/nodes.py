@@ -4,6 +4,7 @@ from pathlib import Path
 from ...schemas.llm_validation import LlmSchemaValidation
 from ..llm_provider import llm_provider
 from ..logginig import get_logger
+from ..tools_provider import Web_search_tool
 from .state_graph import AgentState
 
 logger = get_logger(__name__)
@@ -45,4 +46,8 @@ def input_query_optimizer(state: AgentState):
 
 
 def web_search_resource(state: AgentState):
-    state["optimized_query"]
+    queries = state["optimized_query"]
+
+    result = Web_search_tool(queries)
+
+    print(result)
