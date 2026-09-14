@@ -2,14 +2,15 @@ from operator import add
 from typing import Annotated, Literal, TypedDict
 
 from langgraph.graph import StateGraph, add_messages
+from pydantic import AnyUrl
 
 
-class Source(TypedDict, total=False):
+class Source(TypedDict):
     title: str
-    url: str
+    url: AnyUrl
     score: float
-    level: str
-    type: Literal["easy", "hard", "medium"]
+    level: Literal["easy", "medium", "hard"]
+    type: Literal["blog", "article", "other"]
     description: str
 
 
