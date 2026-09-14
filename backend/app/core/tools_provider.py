@@ -32,6 +32,7 @@ def web_search(query: str) -> dict:
         include_images=False,
         include_domains_mode="boost",
         include_usage=False,
+        language="en",
         include_raw_content=False,
         include_generated_markdown=False,
         include_published_date=True,
