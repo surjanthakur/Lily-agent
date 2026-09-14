@@ -1,7 +1,7 @@
 from langchain.tools import tool
 from tavily import TavilyClient
 
-from ..settings import settings
+from .settings import settings
 
 tavily_client = TavilyClient(api_key=settings.TRAVILY_API_KEY)
 

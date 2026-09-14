@@ -1,11 +1,11 @@
 from langchain.messages import HumanMessage, SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from ...schemas.llm_validation import LlmSchemaValidation
-from ..settings import settings
+from ..schemas.llm_validation import LlmSchemaValidation
+from .settings import settings
 
 
-def llm_model_provider(model_validation: LlmSchemaValidation):
+def llm_provider(model_validation: LlmSchemaValidation):
 
     model = ChatGoogleGenerativeAI(
         model=model_validation.model_name,
@@ -19,4 +19,4 @@ def llm_model_provider(model_validation: LlmSchemaValidation):
     ]
 
     response = model.invoke(messages)
-    return response
+    return response.text
