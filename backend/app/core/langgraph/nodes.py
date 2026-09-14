@@ -1,10 +1,10 @@
-import asyncio
 from pathlib import Path
 
+# from langchain.agents import create_agent
 from ...schemas.llm_validation import LlmSchemaValidation
 from ..llm_provider import llm_provider
 from ..logginig import get_logger
-from ..tools_provider import Web_search_tool
+from ..tools_provider import web_search
 from .state_graph import AgentState
 
 logger = get_logger(__name__)
@@ -33,7 +33,7 @@ def input_query_optimizer(state: AgentState):
         result = llm_provider(validation_config)
         logger.info("llm return response....")
 
-    except asyncio.TimeoutError:
+    except TimeoutError:
         raise
 
     except Exception:
@@ -48,6 +48,6 @@ def input_query_optimizer(state: AgentState):
 def web_search_resource(state: AgentState):
     queries = state["optimized_query"]
 
-    result = Web_search_tool(queries)
+    result = web_search(queries)
 
     print(result)
