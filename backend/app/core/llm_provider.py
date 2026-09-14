@@ -11,6 +11,7 @@ def llm_provider(model_validation: LlmSchemaValidation):
         model=model_validation.model_name,
         api_key=settings.GOOGLE_GEMINI_API_KEY,
         thinking_level=model_validation.thinking_level,
+        max_output_tokens=1024,
     )
 
     messages = [
