@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 # from langchain.agents import create_agent
@@ -16,10 +17,11 @@ QUERY_OPTIMIZER_PROMPT = (
 
 
 # query optimizer node
-def input_query_optimizer(state: AgentState):
+def query_optimizer_node(state: AgentState):
     """
-    takes user input query and optimizes it into smillar sub query's
+    Expands the user's topic into multiple focused search queries.
     """
+
     input_query = state["topic"]
 
     try:
@@ -29,20 +31,23 @@ def input_query_optimizer(state: AgentState):
             thinking_level="medium",
             system_prompt=QUERY_OPTIMIZER_PROMPT.read_text(encoding="utf-8"),
         )
-        logger.info("llm calling....")
-        result = llm_provider(validation_config)
-        logger.info("llm return response....")
 
-    except TimeoutError:
-        raise
+        logger.info("Calling query optimizer model...")
+        result = llm_provider(validation_config)
+
+        logger.info("Query optimizer model returned successfully")
 
     except Exception:
         logger.exception("Query optimizer model call failed")
         raise
 
-    else:
-        logger.info("updating [ optimized_query ] state")
-        return {"optimized_query": result}
+    logger.info("Updating [optimized_query] state")
+
+    data = json.loads(result)
+
+    queries: list[str] = data["queries"]
+
+    return {"optimized_query": queries}
 
 
 def web_search_resource(state: AgentState):

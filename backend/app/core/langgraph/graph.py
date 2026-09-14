@@ -1,14 +1,14 @@
 from langgraph.graph import END, START
 
-from .nodes import input_query_optimizer
+from .nodes import query_optimizer_node
 from .state_graph import GRAPH_BUILDER
 
 # add nodes
-GRAPH_BUILDER.add_node(input_query_optimizer, "input_query_optimizer")
+GRAPH_BUILDER.add_node(query_optimizer_node, "query_optimizer_node")
 
 # add edges
-GRAPH_BUILDER.add_edge(START, "input_query_optimizer")
-GRAPH_BUILDER.add_edge("input_query_optimizer", END)
+GRAPH_BUILDER.add_edge(START, "query_optimizer_node")
+GRAPH_BUILDER.add_edge("query_optimizer_node", END)
 
 # compile graph
 COMPILED_GRAPH = GRAPH_BUILDER.compile()
