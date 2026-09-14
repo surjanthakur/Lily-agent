@@ -17,7 +17,7 @@ def web_search(query: str) -> dict:
     """
     response = tavily.search(
         query=query,
-        max_results=5,
+        max_results=1,
         search_depth="ultra-fast",
         include_domains=[
             "medium.com/",
