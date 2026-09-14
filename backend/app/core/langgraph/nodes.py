@@ -69,6 +69,8 @@ def resource_search_node(state: dict):
             "url": result.get("url"),
             "score": result.get("score", 0.0),
             "content": result.get("content", ""),
+            # Tavily does not always return a publication date for every result.
+            # Use a safe fallback so the app does not crash on missing metadata.
             "published_on": result.get("published_date", ""),
         }
         for result in response.get("results", [])
