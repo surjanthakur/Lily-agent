@@ -1,4 +1,3 @@
-from langchain.tools import tool
 from tavily import TavilyClient
 
 from .settings import settings
@@ -6,8 +5,7 @@ from .settings import settings
 tavily = TavilyClient(api_key=settings.TRAVILY_API_KEY)
 
 
-@tool
-def web_search(query: str, max_results: int = 2) -> dict:
+def web_search(query: str) -> dict:
     """Search the web for current information on a topic.
 
     Use this tool whenever you need up-to-date facts, news, or information
@@ -15,19 +13,22 @@ def web_search(query: str, max_results: int = 2) -> dict:
 
     Args:
         query: The search query
-        max_results: Number of results to return (default 5)
+        max_results: Number of results to return
     """
     response = tavily.search(
-        query,
-        exact_match=True,
-        max_results=max_results,
+        query=query,
+        max_results=1,
         search_depth="ultra-fast",
-        topic="general",
-        include_domains=[],
-        exclude_domains=[],
+        include_domains=[
+            "medium.com/",
+            "reddit.com/",
+        ],
+        exclude_domains=[
+            "youtube.com/",
+            "instagram.com/",
+        ],
         include_favicon=False,
         include_images=False,
-        include_answer=False,
         include_raw_content=False,
         include_domains_mode="boost",
         include_usage=False,

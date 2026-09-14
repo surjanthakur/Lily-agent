@@ -12,7 +12,6 @@ from langchain_google_genai.chat_models import (
 
 from ..schemas.llm_validation import LlmSchemaValidation
 from .settings import settings
-from .tools_provider import web_search
 
 
 def llm_provider(model_validation: LlmSchemaValidation):
@@ -22,7 +21,7 @@ def llm_provider(model_validation: LlmSchemaValidation):
             api_key=settings.GOOGLE_GEMINI_API_KEY,
             thinking_level=model_validation.thinking_level,
             max_output_tokens=1024,
-        ).bind_tools([web_search])
+        )
 
         messages = [
             SystemMessage(content=model_validation.system_prompt),

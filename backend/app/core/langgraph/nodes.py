@@ -7,6 +7,7 @@ from langgraph.types import Send
 from ...schemas.llm_validation import LlmSchemaValidation
 from ..llm_provider import llm_provider
 from ..logginig import get_logger
+from ..tools_provider import web_search
 from .state_graph import AgentState
 
 logger = get_logger(__name__)
@@ -58,18 +59,21 @@ def query_optimizer_node(state: AgentState):
 def resource_search_node(state: dict):
     query = state["query"]
 
-    validation_config = LlmSchemaValidation(
-        user_input=query,
-        model_name="gemini-3.5-flash",
-        thinking_level="low",
-        system_prompt=RESOURCE_SEARCH_PROMPT.read_text(encoding="utf-8"),
-    )
-
     logger.info("Calling resource search model...")
 
-    result = llm_provider(validation_config)
-    print(result)
-    logger.info("Query optimizer model returned successfully")
+    response = web_search(query)
+
+    source = [
+        {
+            "title": result["title"],
+            "url": result["url"],
+            "score": result["score"],
+        }
+        for result in response.get("results", [])
+    ]
+
+    logger.info("resource search model returned successfully")
+    return {"found_resources": source}
 
 
 # send query one by one to resource_search node
