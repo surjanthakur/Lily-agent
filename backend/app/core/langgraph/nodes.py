@@ -10,7 +10,7 @@ logger = get_logger(__name__)
 
 
 QUERY_OPTIMIZER_PROMPT = (
-    Path(__file__).resolve().parent[1] / "prompts" / "query_optimizer_skill.md"
+    Path(__file__).resolve().parent.parent / "prompts" / "query_optimizer_skill.md"
 )
 
 
@@ -26,9 +26,11 @@ def input_query_optimizer(state: AgentState):
             user_input=input_query,
             model_name="gemini-3.5-flash",
             thinking_level="medium",
-            system_prompt=Path.read_text(QUERY_OPTIMIZER_PROMPT, encoding="utf-8"),
+            system_prompt=QUERY_OPTIMIZER_PROMPT.read_text(encoding="utf-8"),
         )
+        logger.info("llm calling....")
         result = llm_provider(validation_config)
+        logger.info("llm return response....")
 
     except asyncio.TimeoutError:
         raise
@@ -37,7 +39,9 @@ def input_query_optimizer(state: AgentState):
         logger.exception("Query optimizer model call failed")
         raise
 
-    return {"optimized_query": result}
+    else:
+        logger.info("updating [ optimized_query ] state")
+        return {"optimized_query": result}
 
 
 def web_search_resource(state: AgentState):
