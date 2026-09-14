@@ -65,9 +65,11 @@ def resource_search_node(state: dict):
 
     source = [
         {
-            "title": result["title"],
-            "url": result["url"],
-            "score": result["score"],
+            "title": result.get("title", ""),
+            "url": result.get("url"),
+            "score": result.get("score", 0.0),
+            "content": result.get("content", ""),
+            "published_on": result.get("published_date", ""),
         }
         for result in response.get("results", [])
     ]
