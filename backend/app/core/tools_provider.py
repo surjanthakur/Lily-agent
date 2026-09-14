@@ -7,7 +7,7 @@ tavily = TavilyClient(api_key=settings.TRAVILY_API_KEY)
 
 
 @tool
-def web_search(query: str, max_results: int = 5) -> str:
+def web_search(query: str, max_results: int = 2) -> dict:
     """Search the web for current information on a topic.
 
     Use this tool whenever you need up-to-date facts, news, or information
