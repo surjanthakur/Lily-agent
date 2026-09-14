@@ -52,11 +52,7 @@ def query_optimizer_node(state: AgentState):
 
     queries: list[str] = data["queries"]
 
-    return {"optimized_query": queries}
-
-
-def fan_out_query(state: AgentState):
-    return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]
+    return {"optimized_queries": queries}
 
 
 def resource_search_node(state: dict):
@@ -74,3 +70,8 @@ def resource_search_node(state: dict):
     result = llm_provider(validation_config)
     print(result)
     logger.info("Query optimizer model returned successfully")
+
+
+# send query one by one to resource_search node
+def fan_out_query(state: AgentState):
+    return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]

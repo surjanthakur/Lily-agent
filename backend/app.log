@@ -362,3 +362,149 @@
 2026-09-14 15:06:20 | INFO | httpx | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent "HTTP/1.1 200 OK"
 2026-09-14 15:06:20 | INFO | app.core.langgraph.nodes | Query optimizer model returned successfully
 2026-09-14 15:06:20 | INFO | app.core.langgraph.nodes | Updating [optimized_query] state
+2026-09-14 16:11:20 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-14 16:11:20 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:11:21 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-14 16:11:21 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:11:21 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-14 16:11:21 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:11:22 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-14 16:11:22 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-14 16:11:22 | INFO | app.db.databse | Database tables created successfully
+2026-09-14 16:11:40 | INFO | app.core.langgraph.nodes | Calling query optimizer model...
+2026-09-14 16:11:44 | INFO | httpx | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+2026-09-14 16:11:44 | INFO | app.core.langgraph.nodes | Query optimizer model returned successfully
+2026-09-14 16:11:44 | INFO | app.core.langgraph.nodes | Updating [optimized_query] state
+2026-09-14 16:20:13 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-14 16:20:13 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:20:14 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-14 16:20:14 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:20:14 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-14 16:20:14 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:20:14 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-14 16:20:14 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-14 16:20:14 | INFO | app.db.databse | Database tables created successfully
+2026-09-14 16:20:47 | INFO | app.core.langgraph.nodes | Calling query optimizer model...
+2026-09-14 16:20:51 | INFO | httpx | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+2026-09-14 16:20:51 | INFO | app.core.langgraph.nodes | Query optimizer model returned successfully
+2026-09-14 16:20:51 | INFO | app.core.langgraph.nodes | Updating [optimized_query] state
+2026-09-14 16:20:51 | ERROR | app.services.agent_services | LangGraph agent call exception
+Traceback (most recent call last):
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/app/services/agent_services.py", line 28, in call_langgraph_agent_workflow
+    result = COMPILED_GRAPH.invoke(
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/pregel/main.py", line 3913, in invoke
+    for chunk in self.stream(
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/pregel/main.py", line 2967, in stream
+    for _ in runner.tick(
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/pregel/_runner.py", line 207, in tick
+    run_with_retry(
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/pregel/_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/_internal/_runnable.py", line 709, in invoke
+    input = step.invoke(input, config)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/_internal/_runnable.py", line 447, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/graph/_branch.py", line 166, in _route
+    result = self.path.invoke(value, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/_internal/_runnable.py", line 440, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/app/core/langgraph/graph.py", line 10, in fan_out_query
+    return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]
+                                                           ~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'optimized_queries'
+During task with name 'query_optimizer' and id '99996b1f-6ddd-377c-3417-04e291aa285f'
+2026-09-14 16:21:59 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-14 16:21:59 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:21:59 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-14 16:21:59 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:22:00 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-14 16:22:00 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:22:00 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-14 16:22:00 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-14 16:22:00 | INFO | app.db.databse | Database tables created successfully
+2026-09-14 16:22:26 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-14 16:22:26 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:22:27 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-14 16:22:27 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:22:27 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-14 16:22:27 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:22:27 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-14 16:22:27 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-14 16:22:27 | INFO | app.db.databse | Database tables created successfully
+2026-09-14 16:22:53 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-14 16:22:53 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:22:53 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-14 16:22:53 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:22:53 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-14 16:22:53 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:22:54 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-14 16:22:54 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-14 16:22:54 | INFO | app.db.databse | Database tables created successfully
+2026-09-14 16:23:01 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-14 16:23:01 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:23:01 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-14 16:23:01 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:23:02 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-14 16:23:02 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:23:02 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-14 16:23:02 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-14 16:23:02 | INFO | app.db.databse | Database tables created successfully
+2026-09-14 16:23:16 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-14 16:23:16 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:23:16 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-14 16:23:16 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:23:16 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-14 16:23:16 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:23:17 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-14 16:23:17 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-14 16:23:17 | INFO | app.db.databse | Database tables created successfully
+2026-09-14 16:23:33 | INFO | app.core.langgraph.nodes | Calling query optimizer model...
+2026-09-14 16:23:37 | INFO | httpx | HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+2026-09-14 16:23:37 | INFO | app.core.langgraph.nodes | Query optimizer model returned successfully
+2026-09-14 16:23:37 | INFO | app.core.langgraph.nodes | Updating [optimized_query] state
+2026-09-14 16:23:37 | ERROR | app.services.agent_services | LangGraph agent call exception
+Traceback (most recent call last):
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/app/services/agent_services.py", line 28, in call_langgraph_agent_workflow
+    result = COMPILED_GRAPH.invoke(
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/pregel/main.py", line 3913, in invoke
+    for chunk in self.stream(
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/pregel/main.py", line 2967, in stream
+    for _ in runner.tick(
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/pregel/_runner.py", line 207, in tick
+    run_with_retry(
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/pregel/_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/_internal/_runnable.py", line 709, in invoke
+    input = step.invoke(input, config)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/_internal/_runnable.py", line 447, in invoke
+    ret = self.func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/graph/_branch.py", line 166, in _route
+    result = self.path.invoke(value, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/.venv/lib/python3.11/site-packages/langgraph/_internal/_runnable.py", line 440, in invoke
+    ret = context.run(self.func, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/surjanthakur/Documents/Documents/Lily-agent/backend/app/core/langgraph/nodes.py", line 77, in fan_out_query
+    return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]
+                                                           ~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'optimized_queries'
+During task with name 'query_optimizer' and id '8011b542-659b-2fa7-4588-951d17031f36'
+2026-09-14 16:25:09 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-14 16:25:09 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:25:10 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-14 16:25:10 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:25:10 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-14 16:25:10 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-14 16:25:10 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-14 16:25:10 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-14 16:25:10 | INFO | app.db.databse | Database tables created successfully

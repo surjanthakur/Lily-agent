@@ -8,7 +8,6 @@ from langgraph.errors import (
     GraphRecursionError,
     InvalidUpdateError,
     NodeCancelledError,
-    NodeError,
     NodeTimeoutError,
     ParentCommand,
     TaskNotFound,
@@ -31,7 +30,7 @@ def call_langgraph_agent_workflow(query: str):
                 "topic": query,
                 "found_resources": [],
                 "messages": [],
-                "optimized_query": "",
+                "optimized_query": [],
                 "scraped_resources": [],
             }
         )
@@ -71,7 +70,6 @@ def call_langgraph_agent_workflow(query: str):
         GraphDrained,
         GraphInterrupt,
         NodeCancelledError,
-        NodeError,
         ParentCommand,
     ) as exc:
         logger.warning("LangGraph workflow stopped: %s", exc)
