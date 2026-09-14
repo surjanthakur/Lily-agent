@@ -4,7 +4,6 @@ from pathlib import Path
 from ...schemas.llm_validation import LlmSchemaValidation
 from ..llm_provider import llm_provider
 from ..logginig import get_logger
-from ..settings import settings
 from .state_graph import AgentState
 
 logger = get_logger(__name__)
