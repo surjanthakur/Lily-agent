@@ -1,4 +1,3 @@
-from json.decoder import JSONDecodeError
 from pathlib import Path
 
 from langgraph.types import Send
@@ -30,7 +29,7 @@ def query_optimizer_node(state: AgentState) -> dict:
     try:
         input_query = state["topic"]
 
-        # validate llm configs
+        # validating llm config's
         validation_config = LlmSchemaValidation(
             user_input=input_query,
             model_name="gemini-3.5-flash-lite",
@@ -40,19 +39,16 @@ def query_optimizer_node(state: AgentState) -> dict:
 
         logger.info("Calling query optimizer...")
 
-        result = llm_provider(validation_config)
+        # calling model...
+        resposne = llm_provider(validation_config)
 
         logger.info("Query optimizer returned repsonse successfully...")
 
         logger.info("Loading optimizer result into JSON...")
 
-        queries = parse_optimized_queries(result)
+        queries = parse_optimized_queries(resposne)
 
         logger.info("getting list of queries from loaded json data...")
-
-    except JSONDecodeError:
-        logger.exception("json decoder error wrong format to decode")
-        raise
 
     except Exception:
         logger.exception("Query optimizer call failed...")
@@ -64,24 +60,38 @@ def query_optimizer_node(state: AgentState) -> dict:
 
 # send query one by one to resource_search node
 def fan_out_query(state: AgentState):
+    """
+    send optmized list of queries one by one to reosurce_search node
+    """
     return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]
 
 
 def resource_search_node(state: dict) -> dict:
-    query = state["query"]
+    """
+    find reosurces for optimized query
+    and return a dict source\n
+    output: source = {title , url , score , content }
+    """
+    try:
 
-    logger.info("Calling Travily api...")
+        query = state["query"]
 
-    response = web_search(query)
-    logger.info("api executed successfully")
+        logger.info("Calling Travily api...")
 
-    source = [
-        {
-            "title": result["title"],
-            "url": result["url"],
-            "score": result["score"],
-            "content": result["content"],
-        }
-        for result in response.get("results", [])
-    ]
-    return {"found_resources": source}
+        response = web_search(query)
+        logger.info("api executed successfully")
+
+        source = [
+            {
+                "title": result["title"],
+                "url": result["url"],
+                "score": result["score"],
+                "content": result["content"],
+            }
+            for result in response.get("results", [])
+        ]
+        return {"found_resources": source}
+
+    except Exception:
+        logger.exception("reosurce search call failed...")
+        raise
