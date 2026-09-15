@@ -16,6 +16,7 @@ from .settings import settings
 
 def llm_provider(model_validation: LlmSchemaValidation):
     try:
+
         model = ChatGoogleGenerativeAI(
             model=model_validation.model_name,
             api_key=settings.GOOGLE_GEMINI_API_KEY,
@@ -42,7 +43,7 @@ def llm_provider(model_validation: LlmSchemaValidation):
         ) from error
     except GoogleContextOverflowError as error:
         raise HTTPException(
-            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            status_code=status.HTTP_413_CONTENT_TOO_LARGE,
             detail="The request is too large for the model context window.",
         ) from error
     except GoogleModelNotFoundError as error:

@@ -21,7 +21,7 @@ RESOURCE_SEARCH_PROMPT = (
 )
 
 
-# query optimizer node
+# optimize user queries
 def query_optimizer_node(state: AgentState) -> dict:
     """
     Expands the user's topic into multiple focused search queries.
@@ -59,25 +59,23 @@ def query_optimizer_node(state: AgentState) -> dict:
 
 
 # send query one by one to resource_search node
-def fan_out_query(state: AgentState):
+def fan_out_query_node(state: AgentState):
     """
     send optmized list of queries one by one to reosurce_search node
     """
     return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]
 
 
+# find resource based on query
 def resource_search_node(state: dict) -> dict:
     """
-    find reosurces for optimized query
-    and return a dict source\n
-    output: source = {title , url , score , content }
+    return structured dict source {title , url , score , content}
     """
     try:
 
         query = state["query"]
 
         logger.info("Calling Travily api...")
-
         response = web_search(query)
         logger.info("api executed successfully")
 
