@@ -1,28 +1,17 @@
 from operator import add
-from typing import Annotated, Literal, TypedDict
+from typing import Annotated, TypedDict
 
 from langgraph.graph import StateGraph
-from pydantic import AnyUrl
-
-
-class Source(TypedDict, total=False):
-    title: str
-    url: AnyUrl
-    score: float
-    level: Literal["easy", "medium", "hard"]
-    type: Literal["blog", "article", "other"]
-    content: str
-    published_on: str
 
 
 class AgentState(TypedDict):
     topic: str
     optimized_queries: list[str]
     found_resources: Annotated[
-        list[Source], add
+        list[dict], add
     ]  # founded resources with title, url, score only.
     scraped_resources: Annotated[
-        list[Source], add
+        list[dict], add
     ]  # after scrapted add metadata: title , url , score , level , type , description.
 
 

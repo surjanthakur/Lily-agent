@@ -3,7 +3,6 @@ from pathlib import Path
 
 from langgraph.types import Send
 
-# from langchain.agents import create_agent
 from ...schemas.llm_validation import LlmSchemaValidation
 from ..llm_provider import llm_provider
 from ..logginig import get_logger
@@ -71,13 +70,10 @@ def resource_search_node(state: dict):
 
     source = [
         {
-            "title": result.get("title", ""),
-            "url": result.get("url"),
-            "score": result.get("score", 0.0),
-            "content": result.get("content", ""),
-            # Tavily does not always return a publication date for every result.
-            # Use a safe fallback so the app does not crash on missing metadata.
-            "published_on": result.get("published_date", ""),
+            "title": result["title"],
+            "url": result["url"],
+            "score": result["score"],
+            "content": result["content"],
         }
         for result in response.get("results", [])
     ]
