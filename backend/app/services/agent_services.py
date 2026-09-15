@@ -19,7 +19,7 @@ from ..core.logginig import get_logger
 logger = get_logger(__name__)
 
 
-def call_langgraph_agent_workflow(query: str):
+def call_langgraph_agent_workflow(query: str) -> dict:
 
     if not isinstance(query, str):
         raise TypeError("topic must be a non-empty string")
