@@ -38,6 +38,7 @@ def query_optimizer_node(state: AgentState):
         )
 
         logger.info("Calling query optimizer model...")
+
         result = llm_provider(validation_config)
 
         logger.info("Query optimizer model returned successfully")
@@ -46,12 +47,11 @@ def query_optimizer_node(state: AgentState):
         logger.exception("Query optimizer model call failed")
         raise
 
-    logger.info("Updating [optimized_query] state")
-
     data = json.loads(result)
 
     queries: list[str] = data["queries"]
 
+    logger.info("Updating state...")
     return {"optimized_queries": queries}
 
 
