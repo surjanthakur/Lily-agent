@@ -1,9 +1,10 @@
-import json
+from json.decoder import JSONDecodeError
 from pathlib import Path
 
 from langgraph.types import Send
 
 from ...schemas.llm_validation import LlmSchemaValidation
+from ...utils.json_parser import parse_optimized_queries
 from ..llm_provider import llm_provider
 from ..logginig import get_logger
 from ..tools_provider import web_search
@@ -22,34 +23,40 @@ RESOURCE_SEARCH_PROMPT = (
 
 
 # query optimizer node
-def query_optimizer_node(state: AgentState):
+def query_optimizer_node(state: AgentState) -> dict:
     """
     Expands the user's topic into multiple focused search queries.
     """
-
-    input_query = state["topic"]
-
     try:
+        input_query = state["topic"]
+
+        # validate llm configs
         validation_config = LlmSchemaValidation(
             user_input=input_query,
             model_name="gemini-3.5-flash-lite",
-            thinking_level="medium",
+            thinking_level="high",
             system_prompt=QUERY_OPTIMIZER_PROMPT.read_text(encoding="utf-8"),
         )
 
-        logger.info("Calling query optimizer model...")
+        logger.info("Calling query optimizer...")
 
         result = llm_provider(validation_config)
 
-        logger.info("Query optimizer model returned successfully")
+        logger.info("Query optimizer returned repsonse successfully...")
 
-    except Exception:
-        logger.exception("Query optimizer model call failed")
+        logger.info("Loading optimizer result into JSON...")
+
+        queries = parse_optimized_queries(result)
+
+        logger.info("getting list of queries from loaded json data...")
+
+    except JSONDecodeError:
+        logger.exception("json decoder error wrong format to decode")
         raise
 
-    data = json.loads(result)
-
-    queries: list[str] = data["queries"]
+    except Exception:
+        logger.exception("Query optimizer call failed...")
+        raise
 
     logger.info("Updating state...")
     return {"optimized_queries": queries}
@@ -60,7 +67,7 @@ def fan_out_query(state: AgentState):
     return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]
 
 
-def resource_search_node(state: dict):
+def resource_search_node(state: dict) -> dict:
     query = state["query"]
 
     logger.info("Calling Travily api...")

@@ -42,11 +42,11 @@ Turn one user-provided topic into a concise set of related subqueries that help 
 
 ## Output Format
 
-Return a Str in List format in this format:
+Return one valid JSON object in this format:
 
-" queries = ["focused subquery","focused subquery","focused subquery","focused subquery","focused subquery"] "
+{"queries": ["focused subquery", "focused subquery", "focused subquery", "focused subquery", "focused subquery"]}
 
-Add objects 6 through 10 only when justified by topic breadth. Do not answer the subqueries unless the user explicitly asks for answers, explanations, or resources. If an interpretation was necessary, add an `assumption` string to the root object.
+Add query strings 6 through 10 only when justified by topic breadth. Do not answer the subqueries unless the user explicitly asks for answers, explanations, or resources. If an interpretation was necessary, add an `assumption` string to the root object.
 
 ## Quality Rules
 
