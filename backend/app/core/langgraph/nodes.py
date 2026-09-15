@@ -56,12 +56,18 @@ def query_optimizer_node(state: AgentState):
     return {"optimized_queries": queries}
 
 
+# send query one by one to resource_search node
+def fan_out_query(state: AgentState):
+    return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]
+
+
 def resource_search_node(state: dict):
     query = state["query"]
 
-    logger.info("Calling resource search model...")
+    logger.info("Calling Travily api...")
 
     response = web_search(query)
+    logger.info("api executed successfully")
 
     source = [
         {
@@ -75,11 +81,4 @@ def resource_search_node(state: dict):
         }
         for result in response.get("results", [])
     ]
-
-    logger.info("resource search model returned successfully")
     return {"found_resources": source}
-
-
-# send query one by one to resource_search node
-def fan_out_query(state: AgentState):
-    return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]

@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-app.include_router(router=llm_router.router, prefix="/lily-agent/ask")
+app.include_router(router=llm_router.router, prefix="/lily-agent")
 
 
 # health check route
