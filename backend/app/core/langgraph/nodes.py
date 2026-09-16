@@ -45,7 +45,6 @@ def query_optimizer_node(state: AgentState) -> dict:
         logger.info("Query optimizer returned repsonse successfully...")
 
         logger.info("Loading optimizer result into JSON...")
-
         queries = parse_optimized_queries(resposne)
 
         logger.info("getting list of queries from loaded json data...")
