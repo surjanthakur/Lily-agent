@@ -4,6 +4,7 @@ import logging.config
 from .settings import settings
 
 
+# logging setup function
 def setup_logging() -> None:
     """Configure application logs for local development and production."""
     log_level = (settings.LOG_LEVEL or "INFO").upper()
