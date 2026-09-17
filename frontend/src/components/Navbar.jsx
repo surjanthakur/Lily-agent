@@ -2,7 +2,7 @@ import LilyLogo from '../assets/lily-3-transparent.png'
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 w-full  backdrop-blur-xs">
+    <nav className="sticky top-0 z-50 w-full  backdrop-blur-lg">
       <div
         className=" mx-auto flex h-25 w-full items-center justify-between px-6 sm:px-10 lg:px-14
         "

@@ -1,7 +1,7 @@
 import { ThemeProvider } from '../context/themecontext.js'
 import { useState, useEffect } from 'react'
-import HomePage from '../pages/HomePage.jsx'
-import Navbar from '../components/Navbar.jsx'
+import { Navbar } from '../components/export.js'
+import { Dashboard, HomePage } from '../pages/export.js'
 
 export default function MainLayout() {
   const [themeMode, setThemeMode] = useState(() => {
@@ -45,6 +45,7 @@ export default function MainLayout() {
           <Navbar />
           <main>
             <HomePage />
+            <Dashboard />
           </main>
         </div>
       </ThemeProvider>
