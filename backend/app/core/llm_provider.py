@@ -14,10 +14,11 @@ from ..schemas.llm_validation import LlmSchemaValidation
 from .settings import settings
 
 
-def llm_provider(model_validation: LlmSchemaValidation):
+async def llm_provider(model_validation: LlmSchemaValidation):
     """
-    return llm response text
+    Return LLM response text asynchronously.
     """
+
     try:
         # config model
         model = ChatGoogleGenerativeAI(
@@ -32,7 +33,7 @@ def llm_provider(model_validation: LlmSchemaValidation):
             HumanMessage(content=model_validation.user_input),
         ]
         # invoke model
-        response = model.invoke(messages)
+        response = await model.ainvoke(messages)
         # return llm response
         return response.text
 

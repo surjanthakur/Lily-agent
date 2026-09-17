@@ -19,10 +19,10 @@ from ..core.logginig import get_logger
 logger = get_logger(__name__)
 
 
-def call_langgraph_agent(query: str) -> dict:
+async def call_langgraph_agent(query: str) -> dict:
     try:
 
-        response = COMPILED_GRAPH.invoke(
+        response = await COMPILED_GRAPH.ainvoke(
             {
                 "topic": query,
                 "found_resources": [],

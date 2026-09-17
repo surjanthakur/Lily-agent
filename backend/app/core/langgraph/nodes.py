@@ -12,17 +12,13 @@ from .state_graph import AgentState
 logger = get_logger(__name__)
 
 
-QUERY_OPTIMIZER_PROMPT = (
+QUERY_OPTIMIZER_SKILL = (
     Path(__file__).resolve().parent.parent / "prompts" / "query_optimizer_skill.md"
-)
-
-RESOURCE_SEARCH_PROMPT = (
-    Path(__file__).resolve().parent.parent / "prompts" / "resource_search_skill.md"
 )
 
 
 # optimize user queries
-def query_optimizer_node(state: AgentState) -> dict:
+async def query_optimizer_node(state: AgentState) -> dict:
     """
     Expands the user's topic into multiple focused search queries.
     """
@@ -34,18 +30,18 @@ def query_optimizer_node(state: AgentState) -> dict:
             user_input=input_query,
             model_name="gemini-3.5-flash-lite",
             thinking_level="high",
-            system_prompt=QUERY_OPTIMIZER_PROMPT.read_text(encoding="utf-8"),
+            system_prompt=QUERY_OPTIMIZER_SKILL.read_text(encoding="utf-8"),
         )
 
         logger.info("Calling query optimizer...")
 
         # calling model...
-        resposne = llm_provider(validation_config)
+        res = await llm_provider(validation_config)
 
         logger.info("Query optimizer returned repsonse successfully...")
 
         logger.info("Loading optimizer result into JSON...")
-        queries = parse_optimized_queries(resposne)
+        queries = parse_optimized_queries(res)
 
         logger.info("getting list of queries from loaded json data...")
 
@@ -66,7 +62,7 @@ def fan_out_query_node(state: AgentState):
 
 
 # find resource based on query
-def resource_search_node(state: dict) -> dict:
+async def resource_search_node(state: dict) -> dict:
     """
     return structured dict source {title , url , score , content}
     """
@@ -75,7 +71,9 @@ def resource_search_node(state: dict) -> dict:
         query = state["query"]
 
         logger.info("Calling Travily api...")
-        response = web_search(query)
+
+        # calling api...
+        response = await web_search(query)
         logger.info("api executed successfully")
 
         source = [

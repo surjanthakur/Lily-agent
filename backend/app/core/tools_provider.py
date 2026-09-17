@@ -1,11 +1,11 @@
-from tavily import TavilyClient
+from tavily import AsyncTavilyClient
 
 from .settings import settings
 
-tavily = TavilyClient(api_key=settings.TRAVILY_API_KEY)
+Client = AsyncTavilyClient(api_key=settings.TRAVILY_API_KEY)
 
 
-def web_search(query: str) -> dict:
+async def web_search(query: str) -> dict:
     """Search the web for current information on a topic.
 
     Use this tool whenever you need up-to-date facts, news, or information
@@ -15,7 +15,7 @@ def web_search(query: str) -> dict:
         query: The search query
         max_results: Number of results to return
     """
-    response = tavily.search(
+    response = await Client.search(
         query=query,
         max_results=1,
         search_depth="ultra-fast",
@@ -27,6 +27,7 @@ def web_search(query: str) -> dict:
             "youtube.com/",
             "instagram.com/",
         ],
+        timeout=20,
         include_answer="basic",
         include_favicon=False,
         include_images=False,
@@ -37,4 +38,5 @@ def web_search(query: str) -> dict:
         include_generated_markdown=False,
         include_published_date=True,
     )
+
     return response

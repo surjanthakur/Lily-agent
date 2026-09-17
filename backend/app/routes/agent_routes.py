@@ -12,7 +12,7 @@ class AgentReq(BaseModel):
 
 # Route to get agent response
 @router.get("/asks", status_code=status.HTTP_200_OK)
-def get_agent_response(requests: AgentReq) -> dict:
-    res = call_langgraph_agent(query=requests.user_query)
+async def get_agent_response(requests: AgentReq) -> dict:
+    res = await call_langgraph_agent(query=requests.user_query)
 
     return {"response": res}
