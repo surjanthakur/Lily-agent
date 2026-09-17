@@ -24,10 +24,10 @@ app = FastAPI(
 )
 
 # include routes to app
-app.include_router(router=agent_routes.router, prefix="api/v1/lily-agent")
+app.include_router(router=agent_routes.router, prefix="/api/v1/lily-agent")
 
 
 # health check route
-@app.get("/health", status_code=200)
+@app.get("/health", status_code=200, tags=["health check"])
 def health_checks_route():
     return {"status": "ok"}

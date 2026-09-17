@@ -58,7 +58,12 @@ def fan_out_query_node(state: AgentState):
     """
     send optmized list of queries one by one to reosurce_search node
     """
-    return [Send("resource_search", {"query": q}) for q in state["optimized_queries"]]
+    queries = state.get("optimized_queries")
+
+    if queries:
+        return [Send("resource_search", {"query": query}) for query in queries]
+
+    return [Send("resource_search", {"query": state.get("topic")})]
 
 
 # find resource based on query

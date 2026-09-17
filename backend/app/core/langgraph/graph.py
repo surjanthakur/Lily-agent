@@ -1,10 +1,7 @@
-from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START
 
 from .nodes import fan_out_query_node, query_optimizer_node, resource_search_node
 from .state_graph import GRAPH_BUILDER
-
-checkpointer = InMemorySaver()
 
 # add nodes
 GRAPH_BUILDER.add_node("query_optimizer", query_optimizer_node)
@@ -17,4 +14,4 @@ GRAPH_BUILDER.add_edge("resource_search", END)
 
 
 # compile graph
-COMPILED_GRAPH = GRAPH_BUILDER.compile(checkpointer=checkpointer)
+COMPILED_GRAPH = GRAPH_BUILDER.compile()
