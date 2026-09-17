@@ -13,11 +13,17 @@ class AgentReq(BaseModel):
     user_query: str = Field(title="user query", min_length=1, max_length=100)
 
 
+class AgentResponse(BaseModel):
+    found_resources: list[dict]
+
+
 # Route to get agent response
-@router.post("/asks", status_code=status.HTTP_200_OK)
+@router.post("/asks", status_code=status.HTTP_200_OK, response_model=AgentResponse)
 async def get_agent_response(requests: AgentReq) -> dict:
     logger.info("executing services fun langgraph_agent...")
+
     res = await call_langgraph_agent(query=requests.user_query)
+
     logger.info("executed services fun langgraph_agent...")
 
-    return {"response": res}
+    return {"found_resources": res}

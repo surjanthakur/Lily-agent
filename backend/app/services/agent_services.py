@@ -32,7 +32,8 @@ async def call_langgraph_agent(query: str) -> dict:
         )
 
         logger.info("invoked langgraph workflow...")
-        return response
+
+        return response.get("found_resources", [])
 
     except (EmptyInputError, EmptyChannelError, InvalidUpdateError) as exc:
         logger.warning("invalid LangGraph input or state: %s", exc)

@@ -10,11 +10,11 @@ from langchain_google_genai.chat_models import (
     GoogleRateLimitError,
 )
 
-from ..schemas.llm_validation import LlmSchemaValidation
+from ..schemas.llm_validation import LLMRequest
 from .settings import settings
 
 
-async def llm_provider(model_validation: LlmSchemaValidation):
+async def llm_provider(model_validation: LLMRequest):
     """
     Return LLM response text asynchronously.
     """
