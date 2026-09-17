@@ -3,7 +3,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class LlmSchemaValidation(BaseModel):
+class LLMRequest(BaseModel):
 
     model_config = ConfigDict(str_strip_whitespace=True)
 

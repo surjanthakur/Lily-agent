@@ -2,7 +2,7 @@ from pathlib import Path
 
 from langgraph.types import Send
 
-from ...schemas.llm_validation import LlmSchemaValidation
+from ...schemas.llm_validation import LLMRequest
 from ...utils.json_parser import parse_optimized_queries
 from ..llm_provider import llm_provider
 from ..logginig import get_logger
@@ -26,7 +26,7 @@ async def query_optimizer_node(state: AgentState) -> dict:
         input_query = state["topic"]
 
         # validating llm config's
-        validation_config = LlmSchemaValidation(
+        validation_config = LLMRequest(
             user_input=input_query,
             model_name="gemini-3.5-flash-lite",
             thinking_level="high",
