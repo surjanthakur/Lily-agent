@@ -1,8 +1,7 @@
-// import LoginForm from '../pages/loginForm'
-// import Dashboard from '../pages/Dashboard.jsx'
 import { ThemeProvider } from '../context/themecontext.js'
 import { useState, useEffect } from 'react'
 import HomePage from '../pages/HomePage.jsx'
+import Navbar from '../components/Navbar.jsx'
 
 export default function MainLayout() {
   const [themeMode, setThemeMode] = useState(() => {
@@ -41,7 +40,12 @@ export default function MainLayout() {
   return (
     <>
       <ThemeProvider value={{ themeMode, lightTheme, darkTheme }}>
-        <HomePage />
+        <div className="min-h-screen bg-[#f7f6f0]">
+          <Navbar />
+          <main>
+            <HomePage />
+          </main>
+        </div>
       </ThemeProvider>
     </>
   )
