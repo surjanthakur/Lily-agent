@@ -14,8 +14,6 @@ html {
 
 body {
   margin: 0;
+  padding: 0;
   min-width: 320px;
-  font-family: sans-serif !important;
-  background-color: #000000;
-  background-image: linear-gradient(to right, #000000 0%, rgb(24, 7, 34) 100%);
 }
