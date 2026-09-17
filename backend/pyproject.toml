@@ -1,7 +1,7 @@
 [project]
 name = "backend"
 version = "0.1.0"
-description = "lily agent that find's and organize articles/blogs to read on specific topic"
+description = "lily a research good reads multi agent project"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
