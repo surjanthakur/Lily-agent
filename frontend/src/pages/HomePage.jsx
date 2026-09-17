@@ -21,7 +21,7 @@ export default function HomePage() {
 
           {/* ================= HEADING ================= */}
           <div
-            className=" relative z-10 mx-auto mt-12 max-w-5xl text-center sm:mt-16 lg:mt-10
+            className=" relative z-10 mx-auto mt-12 max-w-5xl text-center sm:mt-16 lg:mt-10 cursor-pointer
           "
           >
             <h1
@@ -50,7 +50,7 @@ export default function HomePage() {
 
           {/* ================= COLLAGE ================= */}
           <div
-            className=" relative z-10 mx-auto mt-16 h-117.5 max-w-7xl sm:mt-20 lg:h-125
+            className=" relative z-10 mx-auto mt-16 h-117.5 max-w-7xl sm:mt-20 lg:h-125 cursor-pointer
           "
           >
             {/* ---------- LEFT IMAGE CARD ---------- */}
@@ -59,13 +59,19 @@ export default function HomePage() {
               lg:w-70
             "
             >
-              <div className="h-67.5 bg-linear-to-br from-[#e8d4bd] via-[#d9e6c2] to-[#a5c5aa]">
-                <div className="flex h-full items-end p-5">
-                  <div className="rounded-lg bg-white/80 p-3 backdrop-blur">
-                    <p className="font-serif text-lg">
-                      About agents and memory
-                    </p>
-                    <p className="mt-1 text-xs text-gray-600">5 resources</p>
+              <div className="max-h-content bg-lime-300">
+                <div className="flex h-full items-end p-3">
+                  <div className="rounded-lg bg-white/80 p-4 backdrop-blur">
+                    <h3 className="font-serif text-xl font-semibold">
+                      How Lily finds your resources
+                    </h3>
+
+                    <ul className="mt-3 space-y-1.5 font-mono text-xs leading-5">
+                      <li>→ Optimizes your query into focused sub-queries</li>
+                      <li>→ Finds resources for each query</li>
+                      <li>→ Ranks the most relevant resources</li>
+                      <li>→ Structures them around your learning needs</li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -76,13 +82,13 @@ export default function HomePage() {
               className="
               absolute
               left-[0%]
-              top-78.5
+              top-86.5
               z-30
               hidden
               -rotate-2
               rounded-xl
               border-2 border-black
-              bg-[#caff8a]
+              bg-blue-200
               px-4 py-3
               shadow-[4px_5px_0px_#000]
               md:block
@@ -91,7 +97,7 @@ export default function HomePage() {
               <p className="max-w-57.5 font-mono text-sm font-bold">
                 Find me beginner-friendly
                 <br />
-                articles about AI agents.
+                articles agentic memory
               </p>
             </div>
 
@@ -203,12 +209,12 @@ export default function HomePage() {
                   Let it flow with Lily-agent !!
                 </p>
 
-                <div className="relative mt-5 flex flex-1 items-center justify-center overflow-hidden rounded-xl bg-[#d5ff93]">
+                <div className="relative mt-5 flex flex-1 items-center justify-center overflow-hidden rounded-full bg-lime-300">
                   {/* simple flower illustration */}
                   <img src={Lilyflower} alt="flower-logo"></img>
                 </div>
 
-                <div className="mt-3 flex justify-between font-mono text-xs">
+                <div className="mt-3 flex justify-between font-mono text-xs ">
                   <span>Research</span>
                   <span>to</span>
                   <span>Learn</span>
@@ -245,7 +251,7 @@ export default function HomePage() {
 
               <p className="mt-4 text-sm leading-5 text-gray-600">
                 create multiple chats with more context window size , comming in
-                2nd version ,we'r working on it...
+                2nd version we'r working on it...
               </p>
             </div>
 
