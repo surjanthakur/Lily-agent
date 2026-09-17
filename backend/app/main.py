@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from .core.logginig import get_logger, setup_logging
+from .core.settings import settings
 from .db.databse import create_db_tables
 from .routes import llm_router
 
@@ -16,9 +17,12 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    lifespan=lifespan,
+    version=settings.VERSION,
+)
 
-app.include_router(router=llm_router.router, prefix="/lily-agent")
+app.include_router(router=llm_router.router, prefix="api/v1/lily-agent")
 
 
 # health check route
