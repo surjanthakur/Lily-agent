@@ -1,4 +1,28 @@
 import Lilyflower from '../assets/lily-3-transparent.png'
+import { motion } from 'motion/react'
+
+const reveal = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
+const collageReveal = {
+  hidden: { opacity: 0, y: 36, rotate: 0 },
+  visible: (custom) => ({
+    opacity: 1,
+    y: 0,
+    rotate: custom.rotate,
+    transition: {
+      duration: 0.75,
+      delay: custom.delay,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+}
 
 export default function HomePage() {
   return (
@@ -20,9 +44,13 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-[#f7f6f0]/60" />
 
           {/* ================= HEADING ================= */}
-          <div
+          <motion.div
             className=" relative z-10 mx-auto mt-12 max-w-5xl text-center sm:mt-16 lg:mt-10 cursor-pointer
           "
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.35 }}
+            variants={reveal}
           >
             <h1
               className=" font-serif text-[42px]  leading-[0.98]  tracking-[-2px]  sm:text-[58px]  lg:text-[68px]
@@ -46,7 +74,7 @@ export default function HomePage() {
               <br className="hidden sm:block" />
               Don't dig through the internet — we'll find them for you.
             </p>
-          </div>
+          </motion.div>
 
           {/* ================= COLLAGE ================= */}
           <div
@@ -54,10 +82,15 @@ export default function HomePage() {
           "
           >
             {/* ---------- LEFT IMAGE CARD ---------- */}
-            <div
+            <motion.div
               className="  absolute  left-[2%]  top-13.75  hidden  w-57.5  -rotate-6  overflow-hidden  rounded-2xl  border-2 border-black  bg-white  shadow-[5px_6px_0px_#000]  md:block
               lg:w-70
             "
+              custom={{ delay: 0.05, rotate: -6 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={collageReveal}
             >
               <div className="max-h-content bg-lime-300">
                 <div className="flex h-full items-end p-3">
@@ -75,10 +108,10 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* ---------- LEFT FLOATING PROMPT ---------- */}
-            <div
+            <motion.div
               className="
               absolute
               left-[0%]
@@ -93,16 +126,21 @@ export default function HomePage() {
               shadow-[4px_5px_0px_#000]
               md:block
             "
+              custom={{ delay: 0.15, rotate: -2 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={collageReveal}
             >
               <p className="max-w-57.5 font-mono text-sm font-bold">
                 Find me beginner-friendly
                 <br />
                 articles agentic memory
               </p>
-            </div>
+            </motion.div>
 
             {/* ---------- BLACK BOOK CARD ---------- */}
-            <div
+            <motion.div
               className="
               absolute
               left-[18%]
@@ -122,6 +160,11 @@ export default function HomePage() {
               lg:left-[24%]
               lg:w-65
             "
+              custom={{ delay: 0.2, rotate: 4 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={collageReveal}
             >
               <div className="flex h-full flex-col justify-between">
                 <div>
@@ -156,10 +199,10 @@ export default function HomePage() {
                   Articles • Blogs [ finder ]
                 </p>
               </div>
-            </div>
+            </motion.div>
 
             {/* ---------- TOP PROMPT ---------- */}
-            <div
+            <motion.div
               className="
               absolute
               left-[20%]
@@ -175,16 +218,21 @@ export default function HomePage() {
               md:block
               lg:left-[27%]
             "
+              custom={{ delay: 0.1, rotate: -6 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={collageReveal}
             >
               <p className="max-w-70.5 font-mono text-sm font-bold">
                 Help me learn
                 <br />
                 DBMS from scratch
               </p>
-            </div>
+            </motion.div>
 
             {/* ---------- CENTER FLOW CARD ---------- */}
-            <div
+            <motion.div
               className="
               absolute
               left-[35%]
@@ -203,6 +251,11 @@ export default function HomePage() {
               lg:left-[47%]
               lg:w-72.5
             "
+              custom={{ delay: 0.3, rotate: -2 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={collageReveal}
             >
               <div className="flex h-full flex-col">
                 <p className="font-serif text-4xl">
@@ -220,10 +273,10 @@ export default function HomePage() {
                   <span>Learn</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* ---------- RIGHT ARTICLE CARD ---------- */}
-            <div
+            <motion.div
               className="
               absolute
               right-[3%]
@@ -240,6 +293,11 @@ export default function HomePage() {
               shadow-[5px_6px_0px_#000]
               lg:block
             "
+              custom={{ delay: 0.4, rotate: 5 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={collageReveal}
             >
               <p className="font-mono text-xs text-gray-500">more on...</p>
 
@@ -253,10 +311,10 @@ export default function HomePage() {
                 create multiple chats with more context window size , comming in
                 2nd version we'r working on it...
               </p>
-            </div>
+            </motion.div>
 
             {/* ---------- COMING SOON BUBBLE ---------- */}
-            <div
+            <motion.div
               className="
               absolute
               right-[10%]
@@ -273,6 +331,11 @@ export default function HomePage() {
               bg-lime-300
               md:flex
             "
+              custom={{ delay: 0.35, rotate: 12 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={collageReveal}
             >
               <div className="text-center">
                 <div className="text-3xl">☺</div>
@@ -280,7 +343,7 @@ export default function HomePage() {
                   COMING SOON
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
       </section>
