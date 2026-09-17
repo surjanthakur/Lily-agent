@@ -11,6 +11,7 @@ setup_logging()
 logger = get_logger(__name__)
 
 
+# to perform app startup and shutdown task's
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_db_tables()
@@ -22,6 +23,7 @@ app = FastAPI(
     version=settings.VERSION,
 )
 
+# include routes to app
 app.include_router(router=llm_router.router, prefix="api/v1/lily-agent")
 
 
