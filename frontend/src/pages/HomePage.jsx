@@ -6,13 +6,7 @@ export default function HomePage() {
       <section className="min-h-screen overflow-hidden bg-transparent">
         {/* ================= HERO ================= */}
         <section
-          className="
-          relative min-h-screen
-          border border-[#deddd5]
-          bg-[#f7f6f0]
-          px-5 py-8
-          sm:px-8
-          lg:px-12
+          className="relative min-h-screen border border-[#deddd5] bg-[#f7f6f0] px-5 py-8 sm:px-8 lg:px-12
         "
           style={{
             backgroundImage: `
@@ -27,36 +21,17 @@ export default function HomePage() {
 
           {/* ================= HEADING ================= */}
           <div
-            className="
-            relative z-10 mx-auto
-            mt-12 max-w-5xl
-            text-center
-            sm:mt-16
-            lg:mt-10
+            className=" relative z-10 mx-auto mt-12 max-w-5xl text-center sm:mt-16 lg:mt-10
           "
           >
             <h1
-              className="
-              font-serif
-              text-[42px]
-              leading-[0.98]
-              tracking-[-2px]
-              sm:text-[58px]
-              lg:text-[68px]
+              className=" font-serif text-[42px]  leading-[0.98]  tracking-[-2px]  sm:text-[58px]  lg:text-[68px]
             "
             >
               Tell us what you want to learn.
               <br />
               <span
-                className="
-                relative inline
-                px-2
-                before:absolute
-                before:inset-x-0
-                before:bottom-1
-                before:-z-10
-                before:h-[72%]
-                before:bg-[#f2a9dd]
+                className=" relative inline px-2 before:absolute before:inset-x-0  before:bottom-1  before:-z-10  before:h-[72%]  before:bg-[#f2a9dd]
               "
               >
                 Lily finds the best resources for you.
@@ -64,13 +39,7 @@ export default function HomePage() {
             </h1>
 
             <p
-              className="
-              mx-auto mt-7 max-w-2xl
-              font-mono
-              text-sm
-              leading-6
-              text-[#55554f]
-              sm:text-base
+              className=" mx-auto mt-7 max-w-2xl font-mono text-sm leading-6 text-[#55554f] sm:text-base
             "
             >
               Read the best articles and blogs out there.
@@ -81,30 +50,12 @@ export default function HomePage() {
 
           {/* ================= COLLAGE ================= */}
           <div
-            className="
-            relative z-10
-            mx-auto mt-16
-            h-117.5
-            max-w-7xl
-            sm:mt-20
-            lg:h-125
+            className=" relative z-10 mx-auto mt-16 h-117.5 max-w-7xl sm:mt-20 lg:h-125
           "
           >
             {/* ---------- LEFT IMAGE CARD ---------- */}
             <div
-              className="
-              absolute
-              left-[2%]
-              top-13.75
-              hidden
-              w-57.5
-              -rotate-6
-              overflow-hidden
-              rounded-2xl
-              border-2 border-black
-              bg-white
-              shadow-[5px_6px_0px_#000]
-              md:block
+              className="  absolute  left-[2%]  top-13.75  hidden  w-57.5  -rotate-6  overflow-hidden  rounded-2xl  border-2 border-black  bg-white  shadow-[5px_6px_0px_#000]  md:block
               lg:w-70
             "
             >
