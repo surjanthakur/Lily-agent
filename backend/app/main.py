@@ -8,6 +8,8 @@ from .db.databse import create_db_tables
 from .routes import agent_routes
 
 setup_logging()
+
+
 logger = get_logger(__name__)
 
 
@@ -21,6 +23,10 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     lifespan=lifespan,
     version=settings.VERSION,
+    description="API for the Lily AI research agent.",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
 )
 
 # include routes to app
