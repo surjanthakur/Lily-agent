@@ -33,14 +33,14 @@ async def query_optimizer_node(state: AgentState) -> dict:
             system_prompt=QUERY_OPTIMIZER_SKILL.read_text(encoding="utf-8"),
         )
 
-        logger.info("Calling query optimizer...")
+        logger.info("Calling llm...")
 
-        # calling model...
         res = await llm_provider(validation_config)
 
-        logger.info("Query optimizer returned repsonse successfully...")
+        logger.info("llm returned repsonse successfully...")
 
-        logger.info("Loading optimizer result into JSON...")
+        logger.info("Loading optimizer result's into JSON...")
+
         queries = parse_optimized_queries(res)
 
         logger.info("getting list of queries from loaded json data...")
@@ -49,7 +49,7 @@ async def query_optimizer_node(state: AgentState) -> dict:
         logger.exception("Query optimizer call failed...")
         raise
 
-    logger.info("Updating state...")
+    logger.info("Updating graph state...")
     return {"optimized_queries": queries}
 
 
@@ -75,11 +75,11 @@ async def resource_search_node(state: dict) -> dict:
 
         query = state["query"]
 
-        logger.info("Calling Travily api...")
+        logger.info("executing Travily api...")
 
-        # calling api...
         response = await web_search(query)
-        logger.info("api executed successfully")
+
+        logger.info("api executed successfully...")
 
         source = [
             {
@@ -90,6 +90,7 @@ async def resource_search_node(state: dict) -> dict:
             }
             for result in response.get("results", [])
         ]
+        logger.info("updating found_resources list")
         return {"found_resources": source}
 
     except Exception:

@@ -22,16 +22,16 @@ logger = get_logger(__name__)
 async def call_langgraph_agent(query: str) -> dict:
     try:
 
+        logger.info("invoking langgraph workflow...")
         response = await COMPILED_GRAPH.ainvoke(
             {
                 "topic": query,
                 "found_resources": [],
-                "messages": [],
                 "optimized_query": [],
-                "scraped_resources": [],
             }
         )
 
+        logger.info("invoked langgraph workflow...")
         return response
 
     except (EmptyInputError, EmptyChannelError, InvalidUpdateError) as exc:

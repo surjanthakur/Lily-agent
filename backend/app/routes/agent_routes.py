@@ -1,9 +1,12 @@
 from fastapi import APIRouter, status
 from pydantic import BaseModel, Field
 
+from ..core.logginig import get_logger
 from ..services.agent_services import call_langgraph_agent
 
 router = APIRouter(tags=["agent"])
+
+logger = get_logger(__name__)
 
 
 class AgentReq(BaseModel):
@@ -13,6 +16,8 @@ class AgentReq(BaseModel):
 # Route to get agent response
 @router.post("/asks", status_code=status.HTTP_200_OK)
 async def get_agent_response(requests: AgentReq) -> dict:
+    logger.info("executing services fun langgraph_agent...")
     res = await call_langgraph_agent(query=requests.user_query)
+    logger.info("executed services fun langgraph_agent...")
 
     return {"response": res}
