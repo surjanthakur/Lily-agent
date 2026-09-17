@@ -37,6 +37,7 @@ export default function MainLayout() {
     root.classList.add(themeMode)
     root.style.colorScheme = themeMode
   }, [themeMode])
+
   return (
     <>
       <ThemeProvider value={{ themeMode, lightTheme, darkTheme }}>
