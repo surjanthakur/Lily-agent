@@ -19,13 +19,10 @@ from ..core.logginig import get_logger
 logger = get_logger(__name__)
 
 
-def call_langgraph_agent_workflow(query: str) -> dict:
-
-    if not isinstance(query, str):
-        raise TypeError("topic must be a non-empty string")
-
+def call_langgraph_agent(query: str) -> dict:
     try:
-        result = COMPILED_GRAPH.invoke(
+
+        response = COMPILED_GRAPH.invoke(
             {
                 "topic": query,
                 "found_resources": [],
@@ -35,7 +32,7 @@ def call_langgraph_agent_workflow(query: str) -> dict:
             }
         )
 
-        return result
+        return response
 
     except (EmptyInputError, EmptyChannelError, InvalidUpdateError) as exc:
         logger.warning("invalid LangGraph input or state: %s", exc)
