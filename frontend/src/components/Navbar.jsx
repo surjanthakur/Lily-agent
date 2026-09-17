@@ -1,4 +1,4 @@
-import LilyLogo from '../assets/lily-3-transparent.png'
+import LilyLogo from '../assets/lily-logo.png'
 
 export default function Navbar() {
   return (

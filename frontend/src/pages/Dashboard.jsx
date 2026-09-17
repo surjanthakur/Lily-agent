@@ -1,7 +1,7 @@
 import { Settings2 } from 'reicon-react'
 import { useRef, useState } from 'react'
 import { SettingsPopupWindow } from '../components/export.js'
-import Lilylogo from '../assets/lily-3-transparent.png'
+import Lilylogo from '../assets/lily-logo.png'
 
 export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false)

@@ -1,4 +1,4 @@
-import Lilyflower from '../assets/lily-3-transparent.png'
+import Lilyflower from '../assets/lily-logo.png'
 import { motion } from 'motion/react'
 
 const reveal = {
