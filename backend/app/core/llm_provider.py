@@ -10,7 +10,7 @@ from langchain_google_genai.chat_models import (
     GoogleRateLimitError,
 )
 
-from ..schemas.llm_validation import LLMRequest
+from ..schemas.llm_req import LLMRequest
 from .settings import settings
 
 

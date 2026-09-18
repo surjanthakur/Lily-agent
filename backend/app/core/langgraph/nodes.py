@@ -2,7 +2,7 @@ from pathlib import Path
 
 from langgraph.types import Send
 
-from ...schemas.llm_validation import LLMRequest
+from ...schemas.llm_req import LLMRequest
 from ...utils.json_parser import parse_optimized_queries
 from ..llm_provider import llm_provider
 from ..logginig import get_logger
