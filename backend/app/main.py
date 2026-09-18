@@ -31,7 +31,7 @@ app = FastAPI(
     openapi_url="/openapi.json",
 )
 
-app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KET)
+app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 
 
 # # Logging time taken for each api request
