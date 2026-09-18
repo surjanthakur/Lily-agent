@@ -13,6 +13,12 @@ class Settings(BaseSettings):
     VERSION: str
     APP: str
     ENVIRONMENT: str
+    GOOGLE_CLIENT_ID: str
+    GOOGLE_CLIENT_SECRET: str
+    SECRET_KET: str
+    JWT_SECRET_KEY: str
+    FRONTEND_URL: str
+    REDIRECT_URL: str
 
     model_config = SettingsConfigDict(
         env_file=env_path,

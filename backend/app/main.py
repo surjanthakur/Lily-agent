@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from starlette.middleware.sessions import SessionMiddleware
 
 from .core.logginig import get_logger, setup_logging
 from .core.settings import settings
@@ -28,6 +29,8 @@ app = FastAPI(
     redoc_url="/redoc",
     openapi_url="/openapi.json",
 )
+
+app.add_middleware(SessionMiddleware)
 
 # include routes to app
 app.include_router(router=agent_routes.router, prefix="/api/v1/lily-agent")

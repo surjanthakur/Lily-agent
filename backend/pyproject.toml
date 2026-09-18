@@ -7,7 +7,10 @@ requires-python = ">=3.11"
 dependencies = [
     "aiosqlite>=0.22.1",
     "asyncpg>=0.31.0",
+    "authlib>=1.8.0",
     "fastapi[standard]>=0.141.1",
+    "google-auth>=2.58.0",
+    "google-auth-oauthlib>=1.4.1",
     "greenlet>=3.2.4",
     "httpx>=0.28.1",
     "langchain>=1.4.0",
@@ -16,7 +19,10 @@ dependencies = [
     "langgraph>=1.2.11",
     "pathlib>=1.0.1",
     "pydantic>=2.12.5,<2.13.0",
+    "pyjwt>=2.14.0",
     "python-dotenv>=1.2.3",
+    "python-jose>=3.5.0",
+    "requests>=2.34.2",
     "sqlmodel>=0.0.42",
     "tavily-python>=0.8.2",
 ]
