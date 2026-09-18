@@ -25,6 +25,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
+    title=settings.APP_NAME,
     version=settings.VERSION,
     description="API for the Lily AI research agent.",
     docs_url="/docs" if settings.ENVIRONMENT != "production" else None,
@@ -37,6 +38,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_origins=["http://localhost:5173"],
     allow_methods=["GET", "POST", "DELETE"],
+    allow_headers=["*"],
 )
 
 app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)

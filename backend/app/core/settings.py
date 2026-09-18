@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     TRAVILY_API_KEY: str
 
     VERSION: str
-    APP: str
+    APP_NAME: str
     ENVIRONMENT: str
 
     GOOGLE_CLIENT_ID: str
