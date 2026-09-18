@@ -2,6 +2,7 @@ import time
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from .core.logginig import get_logger, setup_logging
@@ -29,6 +30,13 @@ app = FastAPI(
     docs_url="/docs" if settings.ENVIRONMENT != "production" else None,
     redoc_url="/redoc" if settings.ENVIRONMENT != "production" else None,
     openapi_url="/openapi.json",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["GET", "POST", "DELETE"],
 )
 
 app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
