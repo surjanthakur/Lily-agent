@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<MainLayout />} />
+        <Route path="/home" element={<MainLayout />} />
         <Route path="/dashboard/on/:email_id/chats" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>

@@ -9,7 +9,7 @@ export default function Navbar() {
       >
         {/* ================= LOGO ================= */}
         <a
-          href="/"
+          href="/home"
           className="
             group
             relative
