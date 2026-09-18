@@ -1,3 +1,4 @@
+import traceback
 from datetime import datetime, timedelta
 
 from authlib.integrations.starlette_client import OAuth
@@ -56,17 +57,38 @@ def get_current_user(token: str = Cookie(None)):
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated yet!"
         )
 
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
-        return {"user_id": payload.get("sub"), "email": payload.get("email")}
+        user_google_id: str = payload.get("sub")
+        user_email: str = payload.get("email")
+
+        if user_google_id is None or user_email is None:
+            raise credentials_exception
+
+        return {"user_id": user_google_id, "user_email": user_email}
 
     except ExpiredSignatureError:
+        # Specifically handle expired tokens
+        traceback.print_exc()
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expired"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Session expired. Please login again.",
         )
 
     except JWTError:
+        # Handle other JWT-related errors
+        traceback.print_exc()
+        raise credentials_exception
+
+    except Exception:  # noqa: BLE001
+        traceback.print_exc()
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authenticated"
         )

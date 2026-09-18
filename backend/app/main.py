@@ -1,12 +1,13 @@
+import time
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from starlette.middleware.sessions import SessionMiddleware
 
 from .core.logginig import get_logger, setup_logging
 from .core.settings import settings
 from .db.databse import create_db_tables
-from .routes import agent_routes
+from .routes import agent_routes, auth_routes
 
 setup_logging()
 
@@ -30,10 +31,27 @@ app = FastAPI(
     openapi_url="/openapi.json",
 )
 
-app.add_middleware(SessionMiddleware)
+app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KET)
+
+
+# # Logging time taken for each api request
+@app.middleware("http")
+async def log_response_time(request: Request, call_next):
+
+    start_time = time.time()
+
+    response = await call_next(request)
+
+    process_time = time.time() - start_time
+
+    logger.info(f"Request: {request.url.path} completed in {process_time:.4f} seconds")
+
+    return response
+
 
 # include routes to app
 app.include_router(router=agent_routes.router, prefix="/api/v1/lily-agent")
+app.include_router(router=auth_routes.router, prefix="/api/v1/google")
 
 
 # health check route

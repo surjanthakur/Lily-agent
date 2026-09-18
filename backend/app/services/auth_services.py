@@ -2,8 +2,7 @@ from datetime import timedelta
 
 import httpx
 from fastapi import Depends, HTTPException, Request, status
-
-# from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse
 from jose import JWTError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -86,14 +85,14 @@ async def authenticate_user(
         expires_delta=access_token_expires,
     )
 
-    # redirect_url = req.session.pop("login_redirect", "")
-    # response = RedirectResponse(redirect_url)
-    # response.set_cookie(
-    #     key="access_token",
-    #     value=access_token,
-    #     httponly=True,
-    #     secure=True,  # Ensure you're using HTTPS
-    #     samesite="none",  # Set the SameSite attribute to None
-    # )
+    redirect_url = req.session.pop("login_redirect", "")
+    response = RedirectResponse(redirect_url)
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=True,  # Ensure you're using HTTPS
+        samesite="none",  # Set the SameSite attribute to None
+    )
 
-    return access_token
+    return response
