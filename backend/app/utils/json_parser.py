@@ -33,5 +33,6 @@ def parse_optimized_queries(result: str) -> list[str]:
             raise ValueError("Query optimizer response must contain a list of strings")
 
         return queries
+
     except JSONDecodeError:
         logger.exception("json decoder error wrong format to decode")
