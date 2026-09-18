@@ -45,7 +45,7 @@ app.add_middleware(
 app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 
 
-# # Logging time taken for each api request
+# Logging time taken for each api request
 @app.middleware("http")
 async def log_response_time(request: Request, call_next):
 
@@ -61,7 +61,7 @@ async def log_response_time(request: Request, call_next):
 
 
 # include routes to app
-app.include_router(router=agent_routes.router, prefix="/api/v1/lily-agent")
+app.include_router(router=agent_routes.router, prefix="/api/v1/agent")
 app.include_router(router=auth_routes.router, prefix="/api/v1/google")
 
 
