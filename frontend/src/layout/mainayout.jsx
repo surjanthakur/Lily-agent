@@ -1,4 +1,4 @@
-import { ThemeProvider } from '../context/themecontext.js'
+import { ThemeProvider } from '../context/ThemeToggleContext.js'
 import { useState, useEffect } from 'react'
 import { Navbar } from '../components/export.js'
 import { Dashboard, HomePage } from '../pages/export.js'
