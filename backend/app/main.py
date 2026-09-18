@@ -27,7 +27,7 @@ app = FastAPI(
     lifespan=lifespan,
     title=settings.APP_NAME,
     version=settings.VERSION,
-    description="API for the Lily AI research agent.",
+    description="API for the Lily-Agent project.",
     docs_url="/docs" if settings.ENVIRONMENT != "production" else None,
     redoc_url="/redoc" if settings.ENVIRONMENT != "production" else None,
     openapi_url="/openapi.json",
