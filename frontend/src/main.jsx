@@ -1,10 +1,19 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 import './index.css'
-import App from './App.jsx'
+
+import MainLayout from './layout/mainayout.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainLayout />} />
+        <Route path="/dashboard/on/:email_id/chats" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   </StrictMode>,
 )
