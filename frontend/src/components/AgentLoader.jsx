@@ -1,7 +1,7 @@
 import './Loader.css'
 import { useEffect, useState } from 'react'
 
-export const AgentLoader = () => {
+export default function AgentLoader() {
   const [messageIndex, setMessageIndex] = useState(0)
 
   const loadingMessages = [
