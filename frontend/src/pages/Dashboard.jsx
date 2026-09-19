@@ -5,10 +5,13 @@ import Lilylogo from '../assets/lily-logo.png'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { getAgentResponse } from '../api/agent.api.js'
+import { Loader } from '../components/export.js'
 
 export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false)
-  const [agentResponse, setAgentResponse] = useState([{}])
+  const [agentResponse, setAgentResponse] = useState([])
+  const [isAgentLoading, setIsAgentLoading] = useState(false)
+  const [userResponse, setUserResponse] = useState('')
 
   const textareaRef = useRef(null)
   const { register, handleSubmit, reset } = useForm()
@@ -31,15 +34,19 @@ export default function Dashboard() {
   }
 
   const onSubmit = async (data) => {
+    const userQuery = data.user_query
+    setIsAgentLoading(true)
+
     try {
-      const userQuery = data.user_query
+      setUserResponse(userQuery)
       const response = await getAgentResponse(userQuery)
-      setAgentResponse(response)
+      setAgentResponse(response.found_resources)
     } catch (error) {
       toast.error(error)
+    } finally {
+      setIsAgentLoading(false)
+      reset()
     }
-
-    reset()
   }
   return (
     <section
@@ -90,47 +97,52 @@ export default function Dashboard() {
               <div className="w-full max-w-[88%] space-y-3 sm:max-w-[75%]">
                 <div className="rounded-2xl rounded-tl-sm bg-[#f2f1e5] px-4 py-3 sm:px-5">
                   <p className="text-sm leading-6 text-neutral-800">
-                    Hey! 👋 I'm Lily. I found these resources for you:
+                    {userResponse}
                   </p>
                 </div>
 
-                {agentResponse.map((resource, index) => (
-                  <article
-                    key={`${resource.url}-${index}`}
-                    className="rounded-2xl border border-black/10 bg-white p-4 shadow-sm"
-                  >
-                    {/* Title */}
-                    <h3 className="text-base font-semibold text-neutral-900">
-                      {resource.title}
-                    </h3>
-
-                    {/* URL */}
-                    <a
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 block truncate text-sm text-blue-600 hover:underline"
+                {/* agent ui loader */}
+                {isAgentLoading ? (
+                  <Loader />
+                ) : (
+                  agentResponse.map((resource, index) => (
+                    <article
+                      key={`${resource.url}-${index}`}
+                      className="rounded-2xl border border-black/10 bg-white p-4 shadow-sm"
                     >
-                      {resource.url}
-                    </a>
+                      {/* Title */}
+                      <h3 className="text-base font-semibold text-neutral-900">
+                        {resource.title}
+                      </h3>
 
-                    {/* Score */}
-                    <div className="mt-3 flex items-center gap-2">
-                      <span className="text-sm font-medium text-neutral-700">
-                        Resource score
-                      </span>
+                      {/* URL */}
+                      <a
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 block truncate text-sm text-blue-600 hover:underline"
+                      >
+                        {resource.url}
+                      </a>
 
-                      <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-semibold text-neutral-700">
-                        {(resource.score * 100).toFixed(0)}%
-                      </span>
-                    </div>
+                      {/* Score */}
+                      <div className="mt-3 flex items-center gap-2">
+                        <span className="text-sm font-medium text-neutral-700">
+                          Resource score
+                        </span>
 
-                    {/* Content */}
-                    <p className="mt-3 text-sm leading-6 text-neutral-700">
-                      {resource.content.split(/\s+/).slice(0, 200).join(' ')}
-                    </p>
-                  </article>
-                ))}
+                        <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-semibold text-neutral-700">
+                          {(resource.score * 100).toFixed(0)}%
+                        </span>
+                      </div>
+
+                      {/* Content */}
+                      <p className="mt-3 text-sm leading-6 text-neutral-700">
+                        {resource.content.split(/\s+/).slice(0, 200).join(' ')}
+                      </p>
+                    </article>
+                  ))
+                )}
               </div>
             </div>
             {/* User */}
