@@ -24,12 +24,21 @@ export default function Dashboard() {
   const [isAgentLoading, setIsAgentLoading] = useState(false);
 
   const textareaRef = useRef(null);
+  const chatWindowRef = useRef(null);
   const { register, handleSubmit, reset } = useForm();
 
   // Save chats to localStorage whenever chats changes
   useEffect(() => {
     localStorage.setItem('lily_chats', JSON.stringify(chats));
   }, [chats]);
+
+  useEffect(() => {
+    const chatWindow = chatWindowRef.current;
+
+    if (chatWindow) {
+      chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
+    }
+  }, [chats, isAgentLoading]);
 
   const handleSettings = () => {
     setOpenSettings((prev) => !prev);
@@ -105,7 +114,7 @@ export default function Dashboard() {
     <section className="h-dvh overflow-hidden bg-[#e9e8e0] text-neutral-900">
       <div className="mx-auto flex h-full w-full max-w-6xl flex-col bg-[#e9e8e0]/80 backdrop-blur-sm">
         {/* Header */}
-        <header className="flex h-16 shrink-0 items-center justify-between  border border-black/10 bg-[#e9e8e0]/90 px-3 sm:px-6">
+        <header className="flex h-12 shrink-0 items-center justify-between  border-l border-r border-black/10 bg-[#e9e8e0]/90 px-3 sm:px-6">
           {/* Logo */}
           <div className="flex items-center gap-2.5">
             <img
@@ -132,7 +141,10 @@ export default function Dashboard() {
         {/* Main content */}
         <div className="flex min-h-0 flex-1 flex-col">
           {/* Chat */}
-          <main className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6 sm:py-7 border border-black/10">
+          <main
+            ref={chatWindowRef}
+            className="min-h-0 flex-1 overflow-y-auto border border-black/10 px-3 py-5 sm:px-6 sm:py-7"
+          >
             <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 sm:gap-6">
               {/* Empty state */}
               {chats.length === 0 && !isAgentLoading && (
