@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { getAgentResponse } from '../api/agent.api.js'
 import { Loader } from '../components/export.js'
 import Lilylogo from '../assets/lily-logo.png'
-import { ArrowToDownLeft } from 'reicon-react'
+import { ArrowToDownLeft, Magicpen } from 'reicon-react'
 
 export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false)
@@ -140,7 +140,7 @@ export default function Dashboard() {
                       agentResponse.map((resource, index) => (
                         <article
                           key={`${resource.url}-${index}`}
-                          className="rounded-2xl rounded-tl-sm border border-black/10 bg-[#f5f4ed] p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5"
+                          className="rounded-2xl rounded-tl-sm border border-black/10 bg-[#f5f4ed] p-4 shadow-md transition-shadow hover:shadow-lg sm:p-5"
                         >
                           {/* Title */}
                           <h3 className="wrap-break-word text-base py-2 font-semibold leading-6 text-neutral-900 sm:text-lg sm:leading-7">
@@ -237,9 +237,9 @@ export default function Dashboard() {
                   type="submit"
                   aria-label="Send message"
                   disabled={isAgentLoading}
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#292927] text-lg text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#292927cd] text-lg text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  ↑
+                  <Magicpen size={20} />
                 </button>
               </form>
 
