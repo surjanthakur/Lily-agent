@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import { getAgentResponse } from '../api/agent.api.js'
 import { Loader } from '../components/export.js'
 import Lilylogo from '../assets/lily-logo.png'
+import { ArrowToDownLeft } from 'reicon-react'
 
 export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false)
@@ -30,6 +31,7 @@ export default function Dashboard() {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
+      e.currentTarget.form?.requestSubmit()
     }
   }
 
@@ -58,16 +60,10 @@ export default function Dashboard() {
     }
   }
   return (
-    <section
-      className="h-dvh overflow-hidden bg-[#e9e8e0] text-neutral-900"
-      style={{
-        backgroundImage: `linear-gradient(#d6d5cc 1px, transparent 1px), linear-gradient(90deg, #d6d5cc 1px, transparent 1px)`,
-        backgroundSize: '24px 24px',
-      }}
-    >
+    <section className="h-dvh overflow-hidden bg-[#e9e8e0] text-neutral-900">
       <div className="mx-auto flex h-full w-full max-w-6xl flex-col bg-[#e9e8e0]/80 backdrop-blur-sm">
         {/* Header */}
-        <header className="flex h-16 shrink-0 items-center justify-between border-b border-black/10 bg-[#e9e8e0]/90 px-3 sm:px-6">
+        <header className="flex h-16 shrink-0 items-center justify-between  border border-black/10 bg-[#e9e8e0]/90 px-3 sm:px-6">
           {/* Logo */}
           <div className="flex items-center gap-2.5">
             <img
@@ -96,7 +92,7 @@ export default function Dashboard() {
         {/* Main content */}
         <div className="flex min-h-0 flex-1 flex-col">
           {/* Chat */}
-          <main className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6 sm:py-7">
+          <main className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6 sm:py-7 border border-black/10">
             <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 sm:gap-6">
               {/* Empty state */}
               {!userResponse && !isAgentLoading && (
@@ -147,11 +143,15 @@ export default function Dashboard() {
                           className="rounded-2xl rounded-tl-sm border border-black/10 bg-[#f5f4ed] p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5"
                         >
                           {/* Title */}
-                          <h3 className="wrap-break-word text-base font-semibold leading-6 text-neutral-900 sm:text-lg sm:leading-7">
+                          <h3 className="wrap-break-word text-base py-2 font-semibold leading-6 text-neutral-900 sm:text-lg sm:leading-7">
                             {resource.title}
                           </h3>
 
                           {/* URL */}
+                          <span className="text-xs justify-start align-middle flex font-medium text-fuchsia-700 sm:text-sm">
+                            read &nbsp;
+                            <ArrowToDownLeft size={25} />
+                          </span>
                           <a
                             href={resource.url}
                             target="_blank"
@@ -163,19 +163,22 @@ export default function Dashboard() {
 
                           {/* Score */}
                           <div className="mt-3 flex flex-wrap items-center gap-2">
-                            <span className="text-xs font-medium text-neutral-600 sm:text-sm">
-                              Resource score
+                            <span className="text-xs font-medium text-lime-700 sm:text-sm">
+                              good score
                             </span>
-                            <span className="rounded-full bg-[#deddd4] px-2.5 py-1 text-xs font-semibold text-neutral-700">
+                            <span className="rounded-full bg-[#2cc53b7b] px-2.5 py-1 text-xs font-semibold text-neutral-700">
                               {(resource.score * 100).toFixed(0)}%
                             </span>
                           </div>
 
                           {/* Content */}
                           <p className="mt-3 wrap-break-word text-sm leading-6 text-neutral-700">
+                            <span className="text-xs font-medium text-orange-700 sm:text-sm">
+                              About this resource =
+                            </span>{' '}
                             {resource.content
                               ?.split(/\s+/)
-                              .slice(0, 200)
+                              .slice(0, 100)
                               .join(' ')}
                           </p>
                         </article>
@@ -188,7 +191,7 @@ export default function Dashboard() {
           </main>
 
           {/* Input area */}
-          <div className="shrink-0 border-t border-black/10 bg-[#e9e8e0]/95 px-3 py-3 backdrop-blur-md sm:px-6 sm:py-5">
+          <div className="shrink-0 border border-black/10 bg-[#e9e8e0]/95 px-3 py-3 backdrop-blur-md sm:px-6 sm:py-5">
             <div className="mx-auto w-full max-w-3xl">
               <form
                 onSubmit={handleSubmit(onSubmit)}
