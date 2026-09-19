@@ -4,7 +4,7 @@ import { SettingsPopupWindow } from '../components/export.js'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { getAgentResponse } from '../api/agent.api.js'
-import { Loader } from '../components/export.js'
+import { AgentLoader } from '../components/export.js'
 import Lilylogo from '../assets/lily-logo.png'
 import { ArrowToDownLeft, Magicpen } from 'reicon-react'
 
@@ -59,6 +59,7 @@ export default function Dashboard() {
       }
     }
   }
+
   return (
     <section className="h-dvh overflow-hidden bg-[#e9e8e0] text-neutral-900">
       <div className="mx-auto flex h-full w-full max-w-6xl flex-col bg-[#e9e8e0]/80 backdrop-blur-sm">
@@ -72,7 +73,7 @@ export default function Dashboard() {
               className="h-8 w-8 rounded-lg object-cover sm:h-9 sm:w-9"
             />
             <span className="text-base font-semibold tracking-tight text-neutral-900">
-              lily
+              agent on mission
             </span>
           </div>
 
@@ -101,14 +102,14 @@ export default function Dashboard() {
                     <img
                       src={Lilylogo}
                       alt="Lily"
-                      className="mx-auto mb-4 h-12 w-12 rounded-xl object-cover opacity-90"
+                      className="mx-auto mb-4 h-30 w-30 rounded-xl object-cover opacity-90"
                     />
                     <h1 className="text-xl font-semibold tracking-tight text-neutral-800 sm:text-2xl">
-                      What do you want to learn?
+                      What do you want to learn today?
                     </h1>
                     <p className="mt-2 text-sm leading-6 text-neutral-600">
                       Ask Lily for articles, blogs, and resources about any
-                      topic you want to explore.
+                      topic you want to explore/read.
                     </p>
                   </div>
                 </div>
@@ -133,8 +134,10 @@ export default function Dashboard() {
                   <div className="w-full max-w-[98%] space-y-3 sm:max-w-[82%] sm:space-y-4">
                     {/* Loader */}
                     {isAgentLoading ? (
-                      <div className="rounded-2xl rounded-tl-sm border border-black/10 bg-[#f5f4ed] p-5 shadow-sm">
-                        <Loader />
+                      <div className="rounded-2xl p-5">
+                        <div className="flex items-center gap-3">
+                          <AgentLoader />
+                        </div>
                       </div>
                     ) : (
                       agentResponse.map((resource, index) => (
@@ -248,6 +251,7 @@ export default function Dashboard() {
               </p>
             </div>
           </div>
+          {/* ksfksdfnkd */}
         </div>
       </div>
 
