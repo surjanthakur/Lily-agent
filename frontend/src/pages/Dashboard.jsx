@@ -43,34 +43,38 @@ export default function Dashboard() {
       toast.success('agent send response...')
       setAgentResponse(response.found_resources)
     } catch (error) {
-      toast.error(error)
+      toast.error(
+        error?.response?.data?.detail ||
+          error?.message ||
+          'Something went wrong. Please try again.',
+      )
     } finally {
       setIsAgentLoading(false)
       reset()
+
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto'
+      }
     }
   }
   return (
     <section
-      className="h-screen bg-[#f7f6f0]"
+      className="h-dvh overflow-hidden bg-[#e9e8e0] text-neutral-900"
       style={{
-        backgroundImage: `
-            linear-gradient(#deddd5 1px, transparent 1px),
-            linear-gradient(90deg, #deddd5 1px, transparent 1px)
-          `,
+        backgroundImage: `linear-gradient(#d6d5cc 1px, transparent 1px), linear-gradient(90deg, #d6d5cc 1px, transparent 1px)`,
         backgroundSize: '24px 24px',
       }}
     >
-      <div className="relative mx-auto flex h-full w-full max-w-6xl flex-col backdrop-blur-xs">
-        {/* Top Header */}
-        <header className="flex h-16 shrink-0 items-center justify-between border-b border-black/10 px-4 sm:px-6">
-          {/* Lily Logo */}
+      <div className="mx-auto flex h-full w-full max-w-6xl flex-col bg-[#e9e8e0]/80 backdrop-blur-sm">
+        {/* Header */}
+        <header className="flex h-16 shrink-0 items-center justify-between border-b border-black/10 bg-[#e9e8e0]/90 px-3 sm:px-6">
+          {/* Logo */}
           <div className="flex items-center gap-2.5">
             <img
               src={Lilylogo}
               alt="Lily"
-              className="h-9 w-9 rounded-lg object-cover"
+              className="h-8 w-8 rounded-lg object-cover sm:h-9 sm:w-9"
             />
-
             <span className="text-base font-semibold tracking-tight text-neutral-900">
               lily
             </span>
@@ -78,134 +82,168 @@ export default function Dashboard() {
 
           {/* Profile */}
           <div className="flex items-center gap-2.5">
+            <span className="hidden text-sm font-medium text-neutral-700 sm:block">
+              Surjan
+            </span>
             <img
               src={Lilylogo}
               alt="Profile"
-              className="h-9 w-9 rounded-full object-cover"
+              className="h-8 w-8 rounded-full object-cover sm:h-9 sm:w-9"
             />
-
-            <span className="hidden text-sm font-medium text-neutral-800 sm:block">
-              Surjan
-            </span>
           </div>
         </header>
 
-        {/* Chat */}
-        <main className="flex-1 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6">
-          <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 sm:gap-6">
-            {/* User Message */}
-            {userResponse && (
-              <div className="flex justify-end">
-                <div className="w-fit max-w-[90%] sm:max-w-[75%]">
-                  <div className="rounded-2xl rounded-br-sm bg-[#272727] px-4 py-3 sm:px-5">
-                    <p className="wrap-break-word text-sm leading-6 text-white">
-                      {userResponse}
+        {/* Main content */}
+        <div className="flex min-h-0 flex-1 flex-col">
+          {/* Chat */}
+          <main className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6 sm:py-7">
+            <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 sm:gap-6">
+              {/* Empty state */}
+              {!userResponse && !isAgentLoading && (
+                <div className="flex min-h-[50vh] items-center justify-center px-4">
+                  <div className="max-w-md text-center">
+                    <img
+                      src={Lilylogo}
+                      alt="Lily"
+                      className="mx-auto mb-4 h-12 w-12 rounded-xl object-cover opacity-90"
+                    />
+                    <h1 className="text-xl font-semibold tracking-tight text-neutral-800 sm:text-2xl">
+                      What do you want to learn?
+                    </h1>
+                    <p className="mt-2 text-sm leading-6 text-neutral-600">
+                      Ask Lily for articles, blogs, and resources about any
+                      topic you want to explore.
                     </p>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Agent Response */}
-            <div className="flex justify-start">
-              <div className="w-full max-w-[95%] space-y-3 sm:max-w-[80%]">
-                {/* Agent Loader */}
-                {isAgentLoading ? (
-                  <Loader />
-                ) : (
-                  agentResponse.map((resource, index) => (
-                    <article
-                      key={`${resource.url}-${index}`}
-                      className="rounded-2xl rounded-tl-sm border border-black/10 bg-white p-4 shadow-sm sm:p-5"
-                    >
-                      {/* Title */}
-                      <h3 className="wrap-break-word text-base font-semibold text-neutral-900 sm:text-lg">
-                        {resource.title}
-                      </h3>
-
-                      {/* URL */}
-                      <a
-                        href={resource.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-1 block break-all text-sm text-blue-600 hover:underline"
-                      >
-                        {resource.url}
-                      </a>
-
-                      {/* Score */}
-                      <div className="mt-3 flex flex-wrap items-center gap-2">
-                        <span className="text-sm font-medium text-neutral-700">
-                          Resource score
-                        </span>
-
-                        <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-semibold text-neutral-700">
-                          {(resource.score * 100).toFixed(0)}%
-                        </span>
-                      </div>
-
-                      {/* Content */}
-                      <p className="mt-3 wrap-break-word text-sm leading-6 text-neutral-700">
-                        {resource.content.split(/\s+/).slice(0, 200).join(' ')}
+              {/* User message */}
+              {userResponse && (
+                <div className="flex justify-end">
+                  <div className="w-fit max-w-[92%] sm:max-w-[75%]">
+                    <div className="rounded-2xl rounded-br-sm bg-[#292927] px-4 py-3 shadow-sm sm:px-5">
+                      <p className="wrap-break-word text-sm leading-6 text-white">
+                        {userResponse}
                       </p>
-                    </article>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
-        </main>
-        {/* Input area */}
-        <div className="absolute bottom-3 left-0 w-full px-3 sm:bottom-6 sm:px-6">
-          <div className="mx-auto w-full max-w-3xl">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex items-end gap-1.5 rounded-2xl border border-black/10 bg-white p-2 shadow-lg sm:gap-2"
-            >
-              {/* Settings */}
-              <div className="group relative shrink-0">
-                <button
-                  type="button"
-                  onClick={handleSettings}
-                  aria-label="Settings"
-                  className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
-                >
-                  <Settings2 size={20} />
-                </button>
-
-                {/* Tooltip */}
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-lg border border-black bg-white px-3 py-2 text-xs font-medium whitespace-nowrap text-neutral-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
-                  Settings
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Textarea */}
-              <textarea
-                {...register('user_query', {
-                  required: 'Please enter a message.',
-                  validate: (value) =>
-                    value.trim().length > 0 || 'Message cannot be empty.',
-                })}
-                ref={(element) => {
-                  textareaRef.current = element
-                  register('user_query').ref(element)
-                }}
-                rows={1}
-                onInput={handleInput}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask hey! i want to read [your blogs/article topic]"
-                className="max-h-50 min-h-11 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-3 text-sm leading-5 text-neutral-900 outline-none placeholder:text-neutral-400 sm:px-3"
-              />
+              {/* Agent response */}
+              {(isAgentLoading || agentResponse.length > 0) && (
+                <div className="flex justify-start">
+                  <div className="w-full max-w-[98%] space-y-3 sm:max-w-[82%] sm:space-y-4">
+                    {/* Loader */}
+                    {isAgentLoading ? (
+                      <div className="rounded-2xl rounded-tl-sm border border-black/10 bg-[#f5f4ed] p-5 shadow-sm">
+                        <Loader />
+                      </div>
+                    ) : (
+                      agentResponse.map((resource, index) => (
+                        <article
+                          key={`${resource.url}-${index}`}
+                          className="rounded-2xl rounded-tl-sm border border-black/10 bg-[#f5f4ed] p-4 shadow-sm transition-shadow hover:shadow-md sm:p-5"
+                        >
+                          {/* Title */}
+                          <h3 className="wrap-break-word text-base font-semibold leading-6 text-neutral-900 sm:text-lg sm:leading-7">
+                            {resource.title}
+                          </h3>
 
-              {/* Send */}
-              <button
-                type="submit"
-                aria-label="Send message"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-black text-lg text-white transition hover:bg-neutral-800"
+                          {/* URL */}
+                          <a
+                            href={resource.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-1.5 block break-all text-xs leading-5 text-blue-700 hover:underline sm:text-sm"
+                          >
+                            {resource.url}
+                          </a>
+
+                          {/* Score */}
+                          <div className="mt-3 flex flex-wrap items-center gap-2">
+                            <span className="text-xs font-medium text-neutral-600 sm:text-sm">
+                              Resource score
+                            </span>
+                            <span className="rounded-full bg-[#deddd4] px-2.5 py-1 text-xs font-semibold text-neutral-700">
+                              {(resource.score * 100).toFixed(0)}%
+                            </span>
+                          </div>
+
+                          {/* Content */}
+                          <p className="mt-3 wrap-break-word text-sm leading-6 text-neutral-700">
+                            {resource.content
+                              ?.split(/\s+/)
+                              .slice(0, 200)
+                              .join(' ')}
+                          </p>
+                        </article>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </main>
+
+          {/* Input area */}
+          <div className="shrink-0 border-t border-black/10 bg-[#e9e8e0]/95 px-3 py-3 backdrop-blur-md sm:px-6 sm:py-5">
+            <div className="mx-auto w-full max-w-3xl">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex items-end gap-1.5 rounded-2xl border border-black/15 bg-[#f5f4ed] p-2 shadow-md sm:gap-2"
               >
-                ↑
-              </button>
-            </form>
+                {/* Settings */}
+                <div className="group relative shrink-0">
+                  <button
+                    type="button"
+                    onClick={handleSettings}
+                    aria-label="Settings"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl text-neutral-500 transition hover:bg-[#deddd4] hover:text-neutral-900"
+                  >
+                    <Settings2 size={20} />
+                  </button>
+
+                  {/* Tooltip */}
+                  <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-lg border border-black/10 bg-[#f5f4ed] px-3 py-2 text-xs font-medium whitespace-nowrap text-neutral-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
+                    Settings
+                  </div>
+                </div>
+
+                {/* Textarea */}
+                <textarea
+                  {...register('user_query', {
+                    required: 'Please enter a message.',
+                    validate: (value) =>
+                      value.trim().length > 0 || 'Message cannot be empty.',
+                  })}
+                  ref={(element) => {
+                    textareaRef.current = element
+                    register('user_query').ref(element)
+                  }}
+                  rows={1}
+                  onInput={handleInput}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask Lily what you want to learn..."
+                  className="max-h-50 min-h-11 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-3 text-sm leading-5 text-neutral-900 outline-none placeholder:text-neutral-500 sm:px-3"
+                />
+
+                {/* Send */}
+                <button
+                  type="submit"
+                  aria-label="Send message"
+                  disabled={isAgentLoading}
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#292927] text-lg text-white transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  ↑
+                </button>
+              </form>
+
+              <p className="mt-2 hidden text-center text-[11px] text-neutral-500 sm:block">
+                Press Enter to send · Shift + Enter for a new line
+              </p>
+            </div>
           </div>
         </div>
       </div>

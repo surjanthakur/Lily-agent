@@ -1,7 +1,7 @@
 import { ThemeProvider } from '../context/ThemeToggleContext.js'
 import { useState, useEffect } from 'react'
 import { Navbar } from '../components/export.js'
-import { Dashboard } from '../pages/export.js'
+import { HomePage } from '../pages/export.js'
 import { ToastContainer } from 'react-toastify'
 
 export default function MainLayout() {
@@ -45,7 +45,6 @@ export default function MainLayout() {
         <div className="min-h-screen bg-[#f7f6f0]">
           <Navbar />
           <main>
-            <Dashboard />
             <ToastContainer
               position="top-right"
               autoClose={3000}
@@ -53,6 +52,7 @@ export default function MainLayout() {
               closeOnClick
               pauseOnHover
             />
+            <HomePage />
           </main>
         </div>
       </ThemeProvider>
