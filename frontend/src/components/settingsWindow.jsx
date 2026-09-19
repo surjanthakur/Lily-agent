@@ -1,6 +1,6 @@
 import { Sun, MoonStars, Logout6, X } from 'reicon-react'
 
-export default function SettingsPopupWindow({ openSetting, setSettings }) {
+export default function SettingsPopupWindow({ openSetting, setSetting }) {
   if (!openSetting) return null
 
   return (
@@ -9,13 +9,20 @@ export default function SettingsPopupWindow({ openSetting, setSettings }) {
         {/* Header */}
 
         <div className="relative mb-6">
-          <button
-            type="button"
-            onClick={setSettings}
-            className="absolute right-0 top-0 rounded-md p-1 text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
-          >
-            <X size={25} />
-          </button>
+          <div className="group relative shrink-0">
+            <button
+              type="button"
+              onClick={setSetting}
+              className="absolute right-0 top-0 rounded-md p-1 text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              <X size={25} />
+            </button>
+
+            {/* Tooltip */}
+            <div className="pointer-events-none absolute bottom-full left-2/2 mb-2 -translate-x-1/2 rounded-lg border border-black bg-white px-3 py-2 text-xs font-medium whitespace-nowrap text-neutral-700 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+              close
+            </div>
+          </div>
 
           <h2 className="text-lg font-semibold text-neutral-900">Settings</h2>
 

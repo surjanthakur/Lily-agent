@@ -18,6 +18,26 @@ export default function Dashboard() {
     textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const message = e.target.value.trim()
+
+    if (!message) return
+
+    // Send message to backend / agent
+    console.log(message)
+
+    e.currentTarget.elements.message.value = ''
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      e.currentTarget.form.requestSubmit()
+    }
+  }
+
   return (
     <section
       className="h-screen bg-[#f7f6f0]"
@@ -96,7 +116,10 @@ export default function Dashboard() {
         {/* Input area */}
         <div className="absolute bottom-3 left-0 w-full px-3 sm:bottom-6 sm:px-6">
           <div className="mx-auto w-full max-w-3xl">
-            <form className="flex items-end gap-1.5 rounded-2xl border border-black/10 bg-white p-2 shadow-lg sm:gap-2">
+            <form
+              onSubmit={handleSubmit}
+              className="flex items-end gap-1.5 rounded-2xl border border-black/10 bg-white p-2 shadow-lg sm:gap-2"
+            >
               {/* Settings */}
               <div className="group relative shrink-0">
                 <button
@@ -109,7 +132,7 @@ export default function Dashboard() {
                 </button>
 
                 {/* Tooltip */}
-                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-lg border border-black/10 bg-white px-3 py-2 text-xs font-medium whitespace-nowrap text-neutral-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
+                <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-lg border border-black bg-white px-3 py-2 text-xs font-medium whitespace-nowrap text-neutral-700 opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100">
                   Settings
                 </div>
               </div>
@@ -119,6 +142,7 @@ export default function Dashboard() {
                 ref={textareaRef}
                 rows={1}
                 onInput={handleInput}
+                onKeyDown={handleKeyDown}
                 placeholder="Ask Lily anything..."
                 className="max-h-50 min-h-11 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-3 text-sm leading-5 text-neutral-900 outline-none placeholder:text-neutral-400 sm:px-3"
               />
@@ -139,7 +163,7 @@ export default function Dashboard() {
       {/* Settings popup */}
       <SettingsPopupWindow
         openSetting={openSettings}
-        setSettings={handleSettings}
+        setSetting={handleSettings}
       />
     </section>
   )
