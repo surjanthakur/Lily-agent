@@ -1,11 +1,11 @@
 import { Settings2 } from 'reicon-react'
 import { useRef, useState } from 'react'
 import { SettingsPopupWindow } from '../components/export.js'
-import Lilylogo from '../assets/lily-logo.png'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { getAgentResponse } from '../api/agent.api.js'
 import { Loader } from '../components/export.js'
+import Lilylogo from '../assets/lily-logo.png'
 
 export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false)
