@@ -40,6 +40,7 @@ export default function Dashboard() {
     try {
       setUserResponse(userQuery)
       const response = await getAgentResponse(userQuery)
+      toast.success('agent send response...')
       setAgentResponse(response.found_resources)
     } catch (error) {
       toast.error(error)
@@ -90,28 +91,35 @@ export default function Dashboard() {
         </header>
 
         {/* Chat */}
-        <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 sm:py-8">
-          <div className="mx-auto flex w-full max-w-3xl flex-col gap-5 sm:gap-6">
-            {/* Agent */}
-            <div className="flex justify-start">
-              <div className="w-full max-w-[88%] space-y-3 sm:max-w-[75%]">
-                <div className="rounded-2xl rounded-tl-sm bg-[#f2f1e5] px-4 py-3 sm:px-5">
-                  <p className="text-sm leading-6 text-neutral-800">
-                    {userResponse}
-                  </p>
+        <main className="flex-1 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6">
+          <div className="mx-auto flex w-full max-w-4xl flex-col gap-5 sm:gap-6">
+            {/* User Message */}
+            {userResponse && (
+              <div className="flex justify-end">
+                <div className="w-fit max-w-[90%] sm:max-w-[75%]">
+                  <div className="rounded-2xl rounded-br-sm bg-[#272727] px-4 py-3 sm:px-5">
+                    <p className="wrap-break-word text-sm leading-6 text-white">
+                      {userResponse}
+                    </p>
+                  </div>
                 </div>
+              </div>
+            )}
 
-                {/* agent ui loader */}
+            {/* Agent Response */}
+            <div className="flex justify-start">
+              <div className="w-full max-w-[95%] space-y-3 sm:max-w-[80%]">
+                {/* Agent Loader */}
                 {isAgentLoading ? (
                   <Loader />
                 ) : (
                   agentResponse.map((resource, index) => (
                     <article
                       key={`${resource.url}-${index}`}
-                      className="rounded-2xl border border-black/10 bg-white p-4 shadow-sm"
+                      className="rounded-2xl rounded-tl-sm border border-black/10 bg-white p-4 shadow-sm sm:p-5"
                     >
                       {/* Title */}
-                      <h3 className="text-base font-semibold text-neutral-900">
+                      <h3 className="wrap-break-word text-base font-semibold text-neutral-900 sm:text-lg">
                         {resource.title}
                       </h3>
 
@@ -120,13 +128,13 @@ export default function Dashboard() {
                         href={resource.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-1 block truncate text-sm text-blue-600 hover:underline"
+                        className="mt-1 block break-all text-sm text-blue-600 hover:underline"
                       >
                         {resource.url}
                       </a>
 
                       {/* Score */}
-                      <div className="mt-3 flex items-center gap-2">
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
                         <span className="text-sm font-medium text-neutral-700">
                           Resource score
                         </span>
@@ -137,7 +145,7 @@ export default function Dashboard() {
                       </div>
 
                       {/* Content */}
-                      <p className="mt-3 text-sm leading-6 text-neutral-700">
+                      <p className="mt-3 wrap-break-word text-sm leading-6 text-neutral-700">
                         {resource.content.split(/\s+/).slice(0, 200).join(' ')}
                       </p>
                     </article>
@@ -145,17 +153,8 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-            {/* User */}
-            <div className="flex justify-end">
-              <div className="max-w-[88%] rounded-2xl rounded-tr-sm bg-black px-4 py-3 sm:max-w-[75%] sm:px-5">
-                <p className="text-sm leading-6 text-white">
-                  I want to learn system design from beginner to advanced.
-                </p>
-              </div>
-            </div>
           </div>
         </main>
-
         {/* Input area */}
         <div className="absolute bottom-3 left-0 w-full px-3 sm:bottom-6 sm:px-6">
           <div className="mx-auto w-full max-w-3xl">

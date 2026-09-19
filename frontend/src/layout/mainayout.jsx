@@ -45,7 +45,6 @@ export default function MainLayout() {
         <div className="min-h-screen bg-[#f7f6f0]">
           <Navbar />
           <main>
-            <HomePage />
             <Dashboard />
             <ToastContainer
               position="top-right"
