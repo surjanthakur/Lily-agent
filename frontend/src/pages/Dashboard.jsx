@@ -1,5 +1,5 @@
 import { Settings2 } from 'reicon-react'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { SettingsPopupWindow } from '../components/export.js'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -10,12 +10,25 @@ import { ArrowToDownLeft, Magicpen } from 'reicon-react'
 
 export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false)
-  const [agentResponse, setAgentResponse] = useState([])
+  const [chats, setChats] = useState(() => {
+    try {
+      const storedChats = localStorage.getItem('lily_chats')
+      return storedChats ? JSON.parse(storedChats) : []
+    } catch (error) {
+      console.error('Failed to load chats from localStorage:', error)
+      return []
+    }
+  })
   const [isAgentLoading, setIsAgentLoading] = useState(false)
   const [userResponse, setUserResponse] = useState('')
 
   const textareaRef = useRef(null)
   const { register, handleSubmit, reset } = useForm()
+
+  // Save chats to localStorage whenever chats changes
+  useEffect(() => {
+    localStorage.setItem('lily_chats', JSON.stringify(chats))
+  }, [chats])
 
   const handleSettings = () => {
     setOpenSettings((prev) => !prev)
@@ -36,15 +49,46 @@ export default function Dashboard() {
   }
 
   const onSubmit = async (data) => {
-    const userQuery = data.user_query
+    const userQuery = data.user_query?.trim()
+
+    if (!userQuery) return
+
     setIsAgentLoading(true)
+
+    // Add user's query immediately
+    const chatIndex = chats.length
+
+    setChats((prev) => [
+      ...prev,
+      {
+        user_query: userQuery,
+        found_resources: [],
+      },
+    ])
 
     try {
       setUserResponse(userQuery)
+
       const response = await getAgentResponse(userQuery)
+
       toast.success('agent send response...')
-      setAgentResponse(response.found_resources)
+
+      const foundResources = response?.found_resources || []
+
+      // Update the same chat item with agent response
+      setChats((prev) =>
+        prev.map((chat, index) =>
+          index === chatIndex
+            ? {
+                ...chat,
+                found_resources: foundResources,
+              }
+            : chat,
+        ),
+      )
     } catch (error) {
+      // Remove the pending chat if request fails
+      setChats((prev) => prev.filter((_, index) => index !== chatIndex))
       toast.error(
         error?.response?.data?.detail ||
           error?.message ||
@@ -129,7 +173,7 @@ export default function Dashboard() {
               )}
 
               {/* Agent response */}
-              {(isAgentLoading || agentResponse.length > 0) && (
+              {(isAgentLoading || chats.length > 0) && (
                 <div className="flex justify-start">
                   <div className="w-full max-w-[98%] space-y-3 sm:max-w-[82%] sm:space-y-4">
                     {/* Loader */}
@@ -140,7 +184,7 @@ export default function Dashboard() {
                         </div>
                       </div>
                     ) : (
-                      agentResponse.map((resource, index) => (
+                      chats.map((resource, index) => (
                         <article
                           key={`${resource.url}-${index}`}
                           className="rounded-2xl rounded-tl-sm border border-black/10 bg-[#f5f4ed] p-4 shadow-md transition-shadow hover:shadow-lg sm:p-5"
