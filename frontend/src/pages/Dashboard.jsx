@@ -2,10 +2,16 @@ import { Settings2 } from 'reicon-react'
 import { useRef, useState } from 'react'
 import { SettingsPopupWindow } from '../components/export.js'
 import Lilylogo from '../assets/lily-logo.png'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import { getAgentResponse } from '../api/agent.api.js'
 
 export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false)
+  const [agentResponse, setAgentResponse] = useState([{}])
+
   const textareaRef = useRef(null)
+  const { register, handleSubmit, reset } = useForm()
 
   const handleSettings = () => {
     setOpenSettings((prev) => !prev)
@@ -18,26 +24,23 @@ export default function Dashboard() {
     textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    const message = e.target.value.trim()
-
-    if (!message) return
-
-    // Send message to backend / agent
-    console.log(message)
-
-    e.currentTarget.elements.message.value = ''
-  }
-
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      e.currentTarget.form.requestSubmit()
     }
   }
 
+  const onSubmit = async (data) => {
+    try {
+      const userQuery = data.user_query
+      const response = await getAgentResponse(userQuery)
+      setAgentResponse(response)
+    } catch (error) {
+      toast.error(error)
+    }
+
+    reset()
+  }
   return (
     <section
       className="h-screen bg-[#f7f6f0]"
@@ -84,29 +87,57 @@ export default function Dashboard() {
           <div className="mx-auto flex w-full max-w-3xl flex-col gap-5 sm:gap-6">
             {/* Agent */}
             <div className="flex justify-start">
-              <div className="max-w-[88%] rounded-2xl rounded-tl-sm bg-[#f2f1e5] px-4 py-3 sm:max-w-[75%] sm:px-5">
-                <p className="text-sm leading-6 text-neutral-800">
-                  Hey! 👋 I'm Lily. Tell me what you want to learn, and I'll
-                  find the best articles and resources for you.
-                </p>
+              <div className="w-full max-w-[88%] space-y-3 sm:max-w-[75%]">
+                <div className="rounded-2xl rounded-tl-sm bg-[#f2f1e5] px-4 py-3 sm:px-5">
+                  <p className="text-sm leading-6 text-neutral-800">
+                    Hey! 👋 I'm Lily. I found these resources for you:
+                  </p>
+                </div>
+
+                {agentResponse.map((resource, index) => (
+                  <article
+                    key={`${resource.url}-${index}`}
+                    className="rounded-2xl border border-black/10 bg-white p-4 shadow-sm"
+                  >
+                    {/* Title */}
+                    <h3 className="text-base font-semibold text-neutral-900">
+                      {resource.title}
+                    </h3>
+
+                    {/* URL */}
+                    <a
+                      href={resource.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 block truncate text-sm text-blue-600 hover:underline"
+                    >
+                      {resource.url}
+                    </a>
+
+                    {/* Score */}
+                    <div className="mt-3 flex items-center gap-2">
+                      <span className="text-sm font-medium text-neutral-700">
+                        Resource score
+                      </span>
+
+                      <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-semibold text-neutral-700">
+                        {(resource.score * 100).toFixed(0)}%
+                      </span>
+                    </div>
+
+                    {/* Content */}
+                    <p className="mt-3 text-sm leading-6 text-neutral-700">
+                      {resource.content.split(/\s+/).slice(0, 200).join(' ')}
+                    </p>
+                  </article>
+                ))}
               </div>
             </div>
-
             {/* User */}
             <div className="flex justify-end">
               <div className="max-w-[88%] rounded-2xl rounded-tr-sm bg-black px-4 py-3 sm:max-w-[75%] sm:px-5">
                 <p className="text-sm leading-6 text-white">
                   I want to learn system design from beginner to advanced.
-                </p>
-              </div>
-            </div>
-
-            {/* Agent */}
-            <div className="flex justify-start">
-              <div className="max-w-[88%] rounded-2xl rounded-tl-sm bg-[#f2f1e5] px-4 py-3 sm:max-w-[75%] sm:px-5">
-                <p className="text-sm leading-6 text-neutral-800">
-                  Nice! I'll break that into smaller topics and find resources
-                  for each one.
                 </p>
               </div>
             </div>
@@ -117,7 +148,7 @@ export default function Dashboard() {
         <div className="absolute bottom-3 left-0 w-full px-3 sm:bottom-6 sm:px-6">
           <div className="mx-auto w-full max-w-3xl">
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               className="flex items-end gap-1.5 rounded-2xl border border-black/10 bg-white p-2 shadow-lg sm:gap-2"
             >
               {/* Settings */}
@@ -139,11 +170,19 @@ export default function Dashboard() {
 
               {/* Textarea */}
               <textarea
-                ref={textareaRef}
+                {...register('user_query', {
+                  required: 'Please enter a message.',
+                  validate: (value) =>
+                    value.trim().length > 0 || 'Message cannot be empty.',
+                })}
+                ref={(element) => {
+                  textareaRef.current = element
+                  register('user_query').ref(element)
+                }}
                 rows={1}
                 onInput={handleInput}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask Lily anything..."
+                placeholder="Ask hey! i want to read [your blogs/article topic]"
                 className="max-h-50 min-h-11 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-3 text-sm leading-5 text-neutral-900 outline-none placeholder:text-neutral-400 sm:px-3"
               />
 

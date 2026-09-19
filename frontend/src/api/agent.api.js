@@ -1,6 +1,6 @@
 import apiClient from './Client.api.js'
 
-export const getAgentResponse = async (user_query = String) => {
+const getAgentResponse = async (user_query = String) => {
   try {
     const response = await apiClient.post('/agent/ask', { query: user_query })
     return response.data
@@ -9,3 +9,5 @@ export const getAgentResponse = async (user_query = String) => {
     throw error
   }
 }
+
+export { getAgentResponse }
