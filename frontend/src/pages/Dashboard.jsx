@@ -10,6 +10,7 @@ import { ArrowToDownLeft, Magicpen } from 'reicon-react'
 
 export default function Dashboard() {
   const [openSettings, setOpenSettings] = useState(false)
+
   const [chats, setChats] = useState(() => {
     try {
       const storedChats = localStorage.getItem('lily_chats')
@@ -19,6 +20,7 @@ export default function Dashboard() {
       return []
     }
   })
+
   const [isAgentLoading, setIsAgentLoading] = useState(false)
   const [userResponse, setUserResponse] = useState('')
 
