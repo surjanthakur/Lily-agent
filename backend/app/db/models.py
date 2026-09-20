@@ -68,7 +68,7 @@ class Session(SQLModel, table=True):
         title="unique id of the session",
         primary_key=True,
     )
-    user_id: UUID = Field(foreign_key="User.user_id")
+    user_id: UUID = Field(foreign_key="user.user_id")
     expires_at: datetime
     created_at: datetime = Field(
         default_factory=datetime.now,
