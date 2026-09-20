@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 from sqlmodel import Field, Relationship, SQLModel
 
 
-# user's table
+# user table
 class User(SQLModel, table=True):
     user_id: UUID = Field(
         default_factory=uuid4,
@@ -40,7 +40,7 @@ class User(SQLModel, table=True):
     )
 
 
-# Oauth accounds
+# Oauth account
 class OAuthAccounts(SQLModel, table=True):
     OAuth_id: UUID = Field(
         default_factory=uuid4,
@@ -61,7 +61,7 @@ class OAuthAccounts(SQLModel, table=True):
     )
 
 
-# Oauth sessions
+# Oauth session
 class Session(SQLModel, table=True):
     session_id: UUID = Field(
         default_factory=uuid4,
