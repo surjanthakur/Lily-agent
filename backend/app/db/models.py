@@ -41,7 +41,7 @@ class User(SQLModel, table=True):
 
 
 # Oauth accounds
-class OAuthAccounts:
+class OAuthAccounts(SQLModel, table=True):
     OAuth_id: UUID = Field(
         default_factory=uuid4,
         title="unique id of the oauth account",
@@ -62,7 +62,7 @@ class OAuthAccounts:
 
 
 # Oauth sessions
-class Session:
+class Session(SQLModel, table=True):
     session_id: UUID = Field(
         default_factory=uuid4,
         title="unique id of the session",
