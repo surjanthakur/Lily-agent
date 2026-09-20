@@ -16,7 +16,7 @@ setup_logging()
 logger = get_logger(__name__)
 
 
-# to perform app startup and shutdown task's
+# to perform app startup and shutdown task
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_db_tables()
