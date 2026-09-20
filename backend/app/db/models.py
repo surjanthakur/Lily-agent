@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 
 # user's table
@@ -10,6 +10,7 @@ class User(SQLModel, table=True):
         default_factory=uuid4,
         title="unique id of the user",
         primary_key=True,
+        ondelete="CASCADE",
     )
     username: str = Field(
         default=None,
@@ -35,6 +36,9 @@ class User(SQLModel, table=True):
         default_factory=datetime.now,
         title="date and time the user was created",
     )
+    oauthAccounts: list["OAuthAccounts"] = Field(
+        Relationship(back_populates="user", cascade_delete=True)
+    )
 
 
 # Oauth accounds
@@ -53,11 +57,12 @@ class OAuthAccounts:
         default_factory=datetime.now,
         title="date and time the user was created",
     )
+    user: User | None = Relationship(
+        back_populates="oauthaccounts", cascade_delete=True
+    )
 
 
 # Oauth sessions
-
-
 class Session:
     session_id: UUID = Field(
         default_factory=uuid4,
