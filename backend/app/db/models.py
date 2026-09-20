@@ -10,7 +10,6 @@ class User(SQLModel, table=True):
         default_factory=uuid4,
         title="unique id of the user",
         primary_key=True,
-        ondelete="CASCADE",
     )
     username: str = Field(
         default=None,
@@ -48,7 +47,7 @@ class OAuthAccounts:
         title="unique id of the oauth account",
         primary_key=True,
     )
-    user_id: UUID = Field(foreign_key="User.user_id")
+    user_id: UUID = Field(foreign_key="user.user_id", ondelete="CASCADE")
     provider: str
     provider_user_id: str
     access_token: str
