@@ -35,8 +35,8 @@ class User(SQLModel, table=True):
         default_factory=datetime.now,
         title="date and time the user was created",
     )
-    oauthAccounts: list["OAuthAccounts"] = Field(
-        Relationship(back_populates="user", cascade_delete=True)
+    oauthAccounts: list["OAuthAccounts"] = Relationship(
+        back_populates="user", cascade_delete=True
     )
 
 
