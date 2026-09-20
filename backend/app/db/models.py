@@ -37,11 +37,11 @@ class User(SQLModel, table=True):
     )
 
 
-# Oauth provider accounds
+# Oauth accounds
 class OAuthAccounts:
     OAuth_id: UUID = Field(
         default_factory=uuid4,
-        title="unique id of the user",
+        title="unique id of the oauth account",
         primary_key=True,
     )
     user_id: UUID = Field(foreign_key="User.user_id")
@@ -49,4 +49,24 @@ class OAuthAccounts:
     provider_user_id: str
     access_token: str
     expires_at: datetime
-    created_at: datetime
+    created_at: datetime = Field(
+        default_factory=datetime.now,
+        title="date and time the user was created",
+    )
+
+
+# Oauth sessions
+
+
+class Session:
+    session_id: UUID = Field(
+        default_factory=uuid4,
+        title="unique id of the session",
+        primary_key=True,
+    )
+    user_id: UUID = Field(foreign_key="User.user_id")
+    expires_at: datetime
+    created_at: datetime = Field(
+        default_factory=datetime.now,
+        title="date and time the user was created",
+    )
