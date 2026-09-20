@@ -35,3 +35,18 @@ class User(SQLModel, table=True):
         default_factory=datetime.now,
         title="date and time the user was created",
     )
+
+
+# Oauth provider accounds
+class OAuthAccounts:
+    OAuth_id: UUID = Field(
+        default_factory=uuid4,
+        title="unique id of the user",
+        primary_key=True,
+    )
+    user_id: UUID = Field(foreign_key="User.user_id")
+    provider: str
+    provider_user_id: str
+    access_token: str
+    expires_at: datetime
+    created_at: datetime
