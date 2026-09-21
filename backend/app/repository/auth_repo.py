@@ -5,7 +5,7 @@ from ..db.models import User
 from ..schemas.user_req import UserRequest
 
 
-async def get_user(google_id: str, session: AsyncSession):
+async def get_user_by_google_id(google_id: str, session: AsyncSession):
 
     statement = select(User).where(User.google_id == google_id)
     result = await session.exec(statement)

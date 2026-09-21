@@ -27,7 +27,7 @@ async def login(request: Request):
     )
 
 
-@router.route("/auth")
+@router.route("/auth/callback")
 async def auth(request: Request):
     """
     endpoint for authenticate user based on token\n

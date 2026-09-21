@@ -6,7 +6,7 @@ from fastapi.responses import RedirectResponse
 from jose import JWTError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from ..repository.auth_repo import get_user, insert_user
+from ..repository.auth_repo import get_user_by_google_id, insert_user
 from ..schemas.user_req import UserRequest
 from ..utils.auth import create_access_token, oauth_client
 from ..utils.get_db_session import get_db_session
@@ -61,7 +61,9 @@ async def authenticate_user(
             detail="Google authentication failed.",
         )
 
-    existing_user = await get_user(google_id=user_google_id, session=db_session)
+    existing_user = await get_user_by_google_id(
+        google_id=user_google_id, session=db_session
+    )
 
     if existing_user:
         raise HTTPException(
@@ -86,7 +88,9 @@ async def authenticate_user(
     )
 
     redirect_url = req.session.pop("login_redirect", "")
-    response = RedirectResponse(redirect_url)
+    response = RedirectResponse(
+        redirect_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT
+    )
     response.set_cookie(
         key="access_token",
         value=access_token,
