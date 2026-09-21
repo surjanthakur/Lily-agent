@@ -6,7 +6,7 @@ from fastapi.responses import RedirectResponse
 from jose import JWTError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from ..repository.auth_repo import get_user_by_google_id, insert_user
+from ..repository.auth_repo import create_new_user, get_user_by_google_id
 from ..schemas.user_req import UserRequest
 from ..utils.auth import create_access_token, oauth_client
 from ..utils.get_db_session import get_db_session
@@ -77,7 +77,7 @@ async def authenticate_user(
             email_id=user_email,
             profile_picture=user_pic,
         )
-        await insert_user(new_user, db_session)
+        await create_new_user(new_user, db_session)
         access_token_expires = timedelta(seconds=expires_in)
 
         # Creates a JWT token containing the user's ID and email
