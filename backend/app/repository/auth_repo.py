@@ -54,3 +54,11 @@ async def create_new_user(user: UserRequest, session: AsyncSession):
     await session.refresh(new_user)
 
     return new_user.username
+
+
+async def create_new_session(session: AsyncSession):
+    pass
+
+
+async def create_new_oauth_account(session: AsyncSession):
+    pass
