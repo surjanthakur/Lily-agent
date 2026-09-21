@@ -6,7 +6,13 @@ from fastapi.responses import RedirectResponse
 from jose import JWTError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from ..repository.auth_repository import create_new_user, get_user_by_google_id
+from ..repository.auth_repository import (
+    create_new_oauth_account,
+    create_new_session,
+    create_new_user,
+    get_user_by_google_id,
+    update_oauth_account,
+)
 from ..schemas.user_req import UserRequest
 from ..utils.auth import create_access_token, oauth_client
 from ..utils.get_db_session import get_db_session
@@ -39,17 +45,16 @@ async def authenticate_user(
         raise HTTPException(status_code=401, detail="Google authentication failed.")
 
     user: dict = token.get("userinfo")
-
-    expires_in = token.get("expires_in")
     user_google_id = user.get("sub")
-    iss = user.get("iss")
+    oauth_provider = user.get("iss")
     user_email = user.get("email")
 
     user_name = user_info.get("name")
     user_pic = user_info.get("picture")
+    access_token_expiry = timedelta(minutes=60)
 
     # Verifies that the token was actually issued by Google
-    if iss not in ["https://accounts.google.com", "accounts.google.com"]:
+    if oauth_provider not in ["https://accounts.google.com", "accounts.google.com"]:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Google authentication failed.",
@@ -64,11 +69,21 @@ async def authenticate_user(
     existing_user = await get_user_by_google_id(
         google_id=user_google_id, session=db_session
     )
+    # Creates a JWT token containing the user's ID and email
+    new_access_token = create_access_token(
+        data={"sub": user_google_id, "email": user_email},
+        expires_delta=access_token_expiry,
+    )
 
     if existing_user:
-        # update the  existing oauth account: access_token , expirey date
-        # create new session
-        pass
+
+        # update the  existing oauth account
+        await update_oauth_account(
+            google_id=user_google_id,
+            access_token=new_access_token,
+            expires_at=access_token_expiry,
+        )
+
     else:
 
         new_user = UserRequest(
@@ -77,24 +92,36 @@ async def authenticate_user(
             email_id=user_email,
             profile_picture=user_pic,
         )
-        await create_new_user(new_user, db_session)
-        access_token_expires = timedelta(seconds=expires_in)
+        user_id = await create_new_user(new_user, db_session)
 
-        # Creates a JWT token containing the user's ID and email
-        access_token = create_access_token(
-            data={"sub": user_google_id, "email": user_email},
-            expires_delta=access_token_expires,
+        # create new oauth account in db
+        await create_new_oauth_account(
+            user_id=user_id,
+            provider=oauth_provider,
+            google_id=user_google_id,
+            access_token=new_access_token,
+            expiry_date=access_token_expiry,
+            session=db_session,
         )
 
-        redirect_url = req.session.pop("login_redirect", "")
-        response = RedirectResponse(
-            redirect_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT
-        )
-        response.set_cookie(
-            key="access_token",
-            value=access_token,
-            httponly=True,
-            secure=True,  # Ensure you're using HTTPS
-            samesite="none",  # Set the SameSite attribute to None
-        )
-        return response
+    # create new session in db
+    new_session_id = await create_new_session(
+        user_id=user_id,
+        expiry_date=access_token_expiry,
+        session=db_session,
+    )
+
+    redirect_url = req.session.pop("login_redirect", "")
+    response = RedirectResponse(
+        redirect_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT
+    )
+
+    # return cookie
+    response.set_cookie(
+        key="session_id",
+        value=new_session_id,
+        httponly=True,
+        secure=True,  # Ensure you're using HTTPS
+        samesite="none",  # Set the SameSite attribute to None
+    )
+    return response

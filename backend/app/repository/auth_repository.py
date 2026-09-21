@@ -28,29 +28,29 @@ async def create_new_user(user: UserRequest, session: AsyncSession):
     await session.commit(new_user)
     await session.refresh(new_user)
 
-    return new_user
+    return new_user.user_id
 
 
 async def create_new_session(
-    session: AsyncSession,
     user_id: UUID,
     expiry_date: datetime,
+    session: AsyncSession,
 ):
     new_session = Session(user_id=user_id, expires_at=expiry_date)
     session.add(new_session)
     await session.commit(new_session)
     await session.refresh(new_session)
 
-    return new_session
+    return new_session.session_id
 
 
 async def create_new_oauth_account(
-    session: AsyncSession,
     user_id: UUID,
     provider: str,
     google_id: str,
     access_token: str,
     expiry_date: datetime,
+    session: AsyncSession,
 ):
     new_oauth_account = OAuthAccount(
         user_id=user_id,
