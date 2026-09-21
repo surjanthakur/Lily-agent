@@ -40,3 +40,6 @@ WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind 
 2026-09-21 10:51:12 | INFO | sqlalchemy.engine.Engine | [cached since 0.5207s ago] ('session', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
 2026-09-21 10:51:12 | INFO | sqlalchemy.engine.Engine | COMMIT
 2026-09-21 10:51:12 | INFO | app.db.databse | Database tables created successfully
+2026-09-21 10:59:05 | INFO | app.main | Request: /agent/asks completed in 0.0003 seconds
+2026-09-21 10:59:05 | INFO | app.main | Request: /agent/asks completed in 0.0015 seconds
+2026-09-21 10:59:17 | INFO | app.main | Request: /agent/asks completed in 0.0008 seconds

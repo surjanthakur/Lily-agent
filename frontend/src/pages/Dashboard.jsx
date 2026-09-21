@@ -155,25 +155,6 @@ export default function Dashboard() {
                       alt="Lily"
                       className="mx-auto mb-4 h-30 w-30 rounded-xl object-cover opacity-90"
                     />
-                    <h1 className="text-xl font-semibold tracking-tight text-neutral-800 sm:text-2xl">
-                      What do you want to learn today?
-                    </h1>
-                    <p className="mt-2 text-sm leading-6 text-neutral-600">
-                      Ask Lily for articles, blogs, and resources about any topic you want to
-                      explore/read.
-                    </p>
-                  </div>
-                </div>
-              )}
-              {/* Empty state */}
-              {chats.length === 0 && !isAgentLoading && (
-                <div className="flex min-h-[50vh] items-center justify-center px-4">
-                  <div className="max-w-md text-center">
-                    <img
-                      src={Lilylogo}
-                      alt="Lily"
-                      className="mx-auto mb-4 h-30 w-30 rounded-xl object-cover opacity-90"
-                    />
 
                     <h1 className="text-xl font-semibold tracking-tight text-neutral-800 sm:text-2xl">
                       What do you want to learn today?
