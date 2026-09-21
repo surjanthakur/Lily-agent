@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from uuid import UUID, uuid4
 
 from sqlmodel import Field, Relationship, SQLModel
@@ -35,7 +36,10 @@ class User(SQLModel, table=True):
         default_factory=datetime.now,
         title="date and time the user was created",
     )
-    oauthAccounts: list["OAuthAccounts"] = Relationship(
+    oauth_account: Optional["OAuthAccounts"] = Relationship(
+        back_populates="user", cascade_delete=True
+    )
+    sessions: Optional["Session"] = Relationship(
         back_populates="user", cascade_delete=True
     )
 
@@ -47,7 +51,7 @@ class OAuthAccounts(SQLModel, table=True):
         title="unique id of the oauth account",
         primary_key=True,
     )
-    user_id: UUID = Field(foreign_key="user.user_id", ondelete="CASCADE")
+    user_id: UUID = Field(foreign_key="user.user_id", ondelete="CASCADE", unique=True)
     provider: str
     provider_user_id: str
     access_token: str
@@ -55,9 +59,6 @@ class OAuthAccounts(SQLModel, table=True):
     created_at: datetime = Field(
         default_factory=datetime.now,
         title="date and time the user was created",
-    )
-    user: User | None = Relationship(
-        back_populates="oauthaccounts", cascade_delete=True
     )
 
 
@@ -68,7 +69,7 @@ class Session(SQLModel, table=True):
         title="unique id of the session",
         primary_key=True,
     )
-    user_id: UUID = Field(foreign_key="user.user_id")
+    user_id: UUID = Field(foreign_key="user.user_id", ondelete="CASCADE", unique=True)
     expires_at: datetime
     created_at: datetime = Field(
         default_factory=datetime.now,
