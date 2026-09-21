@@ -66,37 +66,34 @@ async def authenticate_user(
     )
 
     if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="user already exists"
+        # update the oauth account: access_token , expirey date
+        pass
+    else:
+
+        new_user = UserRequest(
+            username=user_name,
+            google_id=user_google_id,
+            email_id=user_email,
+            profile_picture=user_pic,
+        )
+        await insert_user(new_user, db_session)
+        access_token_expires = timedelta(seconds=expires_in)
+
+        # Creates a JWT token containing the user's ID and email
+        access_token = create_access_token(
+            data={"sub": user_google_id, "email": user_email},
+            expires_delta=access_token_expires,
         )
 
-    new_user = UserRequest(
-        username=user_name,
-        google_id=user_google_id,
-        email_id=user_email,
-        profile_picture=user_pic,
-    )
-
-    await insert_user(new_user, db_session)
-
-    access_token_expires = timedelta(seconds=expires_in)
-
-    # Creates a JWT token containing the user's ID and email
-    access_token = create_access_token(
-        data={"sub": user_google_id, "email": user_email},
-        expires_delta=access_token_expires,
-    )
-
-    redirect_url = req.session.pop("login_redirect", "")
-    response = RedirectResponse(
-        redirect_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT
-    )
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        httponly=True,
-        secure=True,  # Ensure you're using HTTPS
-        samesite="none",  # Set the SameSite attribute to None
-    )
-
-    return response
+        redirect_url = req.session.pop("login_redirect", "")
+        response = RedirectResponse(
+            redirect_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT
+        )
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            secure=True,  # Ensure you're using HTTPS
+            samesite="none",  # Set the SameSite attribute to None
+        )
+        return response
