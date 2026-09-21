@@ -66,7 +66,8 @@ async def authenticate_user(
     )
 
     if existing_user:
-        # update the oauth account: access_token , expirey date
+        # update the  existing oauth account: access_token , expirey date
+        # create new session
         pass
     else:
 
