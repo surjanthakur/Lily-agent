@@ -76,7 +76,6 @@ async def authenticate_user(
     )
 
     if existing_user:
-
         # update the  existing oauth account
         await update_oauth_account(
             google_id=user_google_id,
