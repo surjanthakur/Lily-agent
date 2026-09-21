@@ -1,5 +1,6 @@
 import Lilyflower from '../assets/lily-logo.png';
 import { motion } from 'motion/react';
+import { DashboardRedirectButton } from '../components/export.js';
 
 const reveal = {
   hidden: { opacity: 0, y: 28 },
@@ -74,6 +75,11 @@ export default function HomePage() {
               <br className="hidden sm:block" />
               Don't dig through the internet — we'll find them for you.
             </p>
+
+            {/* Dashboard redirect button */}
+            <div className="mt-8 flex justify-center">
+              <DashboardRedirectButton />
+            </div>
           </motion.div>
 
           {/* ================= COLLAGE ================= */}
