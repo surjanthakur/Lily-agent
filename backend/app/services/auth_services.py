@@ -6,7 +6,7 @@ from fastapi.responses import RedirectResponse
 from jose import JWTError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from ..repository.auth_repo import create_new_user, get_user_by_google_id
+from ..repository.auth_repository import create_new_user, get_user_by_google_id
 from ..schemas.user_req import UserRequest
 from ..utils.auth import create_access_token, oauth_client
 from ..utils.get_db_session import get_db_session

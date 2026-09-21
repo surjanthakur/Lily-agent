@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import UUID
 
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -56,7 +57,9 @@ async def create_new_user(user: UserRequest, session: AsyncSession):
     return new_user.username
 
 
-async def create_new_session(session: AsyncSession):
+async def create_new_session(
+    session: AsyncSession, user_id: UUID, expires_at: datetime
+):
     pass
 
 
