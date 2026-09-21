@@ -97,9 +97,7 @@ export default function Dashboard() {
     } catch (error) {
       // Remove the pending chat if request fails
       setChats((prev) => prev.filter((_, index) => index !== chatIndex));
-      toast.error(
-        error?.response?.data?.detail || error?.message || 'Something went wrong. Please try again.'
-      );
+      toast.error(error || 'Something went wrong. Please try again.');
     } finally {
       setIsAgentLoading(false);
       reset();
