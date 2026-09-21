@@ -1,6 +1,18 @@
-import LilyLogo from '../assets/lily-logo.png'
+import LilyLogo from '../assets/lily-logo.png';
+import { toast } from 'react-toastify';
+import apiClient from '../api/Client.api';
 
 export default function Navbar() {
+  const handleLoginUser = async () => {
+    try {
+      const response = await apiClient.get('/google/login');
+      return response.data;
+    } catch (error) {
+      toast.error(error);
+      throw error;
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 w-full  backdrop-blur-lg">
       <div
@@ -49,10 +61,10 @@ export default function Navbar() {
         </a>
 
         {/* ================= GOOGLE LOGIN ================= */}
-        <form>
-          <button
-            type="submit"
-            className="
+        <button
+          onClick={handleLoginUser}
+          type="button"
+          className="
               group
               flex
               min-h-14
@@ -83,23 +95,22 @@ export default function Navbar() {
               focus-visible:outline-offset-4
               focus-visible:outline-black
             "
-          >
-            <img
-              src="https://cdn.reicon.dev/logos/google/original.svg"
-              alt="Google"
-              width={22}
-              height={22}
-              className="
+        >
+          <img
+            src="https://cdn.reicon.dev/logos/google/original.svg"
+            alt="Google"
+            width={22}
+            height={22}
+            className="
                 transition-transform
                 duration-200
                 group-hover:scale-110
               "
-            />
+          />
 
-            <span>Continue with Google</span>
-          </button>
-        </form>
+          <span>Continue with Google</span>
+        </button>
       </div>
     </nav>
-  )
+  );
 }
