@@ -1,5 +1,5 @@
-import Lilyflower from '../assets/lily-logo.png'
-import { motion } from 'motion/react'
+import Lilyflower from '../assets/lily-logo.png';
+import { motion } from 'motion/react';
 
 const reveal = {
   hidden: { opacity: 0, y: 28 },
@@ -8,7 +8,7 @@ const reveal = {
     y: 0,
     transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 const collageReveal = {
   hidden: { opacity: 0, y: 36, rotate: 0 },
@@ -22,7 +22,7 @@ const collageReveal = {
       ease: [0.22, 1, 0.36, 1],
     },
   }),
-}
+};
 
 export default function HomePage() {
   return (
@@ -53,7 +53,7 @@ export default function HomePage() {
             variants={reveal}
           >
             <h1
-              className=" font-serif text-[42px]  leading-[0.98]  tracking-[-2px]  sm:text-[58px]  lg:text-[68px]
+              className=" font-serif text-[42px] text-black  leading-[0.98]  tracking-[-2px]  sm:text-[58px]  lg:text-[68px]
             "
             >
               Tell us what you want to learn.
@@ -83,7 +83,7 @@ export default function HomePage() {
           >
             {/* ---------- LEFT IMAGE CARD ---------- */}
             <motion.div
-              className="  absolute  left-[2%]  top-13.75  hidden  w-57.5  -rotate-6  overflow-hidden  rounded-2xl  border-2 border-black  bg-white  shadow-[5px_6px_0px_#000]  md:block
+              className="  absolute  left-[2%]  top-13.75 text-black  hidden  w-57.5  -rotate-6  overflow-hidden  rounded-2xl  border-2 border-black  bg-white  shadow-[5px_6px_0px_#000]  md:block
               lg:w-70
             "
               custom={{ delay: 0.05, rotate: -6 }}
@@ -125,6 +125,7 @@ export default function HomePage() {
               px-4 py-3
               shadow-[4px_5px_0px_#000]
               md:block
+              text-black
             "
               custom={{ delay: 0.15, rotate: -2 }}
               initial="hidden"
@@ -195,9 +196,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <p className="font-mono text-xs uppercase">
-                  Articles • Blogs [ finder ]
-                </p>
+                <p className="font-mono text-xs uppercase">Articles • Blogs [ finder ]</p>
               </div>
             </motion.div>
 
@@ -217,6 +216,7 @@ export default function HomePage() {
               shadow-[4px_5px_0px_#000]
               md:block
               lg:left-[27%]
+              text-black
             "
               custom={{ delay: 0.1, rotate: -6 }}
               initial="hidden"
@@ -246,6 +246,7 @@ export default function HomePage() {
               border-2 border-black
               bg-[#f7f4eb]
               p-4
+              text-black
               shadow-[5px_6px_0px_#000]
               md:block
               lg:left-[47%]
@@ -258,9 +259,7 @@ export default function HomePage() {
               variants={collageReveal}
             >
               <div className="flex h-full flex-col">
-                <p className="font-serif text-4xl">
-                  Let it flow with Lily-agent !!
-                </p>
+                <p className="font-serif text-4xl">Let it flow with Lily-agent !!</p>
 
                 <div className="relative mt-5 flex flex-1 items-center justify-center overflow-hidden rounded-full bg-lime-300">
                   {/* simple flower illustration */}
@@ -291,6 +290,7 @@ export default function HomePage() {
               bg-amber-100
               p-5
               shadow-[5px_6px_0px_#000]
+              text-black
               lg:block
             "
               custom={{ delay: 0.4, rotate: 5 }}
@@ -308,8 +308,8 @@ export default function HomePage() {
               </h3>
 
               <p className="mt-4 text-sm leading-5 text-gray-600">
-                create multiple chats with more context window size , comming in
-                2nd version we'r working on it...
+                create multiple chats with more context window size , comming in 2nd version we'r
+                working on it...
               </p>
             </motion.div>
 
@@ -329,6 +329,7 @@ export default function HomePage() {
               rounded-full
               border-2 border-black
               bg-lime-300
+              text-black
               md:flex
             "
               custom={{ delay: 0.35, rotate: 12 }}
@@ -339,14 +340,12 @@ export default function HomePage() {
             >
               <div className="text-center">
                 <div className="text-3xl">☺</div>
-                <p className="mt-1 font-mono text-[9px] font-bold">
-                  COMING SOON
-                </p>
+                <p className="mt-1 font-mono text-[9px] font-bold">COMING SOON</p>
               </div>
             </motion.div>
           </div>
         </section>
       </section>
     </>
-  )
+  );
 }
