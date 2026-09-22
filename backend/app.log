@@ -199,3 +199,5 @@ WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind 
 2026-09-22 09:38:01 | INFO | sqlalchemy.engine.Engine | [cached since 0.6918s ago] ('session', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
 2026-09-22 09:38:01 | INFO | sqlalchemy.engine.Engine | COMMIT
 2026-09-22 09:38:01 | INFO | app.db.databse | Database tables created successfully
+2026-09-22 09:38:03 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-22 09:38:03 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
