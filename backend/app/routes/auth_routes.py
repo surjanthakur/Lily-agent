@@ -16,7 +16,7 @@ async def login(request: Request):
 
     request.session.clear()
 
-    frontend_redirect_url = settings.FRONTEND_REDIRECT_UR
+    frontend_redirect_url = settings.FRONTEND_REDIRECT_URL
     auth_redirect_url = settings.AUTH_REDIRECT_URL
 
     request.session["login_redirect"] = frontend_redirect_url
