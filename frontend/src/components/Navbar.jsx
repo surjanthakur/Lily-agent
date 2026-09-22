@@ -1,8 +1,21 @@
 import LilyLogo from '../assets/lily-logo.png';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+
 export default function Navbar() {
-  const handleLoginUser = async () => {
-    window.location.href = `http://127.0.0.1:8000/api/v1/google/login`;
+  // login with google
+  const handleLoginUser = () => {
+    const width = 500;
+    const height = 600;
+
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+
+    window.open(
+      `${BACKEND_URL}/google/login`,
+      'google-login',
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
   };
 
   return (
