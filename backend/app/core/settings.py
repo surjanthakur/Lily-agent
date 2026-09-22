@@ -23,8 +23,8 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     JWT_SECRET_KEY: str
 
-    FRONTEND_URL: str
-    REDIRECT_URL: str
+    FRONTEND_REDIRECT_UR: str
+    AUTH_REDIRECT_URL: str
 
     model_config = SettingsConfigDict(
         env_file=env_path,

@@ -16,14 +16,13 @@ async def login(request: Request):
 
     request.session.clear()
 
-    # that once the user logs in, gets verified, where can we redirect them to.
-    frontend_url = settings.FRONTEND_URL
-    redirect_url = settings.REDIRECT_URL
+    frontend_redirect_url = settings.FRONTEND_REDIRECT_UR
+    auth_redirect_url = settings.AUTH_REDIRECT_URL
 
-    request.session["login_redirect"] = frontend_url
+    request.session["login_redirect"] = frontend_redirect_url
 
     return await oauth_client.google_auth.authorize_redirect(
-        request, redirect_url, prompt="consent"
+        request, auth_redirect_url, prompt="consent"
     )
 
 
