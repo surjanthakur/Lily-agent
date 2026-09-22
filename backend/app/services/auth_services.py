@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import httpx
 from fastapi import HTTPException, Request, status
@@ -50,7 +50,7 @@ async def authenticate_user(
 
     user_name = user_info.get("name")
     user_pic = user_info.get("picture")
-    access_token_expiry = datetime.now(datetime.timetz()) + timedelta(minutes=60)
+    access_token_expiry = timedelta(minutes=60)
 
     # Verifies that the token was actually issued by Google
     if oauth_provider not in ["https://accounts.google.com", "accounts.google.com"]:

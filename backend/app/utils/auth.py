@@ -39,7 +39,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
 
     expiry_time = datetime.now(datetime.timetz()) + (
-        expires_delta or timedelta(minutes=30)
+        expires_delta or timedelta(minutes=60)
     )
 
     to_encode.update({"exp": expiry_time})
