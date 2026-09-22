@@ -28,7 +28,7 @@ async def login(request: Request):
     )
 
 
-@router.route("/auth/callback")
+@router.get("/auth/callback")
 async def auth(
     request: Request,
     db_session: AsyncSession = Depends(get_db_session),  # noqa: B008
