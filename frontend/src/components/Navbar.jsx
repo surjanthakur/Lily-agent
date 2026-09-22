@@ -1,16 +1,8 @@
 import LilyLogo from '../assets/lily-logo.png';
-import { toast } from 'react-toastify';
-import apiClient from '../api/Client.api';
 
 export default function Navbar() {
   const handleLoginUser = async () => {
-    try {
-      const response = await apiClient.get('/google/login');
-      return response.data;
-    } catch (error) {
-      toast.error(error);
-      throw error;
-    }
+    window.location.href = `${import.meta.env.VITE_BACKEND_BASE_UR}/google/login`;
   };
 
   return (

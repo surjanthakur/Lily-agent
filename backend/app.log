@@ -19,3 +19,7 @@ WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind 
 2026-09-21 20:58:11 | INFO | sqlalchemy.engine.Engine | [cached since 0.5292s ago] ('session', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
 2026-09-21 20:58:11 | INFO | sqlalchemy.engine.Engine | COMMIT
 2026-09-21 20:58:12 | INFO | app.db.databse | Database tables created successfully
+2026-09-21 20:58:41 | INFO | app.main | Request: /api/v1/google/login completed in 0.0279 seconds
+2026-09-21 20:58:43 | INFO | app.main | Request: /api/v1/google/login completed in 0.0030 seconds
+2026-09-21 20:58:44 | INFO | app.main | Request: /api/v1/google/login completed in 0.0026 seconds
+2026-09-21 20:59:08 | INFO | app.main | Request: /api/v1/google/login completed in 0.0030 seconds
