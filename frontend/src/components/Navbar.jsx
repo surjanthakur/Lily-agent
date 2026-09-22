@@ -2,7 +2,7 @@ import LilyLogo from '../assets/lily-logo.png';
 
 export default function Navbar() {
   const handleLoginUser = async () => {
-    window.location.href = `${import.meta.env.VITE_BACKEND_BASE_UR}/google/login`;
+    window.location.href = `http://127.0.0.1:8000/api/v1/google/login`;
   };
 
   return (
