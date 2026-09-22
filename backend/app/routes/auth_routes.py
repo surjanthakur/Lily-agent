@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from ..core.settings import settings
 from ..services.auth_services import authenticate_user
 from ..utils.auth import oauth_client
+from ..utils.get_db_session import get_db_session
 
 router = APIRouter()
 
@@ -27,10 +29,13 @@ async def login(request: Request):
 
 
 @router.route("/auth/callback")
-async def auth(request: Request):
+async def auth(
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),  # noqa: B008
+):
     """
     endpoint for authenticate user based on token\n
     get token -> validate -> create access token -> extract user info -> store in db -> redict user url
     """
-    res = await authenticate_user(req=request)
+    res = await authenticate_user(req=request, db_session=db_session)
     return res

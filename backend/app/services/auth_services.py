@@ -1,7 +1,7 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import httpx
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from jose import JWTError
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -15,12 +15,11 @@ from ..repository.auth_repository import (
 )
 from ..schemas.user_req import UserRequest
 from ..utils.auth import create_access_token, oauth_client
-from ..utils.get_db_session import get_db_session
 
 
 async def authenticate_user(
     req: Request,
-    db_session: AsyncSession = Depends(get_db_session),  # noqa: B008
+    db_session: AsyncSession,
 ):
     try:
         token: dict = await oauth_client.google_auth.authorize_access_token(req)
@@ -51,7 +50,7 @@ async def authenticate_user(
 
     user_name = user_info.get("name")
     user_pic = user_info.get("picture")
-    access_token_expiry = timedelta(minutes=60)
+    access_token_expiry = datetime.now(datetime.timetz()) + timedelta(minutes=60)
 
     # Verifies that the token was actually issued by Google
     if oauth_provider not in ["https://accounts.google.com", "accounts.google.com"]:
@@ -76,11 +75,13 @@ async def authenticate_user(
     )
 
     if existing_user:
+        user_id = existing_user.user_id
         # update the  existing oauth account
         await update_oauth_account(
             google_id=user_google_id,
             access_token=new_access_token,
             expires_at=access_token_expiry,
+            session=db_session,
         )
 
     else:
