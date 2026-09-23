@@ -326,3 +326,38 @@ WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind 
 2026-09-23 08:07:02 | INFO | sqlalchemy.engine.Engine | [cached since 0.5135s ago] ('session', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
 2026-09-23 08:07:02 | INFO | sqlalchemy.engine.Engine | COMMIT
 2026-09-23 08:07:02 | INFO | app.db.databse | Database tables created successfully
+2026-09-23 08:07:37 | INFO | app.routes.auth_routes | redirecting user to google oauth page.
+2026-09-23 08:07:37 | INFO | app.main | Request: /api/v1/google/login completed in 0.0203 seconds
+2026-09-23 08:07:45 | INFO | app.routes.auth_routes | calling aunthenticate_user function to extract info...
+2026-09-23 08:07:45 | INFO | app.services.auth_services | authorizing access_token from request...
+2026-09-23 08:07:45 | INFO | httpx2 | HTTP Request: POST https://accounts.google.com/o/oauth2/token "HTTP/1.1 200 OK"
+2026-09-23 08:07:46 | INFO | httpx2 | HTTP Request: GET https://www.googleapis.com/oauth2/v3/certs "HTTP/1.1 200 OK"
+2026-09-23 08:07:46 | INFO | app.services.auth_services | getting info from google with autorizing user acess_token
+2026-09-23 08:07:47 | INFO | httpx | HTTP Request: GET https://www.googleapis.com/oauth2/v2/userinfo "HTTP/1.1 200 OK"
+2026-09-23 08:07:47 | INFO | app.services.auth_services | extracted user info successfully
+2026-09-23 08:07:47 | INFO | app.utils.auth | creating access token...
+2026-09-23 08:07:47 | INFO | app.utils.auth | encoding data into a jwt str
+2026-09-23 08:07:47 | INFO | app.utils.auth | access_token created successfully...
+2026-09-23 08:07:47 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-23 08:07:47 | INFO | sqlalchemy.engine.Engine | SELECT "user".user_id, "user".username, "user".google_id, "user".email_id, "user".profile_picture, "user".created_at 
+FROM "user" 
+WHERE "user".google_id = $1::VARCHAR
+2026-09-23 08:07:47 | INFO | sqlalchemy.engine.Engine | [generated in 0.00040s] ('109941764240996918017',)
+2026-09-23 08:07:48 | INFO | app.services.auth_services | creating new user...
+2026-09-23 08:07:48 | INFO | sqlalchemy.engine.Engine | INSERT INTO "user" (user_id, username, google_id, email_id, profile_picture, created_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::TIMESTAMP WITHOUT TIME ZONE)
+2026-09-23 08:07:48 | INFO | sqlalchemy.engine.Engine | [generated in 0.00028s] (UUID('2231f86c-cf39-458b-9f4f-6e9dfe4e2fa0'), 'null 8080', '109941764240996918017', 'nu8080ll@gmail.com', 'https://lh3.googleusercontent.com/a/ACg8ocILdlfyOGUmSW2LtIQCmqhJf9-yziR2d-lvPXsyRLjKBcVhx74=s96-c', datetime.datetime(2026, 9, 23, 8, 7, 48, 156340))
+2026-09-23 08:07:48 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-23 08:07:49 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-23 08:07:49 | INFO | sqlalchemy.engine.Engine | SELECT "user".user_id, "user".username, "user".google_id, "user".email_id, "user".profile_picture, "user".created_at 
+FROM "user" 
+WHERE "user".user_id = $1::UUID
+2026-09-23 08:07:49 | INFO | sqlalchemy.engine.Engine | [generated in 0.00029s] (UUID('2231f86c-cf39-458b-9f4f-6e9dfe4e2fa0'),)
+2026-09-23 08:07:50 | INFO | app.services.auth_services | creating new oauth account
+2026-09-23 08:07:50 | INFO | sqlalchemy.engine.Engine | INSERT INTO oauthaccount ("OAuth_id", user_id, provider, provider_user_id, access_token, expires_at, created_at) VALUES ($1::UUID, $2::UUID, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::TIMESTAMP WITHOUT TIME ZONE, $7::TIMESTAMP WITHOUT TIME ZONE)
+2026-09-23 08:07:50 | INFO | sqlalchemy.engine.Engine | [generated in 0.00034s] (UUID('56b5a540-0d16-4ad5-96af-4f1c0c5219a7'), UUID('2231f86c-cf39-458b-9f4f-6e9dfe4e2fa0'), 'accounts.google.com', '109941764240996918017', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDk5NDE3NjQyNDA5OTY5MTgwMTciLCJlbWFpbCI6Im51ODA4MGxsQGdtYWlsLmNvbSIsImV4cCI6MTc5MDEzNDY2N30.ZVlnFbbGw3NYXI9dLPXjfK8i2IZTCSUx0OlmzyeQtLc', datetime.timedelta(seconds=3600), datetime.datetime(2026, 9, 23, 8, 7, 50, 614679))
+2026-09-23 08:07:50 | INFO | sqlalchemy.engine.Engine | ROLLBACK
+2026-09-23 08:07:50 | WARNING | app.utils.get_db_session | SQLAlchemy error: (sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $6: datetime.timedelta(seconds=3600) (expected a datetime.date or datetime.datetime instance, got 'timedelta')
+[SQL: INSERT INTO oauthaccount ("OAuth_id", user_id, provider, provider_user_id, access_token, expires_at, created_at) VALUES ($1::UUID, $2::UUID, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::TIMESTAMP WITHOUT TIME ZONE, $7::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: (UUID('56b5a540-0d16-4ad5-96af-4f1c0c5219a7'), UUID('2231f86c-cf39-458b-9f4f-6e9dfe4e2fa0'), 'accounts.google.com', '109941764240996918017', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDk5NDE3NjQyNDA5OTY5MTgwMTciLCJlbWFpbCI6Im51ODA4MGxsQGdtYWlsLmNvbSIsImV4cCI6MTc5MDEzNDY2N30.ZVlnFbbGw3NYXI9dLPXjfK8i2IZTCSUx0OlmzyeQtLc', datetime.timedelta(seconds=3600), datetime.datetime(2026, 9, 23, 8, 7, 50, 614679))]
+(Background on this error at: https://sqlalche.me/e/20/dbapi)
+2026-09-23 08:07:50 | INFO | app.utils.get_db_session | session closed now!!
