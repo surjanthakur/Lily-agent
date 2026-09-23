@@ -5,7 +5,10 @@ from authlib.integrations.starlette_client import OAuth
 from fastapi import Cookie, HTTPException, status
 from jose import ExpiredSignatureError, JWTError, jwt
 
+from ..core.logginig import get_logger
 from ..core.settings import settings
+
+logger = get_logger(__name__)
 
 # OAuth Setup
 oauth_client = OAuth()
@@ -20,7 +23,7 @@ oauth_client.register(
     access_token_params=None,
     refresh_token_url=None,
     authorize_state=settings.JWT_SECRET_KEY,
-    redirect_uri="http://127.0.0.1:8000/auth",
+    redirect_uri=settings.AUTH_REDIRECT_URL,
     jwks_uri="https://www.googleapis.com/oauth2/v3/certs",
     client_kwargs={"scope": "openid profile email"},
 )
@@ -35,6 +38,7 @@ ALGORITHM = "HS256"
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     "return a jwt string"
+    logger.info("creating access token...")
 
     to_encode = data.copy()
 
@@ -42,7 +46,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
     to_encode.update({"exp": expiry_time})
 
+    logger.info("encoding data into a jwt str")
     jwt_token_str = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    logger.info("access_token created successfully...")
 
     return jwt_token_str
 
