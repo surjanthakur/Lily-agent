@@ -58,6 +58,7 @@ class OAuthAccount(SQLModel, table=True):
         default_factory=datetime.now,
         title="date and time the user was created",
     )
+    user: "User" = Relationship(back_populates="oauth_account")
 
 
 # Oauth session
