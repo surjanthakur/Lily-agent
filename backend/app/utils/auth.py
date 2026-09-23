@@ -1,5 +1,5 @@
 import traceback
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from authlib.integrations.starlette_client import OAuth
 from fastapi import Cookie, HTTPException, status
@@ -38,9 +38,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
     to_encode = data.copy()
 
-    expiry_time = datetime.now(datetime.timetz()) + (
-        expires_delta or timedelta(minutes=60)
-    )
+    expiry_time = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=60))
 
     to_encode.update({"exp": expiry_time})
 

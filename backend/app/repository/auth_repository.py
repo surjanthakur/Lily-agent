@@ -25,7 +25,7 @@ async def create_new_user(user: UserRequest, session: AsyncSession):
     )
 
     session.add(new_user)
-    await session.commit(new_user)
+    await session.commit()
     await session.refresh(new_user)
 
     return new_user.user_id
@@ -38,7 +38,7 @@ async def create_new_session(
 ):
     new_session = Session(user_id=user_id, expires_at=expiry_date)
     session.add(new_session)
-    await session.commit(new_session)
+    await session.commit()
     await session.refresh(new_session)
 
     return new_session.session_id
@@ -61,7 +61,7 @@ async def create_new_oauth_account(
     )
 
     session.add(new_oauth_account)
-    await session.commit(new_oauth_account)
+    await session.commit()
     await session.refresh(new_oauth_account)
 
     return new_oauth_account
