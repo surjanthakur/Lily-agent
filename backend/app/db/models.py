@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 from uuid import UUID, uuid4
 
@@ -53,7 +53,7 @@ class OAuthAccount(SQLModel, table=True):
     provider: str
     provider_user_id: str
     access_token: str
-    expires_at: datetime
+    expires_at: timedelta
     created_at: datetime = Field(
         default_factory=datetime.now,
         title="date and time the user was created",
@@ -69,7 +69,7 @@ class Session(SQLModel, table=True):
         primary_key=True,
     )
     user_id: UUID = Field(foreign_key="user.user_id", ondelete="CASCADE", unique=True)
-    expires_at: datetime
+    expires_at: timedelta
     created_at: datetime = Field(
         default_factory=datetime.now,
         title="date and time the user was created",
