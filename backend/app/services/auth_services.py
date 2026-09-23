@@ -71,17 +71,18 @@ async def authenticate_user(
             detail="Google authentication failed.",
         )
 
-    existing_user = await get_user_by_google_id(
-        google_id=user_google_id, session=db_session
-    )
     # Creates a JWT token containing the user's ID and email
     new_access_token = create_access_token(
         data={"sub": user_google_id, "email": user_email},
         expires_delta=access_token_expiry,
     )
 
+    existing_user = await get_user_by_google_id(
+        google_id=user_google_id, session=db_session
+    )
+
     if existing_user:
-        user_id = existing_user.user_id
+
         # update the  existing oauth account
         logger.info("updating oauth account...")
         await update_oauth_account(

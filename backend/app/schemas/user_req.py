@@ -1,4 +1,4 @@
-from pydantic import AnyUrl, BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field
 
 
 class UserRequest(BaseModel):
@@ -18,7 +18,7 @@ class UserRequest(BaseModel):
         unique=True,
         title="email of the user",
     )
-    profile_picture: AnyUrl = Field(
+    profile_picture: str = Field(
         default=None,
         title="picture of the user",
     )
