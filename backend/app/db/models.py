@@ -39,7 +39,6 @@ class User(SQLModel, table=True):
     oauth_account: Optional["OAuthAccount"] = Relationship(
         back_populates="user", cascade_delete=True
     )
-    sessions: list["Session"] = Relationship(back_populates="user", cascade_delete=True)
 
 
 # Oauth account
@@ -59,21 +58,3 @@ class OAuthAccount(SQLModel, table=True):
         title="date and time the user was created",
     )
     user: "User" = Relationship(back_populates="oauth_account")
-
-
-# Oauth session
-class Session(SQLModel, table=True):
-    session_id: UUID = Field(
-        default_factory=uuid4,
-        title="unique id of the session",
-        primary_key=True,
-    )
-    user_id: UUID = Field(foreign_key="user.user_id", ondelete="CASCADE", unique=True)
-    expires_at: timedelta
-    created_at: datetime = Field(
-        default_factory=datetime.now,
-        title="date and time the user was created",
-    )
-    user: Optional["User"] = Relationship(
-        back_populates="sessions",
-    )
