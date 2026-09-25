@@ -88,7 +88,6 @@ async def authenticate_user(
         await update_oauth_account(
             google_id=user_google_id,
             access_token=new_access_token,
-            expires_at=access_token_expiry,
             session=db_session,
         )
 
