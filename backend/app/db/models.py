@@ -50,7 +50,7 @@ class OAuthAccount(SQLModel, table=True):
     )
     user_id: UUID = Field(foreign_key="user.user_id", ondelete="CASCADE", unique=True)
     provider: str
-    provider_id: str = Field(unique=True, title="google id of the user")
+    provider_id: str = Field(unique=True, title="provider id")
     created_at: datetime = Field(
         default_factory=datetime.now,
         title="date and time the user was created",
