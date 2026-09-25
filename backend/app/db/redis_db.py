@@ -38,3 +38,12 @@ async def check_redis_connection() -> bool:
     ):
         logger.exception("Redis DB network or connection issue ❌")
         return False
+
+
+# close the redis connection
+async def close_redis_connection() -> None:
+    try:
+        await redis_client.aclose()
+        logger.info("Redis connection closed successfully.")
+    except RedisError as err:
+        logger.warning("Error while closing Redis connection: %s", err)
