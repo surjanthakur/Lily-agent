@@ -1,12 +1,15 @@
 import traceback
-from datetime import datetime, timedelta, timezone
+import uuid
+from datetime import timedelta
 
 from authlib.integrations.starlette_client import OAuth
 from fastapi import Cookie, HTTPException, status
+from fastapi.responses import RedirectResponse
 from jose import ExpiredSignatureError, JWTError, jwt
 
 from ..core.logginig import get_logger
 from ..core.settings import settings
+from ..db.redis_db import redis_client
 
 logger = get_logger(__name__)
 
@@ -31,26 +34,42 @@ oauth_client.register(
 
 # JWT Configurations
 SECRET_KEY = settings.JWT_SECRET_KEY
+SESSION_EXPIRY = timedelta(minutes=1440)
 
 # encoding and decoding jwt token
 ALGORITHM = "HS256"
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
-    "return a jwt string"
-    logger.info("creating access token...")
+async def create_session(user_id: str, expiry_time: timedelta):
+    session_id = str(uuid.uuid4())
+    await redis_client.set(
+        name=f"session:{session_id}",
+        value=user_id,
+        ex=SESSION_EXPIRY,
+    )
 
-    to_encode = data.copy()
+    return session_id
 
-    expiry_time = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=60))
 
-    to_encode.update({"exp": expiry_time})
+def create_auth_response(
+    redirect_url: str,
+    session_id: str,
+) -> RedirectResponse:
+    response = RedirectResponse(
+        redirect_url,
+        status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+    )
 
-    logger.info("encoding data into a jwt str")
-    jwt_token_str = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    logger.info("access_token created successfully...")
+    response.set_cookie(
+        key="session_id",
+        value=session_id,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=SESSION_EXPIRY,
+    )
 
-    return jwt_token_str
+    return response
 
 
 def get_current_user(token: str = Cookie(None)):

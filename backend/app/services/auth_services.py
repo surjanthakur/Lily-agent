@@ -1,9 +1,5 @@
-import uuid
-from datetime import timedelta
-
 import httpx
 from fastapi import HTTPException, Request, status
-from fastapi.responses import RedirectResponse
 from jose import JWTError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -12,10 +8,9 @@ from ..repository.auth_repository import (
     create_new_oauth_account,
     create_new_user,
     get_user_by_google_id,
-    update_oauth_account,
 )
 from ..schemas.user_req import UserRequest
-from ..utils.auth import create_access_token, oauth_client
+from ..utils.auth import create_auth_response, create_session, oauth_client
 
 logger = get_logger(__name__)
 
@@ -42,55 +37,46 @@ async def authenticate_user(
         async with httpx.AsyncClient() as client:
             logger.info("getting info from google with autorizing user acess_token")
             google_response = await client.get(user_info_endpoint, headers=headers)
+            google_response.raise_for_status()
 
         user_info: dict = google_response.json()
         logger.info("extracted user info successfully")
 
-    except Exception:  # noqa: BLE001
-        raise HTTPException(status_code=401, detail="Google authentication failed.")
+    except httpx.HTTPError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Failed to retrieve Google user information.",
+        )
 
     user: dict = token_info.get("userinfo")
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Google authentication failed.",
+        )
     user_google_id = user.get("sub")
     oauth_provider = user.get("iss")
     user_email = user.get("email")
 
     user_name = user_info.get("name")
     user_pic = user_info.get("picture")
-    access_token_expiry = timedelta(minutes=60)
 
     # Verifies that the token was actually issued by Google
-    if oauth_provider not in ["https://accounts.google.com", "accounts.google.com"]:
+    if (
+        oauth_provider not in ["https://accounts.google.com", "accounts.google.com"]
+        and not user_google_id
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Google authentication failed.",
+            detail="Invalid Google user information.",
         )
-
-    if user_google_id is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Google authentication failed.",
-        )
-
-    # Creates a JWT token containing the user's ID and email
-    jwt_access_token = create_access_token(
-        data={"sub": user_google_id, "email": user_email},
-        expires_delta=access_token_expiry,
-    )
 
     existing_user = await get_user_by_google_id(
         google_id=user_google_id, session=db_session
     )
 
-    if existing_user:
-        # update the  existing oauth account
-        logger.info("updating oauth account...")
-        await update_oauth_account(
-            google_id=user_google_id,
-            access_token=jwt_access_token,
-            session=db_session,
-        )
-
-    else:
+    if not existing_user:
         new_user = UserRequest(
             username=user_name,
             google_id=user_google_id,
@@ -105,28 +91,22 @@ async def authenticate_user(
         logger.info("creating new oauth account...")
         await create_new_oauth_account(
             new_user_id=new_user.user_id,
-            provider_name=oauth_provider,
+            provider_name="google",
             google_id=user_google_id,
-            new_access_token=jwt_access_token,
             session=db_session,
         )
+        # create new session
+        logger.info("creating new session..")
 
-    # create new session in db
-    logger.info("creating new session..")
+        new_session_id = await create_session(user_id=new_user.user_id)
 
-    redirect_url = req.session.pop("login_redirect", "")
-    logger.info("redirecting to the frontend redirect url...")
-    response = RedirectResponse(
-        redirect_url, status_code=status.HTTP_307_TEMPORARY_REDIRECT
-    )
+        redirect_url = req.session.pop("login_redirect", "")
 
-    # return cookie
-    logger.info("setting cookies...")
-    response.set_cookie(
-        key="session_id",
-        value=new_session_id,
-        httponly=True,
-        secure=True,  # Ensure you're using HTTPS
-        samesite="none",  # Set the SameSite attribute to None
-    )
-    return response
+        res = create_auth_response(redirect_url, new_session_id)
+        return res
+
+    else:
+        new_session_id = await create_session(user_id=existing_user.user_id)
+        redirect_url = req.session.pop("login_redirect", "")
+        res = create_auth_response(redirect_url, new_session_id)
+        return res

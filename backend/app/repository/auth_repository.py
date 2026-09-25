@@ -37,14 +37,12 @@ async def create_new_oauth_account(
     new_user_id: UUID,
     provider_name: str,
     google_id: str,
-    new_access_token: str,
     session: AsyncSession,
 ):
     new_oauth_account = OAuthAccount(
         user_id=new_user_id,
         provider=provider_name,
         provider_id=google_id,
-        access_token=new_access_token,
     )
 
     session.add(new_oauth_account)
@@ -52,28 +50,3 @@ async def create_new_oauth_account(
     await session.refresh(new_oauth_account)
 
     return new_oauth_account
-
-
-# UPDATE oauth_account
-async def update_oauth_account(
-    google_id: str,
-    access_token: str,
-    session: AsyncSession,
-):
-    statement = (
-        select(OAuthAccount)
-        .join(User, OAuthAccount.user_id == User.user_id)
-        .where(User.google_id == google_id)
-    )
-    result = await session.exec(statement)
-    oauth_account = result.one_or_none()
-
-    if not oauth_account:
-        return
-
-    oauth_account.access_token = access_token
-
-    await session.commit()
-    await session.refresh(oauth_account)
-
-    return oauth_account
