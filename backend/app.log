@@ -932,3 +932,104 @@ WHERE "user".google_id = $1::VARCHAR
 2026-09-25 16:49:51 | INFO | sqlalchemy.engine.Engine | ROLLBACK
 2026-09-25 16:49:52 | INFO | app.utils.get_db_session | session closed now!!
 2026-09-25 16:51:14 | INFO | app.db.redis_db | Redis connection closed successfully.
+2026-09-25 19:35:29 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-25 19:35:29 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-25 19:35:29 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-25 19:35:29 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-25 19:35:30 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-25 19:35:30 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-25 19:35:30 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-25 19:35:30 | INFO | sqlalchemy.engine.Engine | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-09-25 19:35:30 | INFO | sqlalchemy.engine.Engine | [generated in 0.00046s] ('user', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-09-25 19:35:30 | INFO | sqlalchemy.engine.Engine | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-09-25 19:35:30 | INFO | sqlalchemy.engine.Engine | [cached since 0.3874s ago] ('oauthaccount', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-09-25 19:35:31 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-25 19:35:31 | INFO | app.db.databse | Database tables created successfully
+2026-09-25 19:35:32 | INFO | app.db.redis_db | redis db connected successfully ✅
+2026-09-25 19:36:06 | INFO | app.routes.auth_routes | redirecting user to google oauth page.
+2026-09-25 19:36:06 | INFO | app.main | Request: /api/v1/google/login completed in 0.0301 seconds
+2026-09-25 19:36:21 | INFO | app.routes.auth_routes | calling aunthenticate_user function to extract info...
+2026-09-25 19:36:21 | INFO | app.services.auth_services | authorizing access_token from request...
+2026-09-25 19:36:22 | INFO | httpx2 | HTTP Request: POST https://accounts.google.com/o/oauth2/token "HTTP/1.1 200 OK"
+2026-09-25 19:36:22 | INFO | httpx2 | HTTP Request: GET https://www.googleapis.com/oauth2/v3/certs "HTTP/1.1 200 OK"
+2026-09-25 19:36:22 | INFO | app.services.auth_services | getting info from google with autorizing user acess_token
+2026-09-25 19:36:23 | INFO | httpx | HTTP Request: GET https://www.googleapis.com/oauth2/v2/userinfo "HTTP/1.1 200 OK"
+2026-09-25 19:36:23 | INFO | app.services.auth_services | extracted user info successfully
+2026-09-25 19:36:24 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-25 19:36:24 | INFO | sqlalchemy.engine.Engine | SELECT "user".user_id, "user".username, "user".google_id, "user".email_id, "user".profile_picture, "user".created_at 
+FROM "user" 
+WHERE "user".google_id = $1::VARCHAR
+2026-09-25 19:36:24 | INFO | sqlalchemy.engine.Engine | [generated in 0.00055s] ('109941764240996918017',)
+2026-09-25 19:36:24 | INFO | app.services.auth_services | creating new user...
+2026-09-25 19:36:24 | INFO | sqlalchemy.engine.Engine | INSERT INTO "user" (user_id, username, google_id, email_id, profile_picture, created_at) VALUES ($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::TIMESTAMP WITHOUT TIME ZONE)
+2026-09-25 19:36:24 | INFO | sqlalchemy.engine.Engine | [generated in 0.00037s] (UUID('37936eae-7f87-45d0-83f5-083971d8dcb5'), 'null 8080', '109941764240996918017', 'nu8080ll@gmail.com', 'https://lh3.googleusercontent.com/a/ACg8ocILdlfyOGUmSW2LtIQCmqhJf9-yziR2d-lvPXsyRLjKBcVhx74=s96-c', datetime.datetime(2026, 9, 25, 19, 36, 24, 527148))
+2026-09-25 19:36:24 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-25 19:36:25 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-25 19:36:25 | INFO | sqlalchemy.engine.Engine | SELECT "user".user_id, "user".username, "user".google_id, "user".email_id, "user".profile_picture, "user".created_at 
+FROM "user" 
+WHERE "user".user_id = $1::UUID
+2026-09-25 19:36:25 | INFO | sqlalchemy.engine.Engine | [generated in 0.00046s] (UUID('37936eae-7f87-45d0-83f5-083971d8dcb5'),)
+2026-09-25 19:36:25 | INFO | app.services.auth_services | creating new oauth account...
+2026-09-25 19:36:25 | INFO | sqlalchemy.engine.Engine | INSERT INTO oauthaccount ("OAuth_id", user_id, provider, provider_id, created_at) VALUES ($1::UUID, $2::UUID, $3::VARCHAR, $4::VARCHAR, $5::TIMESTAMP WITHOUT TIME ZONE)
+2026-09-25 19:36:25 | INFO | sqlalchemy.engine.Engine | [generated in 0.00035s] (UUID('a613f797-80f6-497d-b8bd-18939c3d9c5f'), UUID('37936eae-7f87-45d0-83f5-083971d8dcb5'), 'google', '109941764240996918017', datetime.datetime(2026, 9, 25, 19, 36, 25, 463593))
+2026-09-25 19:36:25 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-25 19:36:26 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-25 19:36:26 | INFO | sqlalchemy.engine.Engine | SELECT oauthaccount."OAuth_id", oauthaccount.user_id, oauthaccount.provider, oauthaccount.provider_id, oauthaccount.created_at 
+FROM oauthaccount 
+WHERE oauthaccount."OAuth_id" = $1::UUID
+2026-09-25 19:36:26 | INFO | sqlalchemy.engine.Engine | [generated in 0.00037s] (UUID('a613f797-80f6-497d-b8bd-18939c3d9c5f'),)
+2026-09-25 19:36:26 | INFO | app.services.auth_services | creating new session..
+2026-09-25 19:36:26 | INFO | app.routes.auth_routes | called aunthenticate_user function to extract info successfully...
+2026-09-25 19:36:26 | INFO | app.main | Request: /api/v1/google/auth/callback completed in 5.4162 seconds
+2026-09-25 19:36:26 | INFO | sqlalchemy.engine.Engine | ROLLBACK
+2026-09-25 19:36:27 | INFO | app.utils.get_db_session | session closed now!!
+2026-09-25 19:37:25 | INFO | app.db.redis_db | Redis connection closed successfully.
+2026-09-25 19:47:27 | INFO | sqlalchemy.engine.Engine | select pg_catalog.version()
+2026-09-25 19:47:27 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-25 19:47:27 | INFO | sqlalchemy.engine.Engine | select current_schema()
+2026-09-25 19:47:27 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-25 19:47:28 | INFO | sqlalchemy.engine.Engine | show standard_conforming_strings
+2026-09-25 19:47:28 | INFO | sqlalchemy.engine.Engine | [raw sql] ()
+2026-09-25 19:47:28 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-25 19:47:28 | INFO | sqlalchemy.engine.Engine | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-09-25 19:47:28 | INFO | sqlalchemy.engine.Engine | [generated in 0.00039s] ('user', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-09-25 19:47:29 | INFO | sqlalchemy.engine.Engine | SELECT pg_catalog.pg_class.relname 
+FROM pg_catalog.pg_class JOIN pg_catalog.pg_namespace ON pg_catalog.pg_namespace.oid = pg_catalog.pg_class.relnamespace 
+WHERE pg_catalog.pg_class.relname = $1::VARCHAR AND pg_catalog.pg_class.relkind = ANY (ARRAY[$2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR]) AND pg_catalog.pg_table_is_visible(pg_catalog.pg_class.oid) AND pg_catalog.pg_namespace.nspname != $7::VARCHAR
+2026-09-25 19:47:29 | INFO | sqlalchemy.engine.Engine | [cached since 0.4146s ago] ('oauthaccount', 'r', 'p', 'f', 'v', 'm', 'pg_catalog')
+2026-09-25 19:47:29 | INFO | sqlalchemy.engine.Engine | COMMIT
+2026-09-25 19:47:29 | INFO | app.db.databse | Database tables created successfully
+2026-09-25 19:47:30 | INFO | app.db.redis_db | redis db connected successfully ✅
+2026-09-25 19:47:36 | INFO | app.routes.auth_routes | redirecting user to google oauth page.
+2026-09-25 19:47:36 | INFO | app.main | Request: /api/v1/google/login completed in 0.0286 seconds
+2026-09-25 19:47:40 | INFO | app.routes.auth_routes | redirecting user to google oauth page.
+2026-09-25 19:47:40 | INFO | app.main | Request: /api/v1/google/login completed in 0.0028 seconds
+2026-09-25 19:47:49 | INFO | app.routes.auth_routes | calling aunthenticate_user function to extract info...
+2026-09-25 19:47:49 | INFO | app.services.auth_services | authorizing access_token from request...
+2026-09-25 19:47:49 | INFO | app.utils.get_db_session | session closed now!!
+2026-09-25 19:47:49 | INFO | app.main | Request: /favicon.ico completed in 0.0004 seconds
+2026-09-25 19:48:32 | INFO | app.routes.auth_routes | redirecting user to google oauth page.
+2026-09-25 19:48:32 | INFO | app.main | Request: /api/v1/google/login completed in 0.0024 seconds
+2026-09-25 19:48:43 | INFO | app.routes.auth_routes | calling aunthenticate_user function to extract info...
+2026-09-25 19:48:43 | INFO | app.services.auth_services | authorizing access_token from request...
+2026-09-25 19:48:44 | INFO | httpx2 | HTTP Request: POST https://accounts.google.com/o/oauth2/token "HTTP/1.1 200 OK"
+2026-09-25 19:48:45 | INFO | httpx2 | HTTP Request: GET https://www.googleapis.com/oauth2/v3/certs "HTTP/1.1 200 OK"
+2026-09-25 19:48:45 | INFO | app.services.auth_services | getting info from google with autorizing user acess_token
+2026-09-25 19:48:46 | INFO | httpx | HTTP Request: GET https://www.googleapis.com/oauth2/v2/userinfo "HTTP/1.1 200 OK"
+2026-09-25 19:48:46 | INFO | app.services.auth_services | extracted user info successfully
+2026-09-25 19:48:47 | INFO | sqlalchemy.engine.Engine | BEGIN (implicit)
+2026-09-25 19:48:47 | INFO | sqlalchemy.engine.Engine | SELECT "user".user_id, "user".username, "user".google_id, "user".email_id, "user".profile_picture, "user".created_at 
+FROM "user" 
+WHERE "user".google_id = $1::VARCHAR
+2026-09-25 19:48:47 | INFO | sqlalchemy.engine.Engine | [generated in 0.00086s] ('102456066090281312694',)
+2026-09-25 19:48:47 | INFO | app.routes.auth_routes | called aunthenticate_user function to extract info successfully...
+2026-09-25 19:48:47 | INFO | app.main | Request: /api/v1/google/auth/callback completed in 4.3583 seconds
+2026-09-25 19:48:47 | INFO | sqlalchemy.engine.Engine | ROLLBACK
+2026-09-25 19:48:48 | INFO | app.utils.get_db_session | session closed now!!
+2026-09-25 19:49:08 | INFO | app.db.redis_db | Redis connection closed successfully.

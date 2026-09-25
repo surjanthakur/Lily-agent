@@ -1,9 +1,9 @@
 import LilyLogo from '../assets/lily-logo.png';
+import { toast } from 'react-toastify';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export default function Navbar() {
-  // login with google
   const handleLoginUser = () => {
     const width = 500;
     const height = 600;
@@ -11,13 +11,40 @@ export default function Navbar() {
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
 
-    window.open(
+    const popup = window.open(
       `${BACKEND_URL}/google/login`,
       'google-login',
       `width=${width},height=${height},left=${left},top=${top}`
     );
-  };
 
+    // Popup blocked
+    if (!popup) {
+      toast.error('Please allow popups to login with Google.');
+      return;
+    }
+
+    // Listen for OAuth result
+    const handleMessage = (event) => {
+      // Security: only accept message from your backend/frontend origin
+      if (event.origin !== window.location.origin) {
+        return;
+      }
+
+      if (event.data?.type === 'GOOGLE_LOGIN_SUCCESS') {
+        toast.success('Successfully logged in with Google! 🎉');
+
+        window.removeEventListener('message', handleMessage);
+      }
+
+      if (event.data?.type === 'GOOGLE_LOGIN_ERROR') {
+        toast.error('Google login failed.');
+
+        window.removeEventListener('message', handleMessage);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+  };
   return (
     <nav className="sticky top-0 z-50 w-full  backdrop-blur-lg">
       <div
