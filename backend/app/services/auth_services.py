@@ -1,3 +1,4 @@
+import uuid
 from datetime import timedelta
 
 import httpx
@@ -9,7 +10,6 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from ..core.logginig import get_logger
 from ..repository.auth_repository import (
     create_new_oauth_account,
-    create_new_session,
     create_new_user,
     get_user_by_google_id,
     update_oauth_account,
@@ -72,7 +72,7 @@ async def authenticate_user(
         )
 
     # Creates a JWT token containing the user's ID and email
-    new_access_token = create_access_token(
+    jwt_access_token = create_access_token(
         data={"sub": user_google_id, "email": user_email},
         expires_delta=access_token_expiry,
     )
@@ -82,17 +82,15 @@ async def authenticate_user(
     )
 
     if existing_user:
-
         # update the  existing oauth account
         logger.info("updating oauth account...")
         await update_oauth_account(
             google_id=user_google_id,
-            access_token=new_access_token,
+            access_token=jwt_access_token,
             session=db_session,
         )
 
     else:
-
         new_user = UserRequest(
             username=user_name,
             google_id=user_google_id,
@@ -101,26 +99,20 @@ async def authenticate_user(
         )
         logger.info("creating new user...")
 
-        new_user_id = await create_new_user(new_user, db_session)
+        new_user = await create_new_user(new_user, db_session)
 
         # create new oauth account in db
-        logger.info("creating new oauth account")
+        logger.info("creating new oauth account...")
         await create_new_oauth_account(
-            user_id=new_user_id,
-            provider=oauth_provider,
+            new_user_id=new_user.user_id,
+            provider_name=oauth_provider,
             google_id=user_google_id,
-            access_token=new_access_token,
-            expiry_date=access_token_expiry,
+            new_access_token=jwt_access_token,
             session=db_session,
         )
 
     # create new session in db
     logger.info("creating new session..")
-    new_session_id = await create_new_session(
-        user_id="",
-        expiry_date=access_token_expiry,
-        session=db_session,
-    )
 
     redirect_url = req.session.pop("login_redirect", "")
     logger.info("redirecting to the frontend redirect url...")

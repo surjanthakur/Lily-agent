@@ -7,6 +7,7 @@ env_path = Path(__file__).resolve().parents[2] / ".env"
 
 class Settings(BaseSettings):
     DB_URL: str
+    REDIS_DB_URL: str
 
     LOG_LEVEL: str
 

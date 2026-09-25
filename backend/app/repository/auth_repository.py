@@ -29,7 +29,7 @@ async def create_new_user(user: UserRequest, session: AsyncSession):
     await session.commit()
     await session.refresh(new_user)
 
-    return new_user.user_id
+    return new_user
 
 
 # CREATE oauth_account
