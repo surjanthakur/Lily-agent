@@ -101,6 +101,7 @@ async def authenticate_user(
             profile_picture=user_pic,
         )
         logger.info("creating new user...")
+
         new_user_id = await create_new_user(new_user, db_session)
 
         # create new oauth account in db
@@ -117,7 +118,7 @@ async def authenticate_user(
     # create new session in db
     logger.info("creating new session..")
     new_session_id = await create_new_session(
-        user_id=new_user_id,
+        user_id="",
         expiry_date=access_token_expiry,
         session=db_session,
     )
