@@ -1,6 +1,6 @@
 import traceback
-import uuid
 from datetime import timedelta
+from uuid import UUID, uuid4
 
 from authlib.integrations.starlette_client import OAuth
 from fastapi import Cookie, HTTPException, status
@@ -40,11 +40,11 @@ SESSION_EXPIRY = timedelta(minutes=1440)
 ALGORITHM = "HS256"
 
 
-async def create_session(user_id: str, expiry_time: timedelta):
-    session_id = str(uuid.uuid4())
+async def create_session(user_id: UUID):
+    session_id = str(uuid4())
     await redis_client.set(
         name=f"session:{session_id}",
-        value=user_id,
+        value=str(user_id),
         ex=SESSION_EXPIRY,
     )
 
