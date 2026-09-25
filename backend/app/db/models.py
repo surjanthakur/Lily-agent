@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
 from uuid import UUID, uuid4
 
@@ -52,7 +52,6 @@ class OAuthAccount(SQLModel, table=True):
     provider: str
     provider_user_id: str
     access_token: str
-    expires_at: timedelta
     created_at: datetime = Field(
         default_factory=datetime.now,
         title="date and time the user was created",
