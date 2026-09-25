@@ -8,6 +8,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from .core.logginig import get_logger, setup_logging
 from .core.settings import settings
 from .db.databse import create_db_tables
+from .db.redis_db import check_redis_connection
 from .routes import agent_routes, auth_routes
 
 setup_logging()
@@ -20,6 +21,7 @@ logger = get_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_db_tables()
+    await check_redis_connection()
     yield
 
 
