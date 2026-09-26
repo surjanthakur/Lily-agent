@@ -7,7 +7,6 @@ export default function Navbar() {
   const handleLoginUser = () => {
     const width = 500;
     const height = 600;
-
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
 
@@ -17,33 +16,37 @@ export default function Navbar() {
       `width=${width},height=${height},left=${left},top=${top}`
     );
 
-    // Popup blocked
     if (!popup) {
       toast.error('Please allow popups to login with Google.');
       return;
     }
 
-    // Listen for OAuth result
     const handleMessage = (event) => {
-      // Security: only accept message from your backend/frontend origin
-      if (event.origin !== window.location.origin) {
-        return;
-      }
+      // Strict origin check
+      if (event.origin !== window.location.origin) return;
 
       if (event.data?.type === 'GOOGLE_LOGIN_SUCCESS') {
         toast.success('Successfully logged in with Google! 🎉');
-
+        // optional: refetch user, update auth state, etc.
         window.removeEventListener('message', handleMessage);
+        // popup should already be closed by the backend script
       }
 
       if (event.data?.type === 'GOOGLE_LOGIN_ERROR') {
-        toast.error('Google login failed.');
-
+        toast.error(event.data.error || 'Google login failed.');
         window.removeEventListener('message', handleMessage);
       }
     };
 
     window.addEventListener('message', handleMessage);
+
+    // Optional safety: clean up if user closes the popup manually
+    const checkClosed = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(checkClosed);
+        window.removeEventListener('message', handleMessage);
+      }
+    }, 500);
   };
   return (
     <nav className="sticky top-0 z-50 w-full  backdrop-blur-lg">
