@@ -79,7 +79,7 @@ def create_auth_response(
             httponly=True,
             secure=False,
             samesite="lax",
-            max_age=SESSION_EXPIRY,
+            max_age=int(SESSION_EXPIRY.total_seconds()),
         )
 
         return response
