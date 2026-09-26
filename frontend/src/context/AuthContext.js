@@ -1,19 +1,88 @@
-// import { createContext, useContext, useEffect, useState } from 'react';
+// src/context/AuthContext.jsx
+import { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
-// const AuthContext = createContext(null);
+const AuthContext = createContext(undefined);
 
-// export function AuthProvider({ children }) {
-//   const [user, setUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
+const AUTH_ME_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
-//   const checkAuth = async () => {
-//     try {
-//       const response = await api.get('/auth/me');
-//       setUser(response.data);
-//     } catch {
-//       setUser(null);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-// }
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await axios.get(`${AUTH_ME_URL}/google/auth/me`, {
+        withCredentials: true,
+      });
+
+      // Extract from body
+      const { username, email, profile_img } = response.data;
+
+      // Extract from headers (Axios lowercases header names)
+      const isAuthHeader = response.headers['is_authenticated'];
+      const authenticated = isAuthHeader === 'true';
+
+      setUser({
+        username,
+        email,
+        profile_img: profile_img || null,
+      });
+      setIsAuthenticated(authenticated);
+    } catch (err) {
+      setUser(null);
+      setIsAuthenticated(false);
+
+      if (err.response?.status === 401 || err.response?.status === 404) {
+        // not logged in – this is expected
+        setError(null);
+      } else {
+        setError(err.message || 'Failed to authenticate user');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Run once on mount
+  useEffect(() => {
+    void Promise.resolve().then(fetchCurrentUser);
+  }, []);
+
+  const refreshUser = async () => {
+    setIsLoading(true);
+    setError(null);
+    await fetchCurrentUser();
+  };
+
+  const logout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        isLoading,
+        error,
+        refreshUser,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+// Custom hook for easy consumption
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
