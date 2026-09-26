@@ -1,15 +1,16 @@
 import './DashboardButton.css';
 import { ArrowsRight } from 'reicon-react';
-import { useAuth } from '../context/AuthContext.js';
+import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { DefaultLoader } from '../components/export.js';
 export default function DashboardRedirectButton() {
-  const { isLoading, error, user, isAuthenticated } = useAuth();
+  const { isLoading, error, user, isAuthenticated, refreshUser } = useAuth();
   const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
+    void refreshUser();
 
     if (isLoading) {
       toast.info('Checking authentication...');

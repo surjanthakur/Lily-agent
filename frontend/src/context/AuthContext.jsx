@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.get(`${AUTH_ME_URL}/google/auth/me`, {
         withCredentials: true,
       });
+      console.info('Current user response received.', { status: response.status });
 
       // Extract from body
       const { username, email, profile_img } = response.data;
@@ -32,6 +33,10 @@ export const AuthProvider = ({ children }) => {
       });
       setIsAuthenticated(authenticated);
     } catch (err) {
+      console.error('Current user request failed.', {
+        status: err.response?.status,
+        message: err.message,
+      });
       setUser(null);
       setIsAuthenticated(false);
 
@@ -52,6 +57,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const refreshUser = async () => {
+    console.log('refresh user executing function');
     setIsLoading(true);
     setError(null);
     await fetchCurrentUser();
@@ -78,7 +84,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook for easy consumption
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {

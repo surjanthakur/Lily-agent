@@ -46,7 +46,7 @@ async def auth(
     return res
 
 
-@router.get("auth/me")
+@router.get("/auth/me")
 async def current_user(
     request: Request,
     db_session: AsyncSession = Depends(get_db_session),  # noqa: B008

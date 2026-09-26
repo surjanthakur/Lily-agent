@@ -168,7 +168,7 @@ async def get_current_user(
         session_id = req.cookies.get("session_id")
 
         if not session_id:
-            logger.exception("can't find session_id user is not authenticated.")
+            logger.warning("Current user request has no session cookie.")
 
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -176,10 +176,10 @@ async def get_current_user(
             )
 
         logger.info("searching for current user_id in redis.")
-        curr_user_id = redis_client.get(f"session:{session_id}")
+        curr_user_id = await redis_client.get(f"session:{session_id}")
 
         if not curr_user_id:
-            logger.exception("can't get user_id in redis.")
+            logger.warning("No user ID found in Redis for the current session.")
 
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -190,7 +190,7 @@ async def get_current_user(
         curr_user = await get_user_by_user_id(UUID(curr_user_id), db_session)
 
         if not curr_user:
-            logger.exception("can't find user in database.")
+            logger.warning("Current session references a user that does not exist.")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="user don't exists login first",
@@ -208,8 +208,14 @@ async def get_current_user(
             headers={"is_authenticated": "true"},
         )
 
-    except ValueError:
-        pass
+    except HTTPException:
+        raise
+    except Exception:
+        logger.exception("Unexpected error while retrieving the current user.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="something went worng!",
+        )
 
 
 async def logout_session_user(
