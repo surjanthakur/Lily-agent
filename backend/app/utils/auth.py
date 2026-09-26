@@ -2,9 +2,9 @@ import traceback
 from datetime import timedelta
 from uuid import UUID, uuid4
 
-from authlib.integrations.starlette_client import OAuth
+from authlib.integrations.starlette_client import OAuth, OAuthError
 from fastapi import Cookie, HTTPException, status
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse
 from jose import ExpiredSignatureError, JWTError, jwt
 
 from ..core.logginig import get_logger
@@ -51,27 +51,6 @@ async def create_session(user_id: UUID):
     return session_id
 
 
-def create_auth_response(
-    redirect_url: str,
-    session_id: str,
-) -> RedirectResponse:
-    response = RedirectResponse(
-        redirect_url,
-        status_code=status.HTTP_307_TEMPORARY_REDIRECT,
-    )
-
-    response.set_cookie(
-        key="session_id",
-        value=session_id,
-        httponly=True,
-        secure=True,
-        samesite="none",
-        max_age=SESSION_EXPIRY,
-    )
-
-    return response
-
-
 def get_current_user(token: str = Cookie(None)):
     "validate current user with token if token return dict data"
 
@@ -115,3 +94,57 @@ def get_current_user(token: str = Cookie(None)):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authenticated"
         )
+
+
+def create_auth_response(
+    session_id: str,
+) -> HTMLResponse:
+    try:
+        response = HTMLResponse(content="""
+        <html>
+            <body>
+                <script>
+
+                console.log("Popup: sending success message");
+
+                    window.opener.postMessage(
+                        { type: "google-login-success" },
+                        "http://localhost:5173"
+                    );
+                    
+                    console.log("Popup: closing");
+
+                    window.close();
+                </script>
+            </body>
+        </html>
+        """)
+
+        response.set_cookie(
+            key="session_id",
+            value=session_id,
+            httponly=True,
+            secure=True,
+            samesite="none",
+            max_age=SESSION_EXPIRY,
+        )
+
+        return response
+    except OAuthError as err:
+        html = f"""
+        <html>
+        <body>
+          <script>
+            if (window.opener) {{
+              window.opener.postMessage(
+                {{ type: 'google-login-error', error: '{err!s}' }},
+                'http://localhost:5173'
+              );
+              window.close();
+            }}
+          </script>
+          <p>Login failed! try again?</p>
+        </body>
+        </html>
+        """
+        return HTMLResponse(content=html, status_code=status.HTTP_400_BAD_REQUEST)

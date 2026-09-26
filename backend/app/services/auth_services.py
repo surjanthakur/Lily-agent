@@ -100,13 +100,10 @@ async def authenticate_user(
 
         new_session_id = await create_session(user_id=new_user.user_id)
 
-        redirect_url = req.session.pop("login_redirect", "")
-
-        res = create_auth_response(redirect_url, new_session_id)
+        res = create_auth_response(new_session_id)
         return res
 
     else:
         new_session_id = await create_session(user_id=existing_user.user_id)
-        redirect_url = req.session.pop("login_redirect", "")
-        res = create_auth_response(redirect_url, new_session_id)
+        res = create_auth_response(new_session_id)
         return res

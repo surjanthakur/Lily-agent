@@ -1,5 +1,4 @@
 import LilyLogo from '../assets/lily-logo.png';
-import { toast } from 'react-toastify';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -7,8 +6,25 @@ export default function Navbar() {
   const handleLoginUser = () => {
     const width = 500;
     const height = 600;
+
     const left = window.screenX + (window.outerWidth - width) / 2;
+
     const top = window.screenY + (window.outerHeight - height) / 2;
+
+    const handleMessage = (event) => {
+      console.log('Message received:', event);
+      if (event.origin !== window.location.origin) return;
+
+      if (event.data?.type === 'google-login-success') {
+        window.removeEventListener('message', handleMessage);
+      }
+
+      if (event.data?.type === 'google-login-error') {
+        window.removeEventListener('message', handleMessage);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
 
     const popup = window.open(
       `${BACKEND_URL}/google/login`,
@@ -17,37 +33,11 @@ export default function Navbar() {
     );
 
     if (!popup) {
-      toast.error('Please allow popups to login with Google.');
+      window.removeEventListener('message', handleMessage);
       return;
     }
-
-    const handleMessage = (event) => {
-      // Strict origin check
-      if (event.origin !== window.location.origin) return;
-
-      if (event.data?.type === 'GOOGLE_LOGIN_SUCCESS') {
-        toast.success('Successfully logged in with Google! 🎉');
-        // optional: refetch user, update auth state, etc.
-        window.removeEventListener('message', handleMessage);
-        // popup should already be closed by the backend script
-      }
-
-      if (event.data?.type === 'GOOGLE_LOGIN_ERROR') {
-        toast.error(event.data.error || 'Google login failed.');
-        window.removeEventListener('message', handleMessage);
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-
-    // Optional safety: clean up if user closes the popup manually
-    const checkClosed = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(checkClosed);
-        window.removeEventListener('message', handleMessage);
-      }
-    }, 500);
   };
+
   return (
     <nav className="sticky top-0 z-50 w-full  backdrop-blur-lg">
       <div
@@ -56,7 +46,7 @@ export default function Navbar() {
       >
         {/* ================= LOGO ================= */}
         <a
-          href="/home"
+          href="/"
           className="
             group
             relative
