@@ -1,10 +1,8 @@
 // src/context/AuthContext.jsx
-import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { createContext, useContext, useState, useCallback } from 'react';
+import apiClient from '../api/Client.api.js';
 
 const AuthContext = createContext(undefined);
-
-const AUTH_ME_URL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -12,15 +10,15 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchCurrentUser = async () => {
+  // fetch current user api call
+  const fetchCurrentUser = useCallback(async () => {
     try {
-      const response = await axios.get(`${AUTH_ME_URL}/google/auth/me`, {
-        withCredentials: true,
-      });
+      setIsLoading(true);
+      const response = await apiClient.get('/google/auth/me');
       console.info('Current user response received.', { status: response.status });
 
       // Extract from body
-      const { username, email, profile_img } = response.data;
+      const { username, email, profile_img } = response.data ?? {};
 
       // Extract from headers (Axios lowercases header names)
       const isAuthHeader = response.headers['is_authenticated'];
@@ -49,24 +47,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  // Run once on mount
-  useEffect(() => {
-    void Promise.resolve().then(fetchCurrentUser);
   }, []);
-
-  const refreshUser = async () => {
-    console.log('refresh user executing function');
-    setIsLoading(true);
-    setError(null);
-    await fetchCurrentUser();
-  };
-
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-  };
 
   return (
     <AuthContext.Provider
@@ -75,8 +56,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         isLoading,
         error,
-        refreshUser,
-        logout,
+        fetchCurrentUser,
       }}
     >
       {children}

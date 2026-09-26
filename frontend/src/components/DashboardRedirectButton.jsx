@@ -3,32 +3,38 @@ import { ArrowsRight } from 'reicon-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { DefaultLoader } from '../components/export.js';
+// import { DefaultLoader } from '../components/export.js';
+
 export default function DashboardRedirectButton() {
-  const { isLoading, error, user, isAuthenticated, refreshUser } = useAuth();
+  const { isLoading, error, user, isAuthenticated, fetchCurrentUser } = useAuth();
+
   const navigate = useNavigate();
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    void refreshUser();
+    try {
+      await fetchCurrentUser();
 
-    if (isLoading) {
-      toast.info('Checking authentication...');
-      return;
-    }
+      if (isLoading) {
+        toast.info('Checking authentication...');
+        return;
+      }
 
-    if (error) {
+      if (error) {
+        toast.error('Something went wrong. Please try again.');
+        return;
+      }
+
+      if (!isAuthenticated || !user?.email) {
+        toast.error('Please login first to open dashboard');
+        return;
+      }
+
+      // Redirect to /dashboard/:email
+      navigate(`/dashboard/${user.email}`);
+    } catch {
       toast.error('Something went wrong. Please try again.');
-      return;
     }
-
-    if (!isAuthenticated || !user?.email) {
-      toast.error('Please login first to open dashboard');
-      return;
-    }
-
-    // Redirect to /dashboard/:email
-    navigate(`/dashboard/${user.email}`);
   };
 
   return (
@@ -66,12 +72,7 @@ export default function DashboardRedirectButton() {
           ></path>
         </svg>
         <span className="text_button flex justify-center align-middle">
-          open dashboard{' '}
-          {isLoading ? (
-            <DefaultLoader />
-          ) : (
-            <ArrowsRight className="px-0.5" color="white" size={25} />
-          )}
+          open dashboard <ArrowsRight className="px-0.5" color="white" size={25} />
         </span>
       </button>
     </>
