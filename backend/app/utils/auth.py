@@ -74,11 +74,11 @@ def create_auth_response(
         """)
 
         response.set_cookie(
-            key="session_id",
+            key="session",
             value=session_id,
             httponly=True,
-            secure=True,
-            samesite="none",
+            secure=False,
+            samesite="lax",
             max_age=SESSION_EXPIRY,
         )
 

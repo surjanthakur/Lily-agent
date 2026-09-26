@@ -161,11 +161,11 @@ async def authenticate_user(
 
 
 async def get_current_user(
-    req: Request,
+    request: Request,
     db_session: AsyncSession,
 ):
     try:
-        session_id = req.cookies.get("session_id")
+        session_id = request.cookies.get("session")
 
         if not session_id:
             logger.warning("Current user request has no session cookie.")
