@@ -1,11 +1,9 @@
-import traceback
 from datetime import timedelta
 from uuid import UUID, uuid4
 
 from authlib.integrations.starlette_client import OAuth, OAuthError
-from fastapi import Cookie, HTTPException, status
+from fastapi import status
 from fastapi.responses import HTMLResponse
-from jose import ExpiredSignatureError, JWTError, jwt
 
 from ..core.logginig import get_logger
 from ..core.settings import settings
@@ -49,51 +47,6 @@ async def create_session(user_id: UUID):
     )
 
     return session_id
-
-
-def get_current_user(token: str = Cookie(None)):
-    "validate current user with token if token return dict data"
-
-    if not token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated yet!"
-        )
-
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-
-        user_google_id: str = payload.get("sub")
-        user_email: str = payload.get("email")
-
-        if user_google_id is None or user_email is None:
-            raise credentials_exception
-
-        return {"user_id": user_google_id, "user_email": user_email}
-
-    except ExpiredSignatureError:
-        # Specifically handle expired tokens
-        traceback.print_exc()
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Session expired. Please login again.",
-        )
-
-    except JWTError:
-        # Handle other JWT-related errors
-        traceback.print_exc()
-        raise credentials_exception
-
-    except Exception:  # noqa: BLE001
-        traceback.print_exc()
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authenticated"
-        )
 
 
 def create_auth_response(

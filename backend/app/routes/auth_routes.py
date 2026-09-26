@@ -44,3 +44,19 @@ async def auth(
 
     logger.info("called aunthenticate_user function to extract info successfully...")
     return res
+
+
+@router.get("auth/me")
+async def current_user(
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),  # noqa: B008
+):
+    pass
+
+
+@router.get("/logout")
+async def logout_user(
+    request: Request,
+    db_session: AsyncSession = Depends(get_db_session),  # noqa: B008
+):
+    pass
