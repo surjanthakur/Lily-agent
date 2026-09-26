@@ -20,6 +20,7 @@ from ..utils.auth import create_auth_response, create_session, oauth_client
 logger = get_logger(__name__)
 
 
+# authenticate user
 async def authenticate_user(
     req: Request,
     db_session: AsyncSession,
@@ -160,6 +161,7 @@ async def authenticate_user(
         return res
 
 
+# get current session user
 async def get_current_user(
     request: Request,
     db_session: AsyncSession,
