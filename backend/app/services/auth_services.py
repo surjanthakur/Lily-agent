@@ -200,6 +200,7 @@ async def get_current_user(
         return JSONResponse(
             content={
                 "username": curr_user.username,
+                "email": curr_user.email_id,
                 "profile_img": curr_user.profile_picture,
             },
             status_code=status.HTTP_200_OK,
