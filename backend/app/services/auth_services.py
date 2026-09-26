@@ -168,30 +168,35 @@ async def get_current_user(
         session_id = req.cookies.get("session_id")
 
         if not session_id:
-            logger.info("can't find session_id user is not authenticated.")
+            logger.exception("can't find session_id user is not authenticated.")
 
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="user is not Authenticated",
             )
 
-        logger.info("searching for current user in redis.")
+        logger.info("searching for current user_id in redis.")
         curr_user_id = redis_client.get(f"session:{session_id}")
 
         if not curr_user_id:
+            logger.exception("can't get user_id in redis.")
+
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="user is not Authenticated",
             )
 
+        logger.info("searching for current user in database.")
         curr_user = await get_user_by_user_id(UUID(curr_user_id), db_session)
 
         if not curr_user:
+            logger.exception("can't find user in database.")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="user don't exists login first",
             )
 
+        logger.info("find the current user in db.")
         return JSONResponse(
             content={
                 "username": curr_user.username,
@@ -204,3 +209,10 @@ async def get_current_user(
 
     except ValueError:
         pass
+
+
+async def logout_session_user(
+    req: Request,
+    db_session: AsyncSession,
+):
+    pass

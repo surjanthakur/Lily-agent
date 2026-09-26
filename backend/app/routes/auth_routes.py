@@ -3,7 +3,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from ..core.logginig import get_logger
 from ..core.settings import settings
-from ..services.auth_services import authenticate_user
+from ..services.auth_services import authenticate_user, get_current_user
 from ..utils.auth import oauth_client
 from ..utils.get_db_session import get_db_session
 
@@ -39,10 +39,10 @@ async def auth(
     endpoint for authenticate user based on token\n
     get token -> validate -> create access token -> extract user info -> store in db -> redict user url
     """
-    logger.info("calling aunthenticate_user function to extract info...")
+    logger.info("calling aunthenticate_user function to extract info.")
     res = await authenticate_user(req=request, db_session=db_session)
+    logger.info("aunthenticate_user function return successfully.")
 
-    logger.info("called aunthenticate_user function to extract info successfully...")
     return res
 
 
@@ -51,7 +51,11 @@ async def current_user(
     request: Request,
     db_session: AsyncSession = Depends(get_db_session),  # noqa: B008
 ):
-    pass
+    logger.info("calling get_current_user function to auth user.")
+    res = await get_current_user(request, db_session)
+    logger.info("get_current_user function return successfully.")
+
+    return res
 
 
 @router.get("/logout")
