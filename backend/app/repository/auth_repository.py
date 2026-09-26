@@ -7,10 +7,16 @@ from ..db.models import OAuthAccount, User
 from ..schemas.user_req import UserRequest
 
 
-# INSERT user
+# FIND user
 async def get_user_by_google_id(google_id: str, session: AsyncSession):
-
     statement = select(User).where(User.google_id == google_id)
+    result = await session.exec(statement)
+
+    return result.one_or_none()
+
+
+async def get_user_by_user_id(user_id: UUID, session: AsyncSession):
+    statement = select(User).where(User.user_id == user_id)
     result = await session.exec(statement)
 
     return result.one_or_none()

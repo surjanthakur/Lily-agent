@@ -1,13 +1,18 @@
+from uuid import UUID
+
 import httpx
 from fastapi import HTTPException, Request, status
+from fastapi.responses import JSONResponse
 from jose import JWTError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from ..core.logginig import get_logger
+from ..db.redis_db import redis_client
 from ..repository.auth_repository import (
     create_new_oauth_account,
     create_new_user,
     get_user_by_google_id,
+    get_user_by_user_id,
 )
 from ..schemas.user_req import UserRequest
 from ..utils.auth import create_auth_response, create_session, oauth_client
@@ -19,11 +24,17 @@ async def authenticate_user(
     req: Request,
     db_session: AsyncSession,
 ):
+    logger.info("Authentication started.")
     try:
-        logger.info("authorizing access_token from request...")
+        logger.info("Requesting Google OAuth token authorization.")
+
         token_info: dict = await oauth_client.google_auth.authorize_access_token(req)
 
+        logger.info("Google OAuth token authorization succeeded.")
+
     except JWTError:
+        logger.exception("Google OAuth token authorization failed.")
+
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Google authentication failed.",
@@ -35,26 +46,38 @@ async def authenticate_user(
         headers = {"Authorization": f"Bearer {token_info['access_token']}"}
 
         async with httpx.AsyncClient() as client:
-            logger.info("getting info from google with autorizing user acess_token")
+            logger.info("Requesting user profile from Google.")
+
             google_response = await client.get(user_info_endpoint, headers=headers)
+
             google_response.raise_for_status()
 
         user_info: dict = google_response.json()
-        logger.info("extracted user info successfully")
+
+        logger.info("Google user profile retrieved successfully.")
 
     except httpx.HTTPError:
+
+        logger.exception("Failed to retrieve the Google user profile.")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Failed to retrieve Google user information.",
         )
 
+    logger.info("Checking OAuth response for user information.")
+
     user: dict = token_info.get("userinfo")
 
     if not user:
+
+        logger.warning("Google OAuth response did not include user information.")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Google authentication failed.",
         )
+
+    logger.info("Extracting required Google user claims.")
+
     user_google_id = user.get("sub")
     oauth_provider = user.get("iss")
     user_email = user.get("email")
@@ -62,48 +85,122 @@ async def authenticate_user(
     user_name = user_info.get("name")
     user_pic = user_info.get("picture")
 
+    logger.info(
+        "Google user claims extracted (provider_present=%s, subject_present=%s, email_present=%s).",
+        bool(oauth_provider),
+        bool(user_google_id),
+        bool(user_email),
+    )
+
     # Verifies that the token was actually issued by Google
+    logger.info("Validating Google token issuer and subject.")
+
     if (
         oauth_provider not in ["https://accounts.google.com", "accounts.google.com"]
         and not user_google_id
     ):
+        logger.warning("Google user information failed issuer/subject validation.")
+
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid Google user information.",
         )
+    logger.info("Google issuer and subject validation completed.")
+
+    logger.info("Looking up user by Google account.")
 
     existing_user = await get_user_by_google_id(
         google_id=user_google_id, session=db_session
     )
 
     if not existing_user:
+        logger.info("No existing user found; creating a new user.")
+
         new_user = UserRequest(
             username=user_name,
             google_id=user_google_id,
             email_id=user_email,
             profile_picture=user_pic,
         )
-        logger.info("creating new user...")
-
         new_user = await create_new_user(new_user, db_session)
 
-        # create new oauth account in db
-        logger.info("creating new oauth account...")
+        logger.info("New user created successfully.")
+
+        logger.info("Creating Google OAuth account record.")
+
         await create_new_oauth_account(
             new_user_id=new_user.user_id,
             provider_name="google",
             google_id=user_google_id,
             session=db_session,
         )
-        # create new session
-        logger.info("creating new session..")
+        logger.info("Google OAuth account record created successfully.")
+
+        logger.info("Creating application session for new user.")
 
         new_session_id = await create_session(user_id=new_user.user_id)
 
+        logger.info("Application session created for new user.")
+
         res = create_auth_response(new_session_id)
+
+        logger.info("Authentication completed for newly registered user.")
         return res
 
     else:
+        logger.info("Existing user found; creating application session.")
+
         new_session_id = await create_session(user_id=existing_user.user_id)
+
+        logger.info("Application session created for existing user.")
+
         res = create_auth_response(new_session_id)
+
+        logger.info("Authentication completed for existing user.")
         return res
+
+
+async def get_current_user(
+    req: Request,
+    db_session: AsyncSession,
+):
+    try:
+        session_id = req.cookies.get("session_id")
+
+        if not session_id:
+            logger.info("can't find session_id user is not authenticated.")
+
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="user is not Authenticated",
+            )
+
+        logger.info("searching for current user in redis.")
+        curr_user_id = redis_client.get(f"session:{session_id}")
+
+        if not curr_user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="user is not Authenticated",
+            )
+
+        curr_user = await get_user_by_user_id(UUID(curr_user_id), db_session)
+
+        if not curr_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="user don't exists login first",
+            )
+
+        return JSONResponse(
+            content={
+                "username": curr_user.username,
+                "profile_img": curr_user.profile_picture,
+            },
+            status_code=status.HTTP_200_OK,
+            media_type="application/json",
+            headers={"is_authenticated": "true"},
+        )
+
+    except ValueError:
+        pass
